@@ -1,0 +1,32 @@
+@import "./colors.scss";
+@import "./common.scss";
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  background-color: theme($bg-color, $primary-color);
+  color: theme($text-color, $primary-color);
+
+  padding: 0 1rem;
+
+  // border-bottom: .1rem solid theme($text-color, $primary-color);
+  // @include shadow(change-color($color: theme($text-color, $primary-color), $alpha: .1));
+
+  text-transform: uppercase;
+
+  & .header-name {
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+
+    max-height: 6rem;
+
+    & a {
+      height: 100%;
+    }
+
+    & img {
+      max-height: 100%;
+    }
+  }
+}

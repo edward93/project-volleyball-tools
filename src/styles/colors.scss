@@ -1,0 +1,40 @@
+//#region helper variables (keys)
+$bg-color: "bg-color";
+$text-color: "text-color";
+
+$primary-color: "primary-color";
+$secondary-color: "secondary-color";
+$highlighted-color: "highlighted-color";
+
+$theme-prefix: "theme";
+//#endregion
+
+// list themes here
+$themes: (
+  "#{$theme-prefix}-default": (
+    $bg-color: (
+      $primary-color: #191b20,
+      $secondary-color: #8367C7,
+    ),
+    $text-color: (
+      $primary-color: #03B5AA,
+      $secondary-color: #D4C5C7,
+      $highlighted-color: #EEF0F2,
+    ),
+  ),
+  "#{$theme-prefix}-dark": (
+    $bg-color: (
+      $primary-color: #020202,
+      $secondary-color: #1c1c1c,
+    ),
+    $text-color: (
+      $primary-color: #A31621,
+      $secondary-color: #999999,
+      $highlighted-color: #eeeeee
+    ),
+  ),
+);
+
+@function theme($type: $bg-color, $key: $primary-color, $theme-name: "default") {
+  @return map-get(map-get(map-get($map: $themes, $key: "theme-#{$theme-name}"), $key: $type), $key: $key);
+}

@@ -1,0 +1,19 @@
+@import "./colors.scss";
+
+.app-container {
+  background-color: theme($bg-color, $primary-color);
+  color: theme($text-color, $primary-color);
+  display: flex;
+  flex: 1;
+
+  flex-direction: column;
+  min-height: 100vh;
+
+  & > .app-content {
+    display: flex;
+    flex: 1 1 0;
+    flex-wrap: wrap;
+
+    color: theme($text-color, $secondary-color);
+  }
+}

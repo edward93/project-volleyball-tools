@@ -1,0 +1,12 @@
+@mixin shadow($shadow-color: rgba(0, 0, 0, 0.2), $placement: "bottom") {
+  $shadow-length: 0.4rem;
+
+  @if $placement != "bottom" {
+    $shadow-length: -0.4rem;
+  }
+  $shadow: 0.1rem $shadow-length 0.3rem 0rem $shadow-color;
+
+  box-shadow: $shadow;
+  -webkit-box-shadow: $shadow;
+  -moz-box-shadow: $shadow;
+}
