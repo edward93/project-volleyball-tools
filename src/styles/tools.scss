@@ -4,7 +4,7 @@ $outer-court-color: #0084ff;
 $court-color: #ce8976;
 $bound-color: rgb(243, 243, 243);
 
-$player-default-color: #4d4d4d;
+$player-default-color: theme($text-color, $primary-color);
 
 .vt-tools-container {
   display: flex;

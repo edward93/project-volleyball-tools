@@ -6,7 +6,7 @@ const HeaderComponent = () => {
       <div className="header-left"></div>
       <div className="header-middle">
         <div className="header-name">
-          <h1>Volleyball Tools</h1>
+          <h1>Volleyball Stats Tracker</h1>
         </div>
       </div>
       <div className="header-right"></div>
