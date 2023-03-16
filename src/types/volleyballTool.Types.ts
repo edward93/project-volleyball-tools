@@ -1,64 +1,80 @@
+
+
+/** Game results */
+export type GameResult = {
+  /** Game id that his result belongs to */
+  gameId: string;
+  /** Set number */
+  set: GameSet;
+  /** Final score of the set */
+  score: GameScore;
+};
+
+/** Volleyball game sets */
+export type GameSet = 1 | 2 | 3 | 4 | 5;
+
 /**
- * Abstract Circle type what will be the bases of 
+ * Game info, set, rally, score
  */
-export type Circle = {
+export type GameInfo = {
   /**
-   * unique id
+   * Unique auto generated id
    */
-  id: string;
-  /**
-   * Center X coordinate
-   */
-  cx: number,
-  /**
-   * Center Y coordinate
-   */
-  cy: number,
-  /**
-   * Radius
-   */
-  r: number,
-  /**
-   * Color
-   */
-  color: string
-}
+  id: number;
+  set: number;
+  rally?: number;
+  currentScore: GameScore;
+};
+
+/**
+ * Game score! Sides don't switch
+ */
+export type GameScore = {
+  home: number;
+  away: number;
+};
 
 type PositionType = {
   id: number;
   name: string;
   shortName?: string;
-}
+};
 
 export const OutsideHitter: PositionType = {
   id: 1,
   name: "Outside Hitter",
-  shortName: "OH"
-}
+  shortName: "OH",
+};
 
 export const OppositeHitter: PositionType = {
   id: 2,
   name: "Opposite Hitter",
-  shortName: "Oppo"
-}
+  shortName: "Oppo",
+};
 
 export const MiddleBlocker: PositionType = {
   id: 3,
   name: "Middle Blocker",
-  shortName: "Middle"
-}
+  shortName: "Middle",
+};
 
 export const Setter: PositionType = {
   id: 4,
   name: "Setter",
-  shortName: "Setter"
-}
+  shortName: "Setter",
+};
 
 export const Libero: PositionType = {
   id: 5,
   name: "Libero",
-  shortName: "Lib"
-}
+  shortName: "Lib",
+};
+
+export const None: PositionType = {
+  id: 6,
+  name: "None",
+  shortName: "None",
+};
 
 /**
  * Position type (major positions only)
@@ -69,23 +85,16 @@ export type Position =
   | typeof MiddleBlocker
   | typeof Setter
   | typeof Libero
-  ;
-
-/**
- * Player type
- */
-export interface Player extends Circle {
-  name: string;
-  jerseyNumber?: number;
-  position: Position;
-  stats: PlayerStats;
-  averageScore: number;
-}
+  | typeof None;
 
 /**
  * Detailed description of a certain action and how well it was performed
  */
 export type Statistic = {
+  /** Unique auto generated id */
+  id: string;
+  /** Player id */
+  playerId: string;
   /**
    * What happened
    */
@@ -97,7 +106,7 @@ export type Statistic = {
   /**
    * How well the said action was performed: 1 - worst, 10 - best score
    */
-  score: Score;
+  score: ActionScore;
   /**
    * Extra notes if applicable
    */
@@ -110,9 +119,9 @@ export type Statistic = {
    * Current game info
    */
   gameInfo?: GameInfo;
-}
+};
 
-export type Score = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export type ActionScore = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 export enum GameAction {
   Serve,
@@ -121,7 +130,7 @@ export enum GameAction {
   Spike,
   Block,
   Dig,
-  Pass
+  Pass,
 }
 
 /**
@@ -130,25 +139,7 @@ export enum GameAction {
 export type PlayerLocation = {
   x: number;
   y: number;
-}
-
-/**
- * Game info, set, rally, score
- */
-export type GameInfo = {
-  id: number;
-  set: number;
-  rally?: number;
-  currentScore: GameScore;
-}
-
-/**
- * Game score! Sides don't switch
- */
-export type GameScore = {
-  home: number;
-  away: number;
-}
+};
 
 /**
  * Key - time
