@@ -1,5 +1,6 @@
 import "../../styles/tools.scss";
 import PlayersComponent from "../Players/Players.Component";
+import InspectorComponent from "../Inspector/Inspector.Component";
 
 const Tools = () => {
   return (
@@ -8,7 +9,7 @@ const Tools = () => {
         <PlayersComponent />
       </section>
       <section className="vt-tools-inspector">
-        <div className="vt-tools-properties-title">Properties</div>
+        <InspectorComponent />
       </section>
     </div>
   );

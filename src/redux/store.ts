@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import teamReducer from "../components/VolleyballTool/team.Slice";
 import circlesReducer from "../components/Visualizer/circles.Slice";
 import playersReducer from "../components/Players/players.Slice";
+import inspectorSlice from "../components/Inspector/inspector.Slice";
 
 /**
  * Main store configuration
@@ -9,6 +10,7 @@ import playersReducer from "../components/Players/players.Slice";
 export const store = configureStore({
   reducer: {
     teamReducer,
+    inspectorSlice,
     circlesReducer,
     playersReducer,
   },

@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "@redux-devtools/core": "^3.13.1",
-    "@types/uuid": "^9.0.1"
+    "@types/uuid": "^9.0.1",
+    "react-git-info": "^2.0.1"
   }
 }

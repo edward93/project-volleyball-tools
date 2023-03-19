@@ -1,0 +1,42 @@
+@import "./colors.scss";
+
+.vt-tools-inspector-container {
+  display: flex;
+  // background-color: theme($bg-color, $secondary-color);
+  flex-direction: column;
+  flex: 1 1 0;
+
+  & .vt-tools-properties-title {
+    font-size: 1em;
+    text-transform: uppercase;
+    margin-bottom: 1em;
+  }
+
+  & .vt-tools-properties {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0.5rem;
+
+    & .vt-tools-property {
+      display: flex;
+      font-size: 0.7rem;
+      padding-bottom: 1rem;
+      flex-direction: column;
+
+      & .vt-tools-property-label {
+        display: flex;
+        font-size: 1.3em;
+        font-weight: 900;
+        text-decoration: underline;
+      }
+
+      & .vt-tools-property-value {
+        color: theme($text-color, $secondary-color);
+        font-weight: 300;
+        font-style: italic;
+        font-size: 0.9em;
+        display: flex;
+      }
+    }
+  }
+}

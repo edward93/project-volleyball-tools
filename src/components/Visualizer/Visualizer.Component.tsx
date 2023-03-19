@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Circle } from "../../types/reduxStore.Types";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
-import { updatePosition } from "./circles.Slice";
+import { select } from "../Inspector/inspector.Slice";
+import Player from "./Player.Component";
 
 /**
  * SVG visualizer
@@ -11,10 +12,9 @@ import { updatePosition } from "./circles.Slice";
 const SvgVisualizerComponent = (props: { texts: Record<string, string> }) => {
   const dispatch = useAppDispatch();
   const circles = useAppSelector((selector) => selector.circlesReducer.byId);
+  const players = useAppSelector((selector) => selector.playersReducer);
 
   const { texts } = props;
-
-  const [activeCircle, setActiveCircle] = useState<Circle | null>(null);
 
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
@@ -24,78 +24,44 @@ const SvgVisualizerComponent = (props: { texts: Record<string, string> }) => {
    * @param circle SVG circle
    */
   const handleMouseDown = (circle: Circle) => {
-    setActiveCircle(circle);
-  };
+    // setActiveCircle(circle);
+    const player = players.byId[circle.id];
+    console.log(player);
 
-  /**
-   * Deselects current circle when mouse is released
-   */
-  const handleMouseUp = () => {
-    setActiveCircle(null);
-  };
-
-  const onTouchMove = (event: React.TouchEvent<SVGSVGElement>) => {
-    // event.preventDefault();
-
-    moveCircle(event.touches[0].clientX, event.touches[0].clientY);
-  };
-
-  const onMouseMove = (event: React.MouseEvent<SVGSVGElement>) => {
-    moveCircle(event.clientX, event.clientY);
-  };
-
-  /**
-   * Moves circles when dragged
-   * @param event Mouse move event
-   */
-  const moveCircle = (x: number, y: number) => {
-    if (!activeCircle) return;
-
-    const point = svgRef.current?.createSVGPoint();
-    if (!point) return;
-
-    point.x = x;
-    point.y = y;
-
-    const transformedPoint = point.matrixTransform(svgRef.current?.getScreenCTM()?.inverse());
-
-    // calc new coordinates relative to the SVG itself
-    const newX = transformedPoint.x;
-    const newY = transformedPoint.y;
-
-    dispatch(updatePosition({ id: activeCircle.id, newX, newY }));
+    dispatch(select(player));
   };
 
   return (
     <div className="vt-svg-container">
-      <svg
-        viewBox="0 0 1600 1200"
-        ref={svgRef}
-        className="vt-svg"
-        onMouseMove={onMouseMove}
-        onMouseUp={handleMouseUp}
-        onTouchEnd={handleMouseUp}
-        onTouchMove={onTouchMove}
-        preserveAspectRatio="xMidYMin meet"
-      >
-        <line className="vt-svg-net" strokeWidth={5} x1={200} y1={10} x2={1400} y2={10} />
+      <svg viewBox="0 0 1600 1200" ref={svgRef} className="vt-svg" preserveAspectRatio="xMidYMin meet">
         <g className="vt-svg-court-group" transform="translate(350, 10)">
+          <line className="vt-svg-net" strokeWidth={5} x1={-150} y1={0} x2={1050} y2={0} />
           <rect className="vt-svg-court" strokeWidth={5} width={900} height={900} />
           <line className="vt-svg-10-ft-line" strokeWidth={5} x1={0} y1={300} x2={900} y2={300} />
+          <line
+            className="vt-svg-10-ft-line-outside"
+            strokeWidth={4}
+            x1={-175}
+            y1={300}
+            x2={1075}
+            y2={300}
+            strokeDasharray={10}
+          />
         </g>
 
         {Object.values(circles).map((circle) => (
-          <g
+          <Player
+            circle={circle}
             key={circle.id}
-            onMouseDown={() => handleMouseDown(circle)}
-            onTouchStart={(event) => handleMouseDown(circle)}
-            className="vt-svg-player"
-          >
-            <circle stroke="black" key={circle.id} cx={circle.cx} cy={circle.cy} r={circle.r} fill={circle.color} />
-            <text x={circle.cx} y={circle.cy + 1.4 * circle.r} textAnchor="middle" alignmentBaseline="middle">
-              {texts[circle.id]}
-            </text>
-          </g>
+            circleRadius={circle.r}
+            color={circle.color}
+            id={circle.id}
+            x={circle.cx}
+            y={circle.cy}
+            name={texts[circle.id]}
+            svgRef={svgRef}
+            onPressed={handleMouseDown}
+          />
         ))}
       </svg>
     </div>

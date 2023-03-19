@@ -17,7 +17,7 @@ $player-default-color: theme($text-color, $primary-color);
 
     flex-grow: 9;
     // flex-basis: 32em;
-    // flex-basis: 1000px;
+    flex-basis: 1000px;
     // use media to switch from auto to 1000px when the screen is small
     // flex: 10 5 auto;
 
@@ -55,6 +55,9 @@ $player-default-color: theme($text-color, $primary-color);
           }
           & .vt-svg-10-ft-line {
             display: flex;
+            stroke: $boundary-color;
+          }
+          & .vt-svg-10-ft-line-outside {
             stroke: $boundary-color;
           }
         }
