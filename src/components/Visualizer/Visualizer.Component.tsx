@@ -1,7 +1,5 @@
 import { useRef } from "react";
-import { Circle } from "../../types/reduxStore.Types";
-import { useAppSelector, useAppDispatch } from "../../redux/hooks";
-import { select } from "../Inspector/inspector.Slice";
+import { useAppSelector } from "../../redux/hooks";
 import Player from "./Player.Component";
 
 /**
@@ -9,27 +7,11 @@ import Player from "./Player.Component";
  * @param props Component props
  * @returns React component
  */
-const SvgVisualizerComponent = (props: { texts: Record<string, string> }) => {
-  const dispatch = useAppDispatch();
+const SvgVisualizerComponent = () => {
   const circles = useAppSelector((selector) => selector.circlesReducer.byId);
-  const players = useAppSelector((selector) => selector.playersReducer);
-
-  const { texts } = props;
 
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
-
-  /**
-   * Sets current circle as active when mouse is pressed
-   * @param circle SVG circle
-   */
-  const handleMouseDown = (circle: Circle) => {
-    // setActiveCircle(circle);
-    const player = players.byId[circle.id];
-    console.log(player);
-
-    dispatch(select(player));
-  };
 
   return (
     <div className="vt-svg-container">
@@ -51,16 +33,11 @@ const SvgVisualizerComponent = (props: { texts: Record<string, string> }) => {
 
         {Object.values(circles).map((circle) => (
           <Player
-            circle={circle}
             key={circle.id}
-            circleRadius={circle.r}
-            color={circle.color}
             id={circle.id}
-            x={circle.cx}
-            y={circle.cy}
-            name={texts[circle.id]}
+            color={circle.color}
+            circle={{ x: circle.cx, y: circle.cy, r: circle.r }}
             svgRef={svgRef}
-            onPressed={handleMouseDown}
           />
         ))}
       </svg>

@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import { useAppDispatch } from "../../redux/hooks";
-import { Circle } from "../../types/reduxStore.Types";
+import { useRef, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { PlayerComponentProps } from "../../types/playerComponent.Types";
+import { select } from "../Inspector/inspector.Slice";
 import { updatePosition } from "./circles.Slice";
 
 /**
@@ -9,22 +10,12 @@ import { updatePosition } from "./circles.Slice";
  * @param props - Component props
  * @returns React component
  */
-const PlayerComponent = (props: {
-  id: string;
-  x: number;
-  y: number;
-  circleRadius: number;
-  color: string;
-  name: string;
-  /** This should be removed and instead id should be passed */
-  circle: Circle;
-  onPressed: (circle: Circle) => void;
-  onReleased?: () => void;
-  svgRef: React.RefObject<SVGSVGElement>;
-}) => {
+const PlayerComponent = (props: PlayerComponentProps) => {
   const dispatch = useAppDispatch();
+  const players = useAppSelector((selector) => selector.playersReducer);
+
   /** Deconstruct props */
-  const { id, x, y, circleRadius, color, name, circle, onPressed, onReleased, svgRef } = props;
+  const { id, circle: { x, y, r} , color, name, onPressed, onReleased, svgRef } = props;
 
   /** is this player/circle pressed/touched or not */
   const [isPressed, setIsPressed] = useState(false);
@@ -50,7 +41,7 @@ const PlayerComponent = (props: {
    * @param event Mouse event
    */
   const onMouseDown = (event: React.MouseEvent<SVGSVGElement>) => {
-    press(circle);
+    press(id);
   };
 
   /**
@@ -58,7 +49,7 @@ const PlayerComponent = (props: {
    * @param event Touch event
    */
   const onTouchStart = (event: React.TouchEvent<SVGSVGElement>) => {
-    press(circle);
+    press(id);
   };
 
   /**
@@ -87,12 +78,21 @@ const PlayerComponent = (props: {
 
   /**
    * Press (actively select [mouse down/touch start] ) this player
-   * @param circle - Current circle
+   * @param id - Current circle id
    */
-  const press = (circle: Circle) => {
+  const press = (id: string) => {
     setIsPressed(true);
+
+    // find the current player
+    const player = players.byId[id];
+
+    // select this player (to view the properties)
+    dispatch(select(player));
+
     // TODO: log
-    onPressed(circle);
+
+    // call onPressed if exists
+    onPressed && onPressed(id);
   };
 
   /**
@@ -141,11 +141,11 @@ const PlayerComponent = (props: {
       }}
       className="vt-svg-player"
     >
-      <circle stroke="black" cx={x} cy={y} r={circleRadius} fill={color} />
-      <g transform={`translate(${x}, ${y + 1.6 * circleRadius})`}>
+      <circle stroke="black" cx={x} cy={y} r={r} fill={color} />
+      <g transform={`translate(${x}, ${y + 1.6 * r})`}>
         <rect strokeWidth={2} width={rectWidth} height={30} fill="black" x={-rectWidth / 2} y={-15} rx={5} />
         <text ref={textRef} textAnchor="middle" alignmentBaseline="middle" fill="white">
-          {name}
+          {name || players.byId[id].name}
         </text>
       </g>
     </g>
