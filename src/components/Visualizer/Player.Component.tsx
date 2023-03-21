@@ -13,7 +13,6 @@ import { updatePosition } from "./circles.Slice";
 const PlayerComponent = (props: PlayerComponentProps) => {
   const dispatch = useAppDispatch();
   const players = useAppSelector((selector) => selector.playersReducer);
-  const circles = useAppSelector((selector) => selector.circlesReducer);
 
   /** Deconstruct props */
   const {
@@ -118,6 +117,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const movePlayer = (x: number, y: number) => {
     if (!isPressed) return;
 
+    //#region find transformed coordinates
     const point = svgRef.current?.createSVGPoint();
     if (!point) return;
 
@@ -129,7 +129,9 @@ const PlayerComponent = (props: PlayerComponentProps) => {
     // calc new coordinates relative to the SVG itself
     const newX = transformedPoint.x;
     const newY = transformedPoint.y;
-
+    //#endregion
+    
+    // update position in the store
     dispatch(updatePosition({ id, newX, newY }));
   };
 
