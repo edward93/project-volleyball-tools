@@ -13,9 +13,18 @@ import { updatePosition } from "./circles.Slice";
 const PlayerComponent = (props: PlayerComponentProps) => {
   const dispatch = useAppDispatch();
   const players = useAppSelector((selector) => selector.playersReducer);
+  const circles = useAppSelector((selector) => selector.circlesReducer);
 
   /** Deconstruct props */
-  const { id, circle: { x, y, r} , color, name, onPressed, onReleased, svgRef } = props;
+  const {
+    id,
+    circle: { x, y, r },
+    color,
+    name,
+    onPressed,
+    onReleased,
+    svgRef,
+  } = props;
 
   /** is this player/circle pressed/touched or not */
   const [isPressed, setIsPressed] = useState(false);
@@ -83,11 +92,8 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const press = (id: string) => {
     setIsPressed(true);
 
-    // find the current player
-    const player = players.byId[id];
-
-    // select this player (to view the properties)
-    dispatch(select(player));
+    // select current player
+    dispatch(select(id));
 
     // TODO: log
 

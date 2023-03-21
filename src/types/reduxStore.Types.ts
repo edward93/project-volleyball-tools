@@ -1,4 +1,12 @@
-import { GameResult, GameSet, Position, Statistic } from "./volleyballTool.Types";
+import {
+  ActionScore,
+  GameAction,
+  GameResult,
+  GameSet,
+  PlayerLocation,
+  Position,
+  Statistic,
+} from "./volleyballTool.Types";
 
 /**
  * This is the workspace type! Root level type that contains everything regarding the workspace
@@ -93,4 +101,20 @@ export type Circles = {
   byId: Record<string, Circle>;
   /** List of all ids */
   allIds: string[];
+};
+
+/** Type that represents selected element, usually a player */
+export type SelectedPlayer = {
+  /** Represents internal props that are not very important */
+  internal: { id: string; x: number; y: number; r: number };
+  /** Those properties may be more important than internal ones but are not very critical */
+  visual: { color: string; name: string; position: string; jerseyNumber?: number; avgScore: number };
+  /** Array of stats. These props are the most critical ones */
+  stats: {
+    actionName: GameAction;
+    description?: string;
+    score: ActionScore;
+    notes?: string;
+    locationOnCourt: PlayerLocation;
+  }[];
 };

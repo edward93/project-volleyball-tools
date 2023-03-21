@@ -1,11 +1,4 @@
 @import "./colors.scss";
-@import "./common.scss";
-
-$outer-court-color: #0084ff;
-$court-color: #ce8976;
-$boundary-color: rgb(243, 243, 243);
-
-$player-default-color: theme($text-color, $primary-color);
 
 .vt-tools-container {
   display: flex;
@@ -23,55 +16,7 @@ $player-default-color: theme($text-color, $primary-color);
 
     justify-content: center;
 
-    & .vt-svg-container {
-      display: flex;
-      // flex-direction: column;
-      flex-wrap: wrap;
-      flex: 1 1 0;
-      justify-content: center;
-      padding: 0 0.5rem 1rem 0.5rem;
-
-      & .vt-svg {
-        background-color: $outer-court-color;
-        width: 100%;
-        height: 100%;
-        touch-action: none;
-
-        & text {
-          @include prevent-select;
-        }
-
-        & .vt-svg-net {
-          display: flex;
-          stroke: $boundary-color;
-        }
-
-        & .vt-svg-court-group {
-          & .vt-svg-court {
-            display: flex;
-            stroke: $boundary-color;
-            fill: $court-color;
-            // transform: translate(-1 * calc($court-size / 2), -1 * calc($court-size / 2));
-          }
-          & .vt-svg-10-ft-line {
-            display: flex;
-            stroke: $boundary-color;
-          }
-          & .vt-svg-10-ft-line-outside {
-            stroke: $boundary-color;
-          }
-        }
-
-        & .vt-svg-player {
-          & circle {
-            fill: $player-default-color;
-            stroke: $boundary-color;
-          }
-          // fill: $player-default-color;
-          // stroke: $boundary-color;
-        }
-      }
-    }
+    
   }
 
   & .vt-tools-inspector {

@@ -9,33 +9,54 @@
   & .vt-tools-properties-title {
     font-size: 1em;
     text-transform: uppercase;
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
   }
 
   & .vt-tools-properties {
     display: flex;
     flex-direction: column;
-    margin: 0 0.5rem;
+    // margin: 0 0.5rem;
 
-    & .vt-tools-property {
-      display: flex;
-      font-size: 0.7rem;
-      padding-bottom: 1rem;
-      flex-direction: column;
+    & .vt-tools-properties-section {
+      background-color: lighten($color: theme($bg-color, $primary-color), $amount: 10);
+      margin-bottom: 0.3rem;
 
-      & .vt-tools-property-label {
-        display: flex;
-        font-size: 1.3em;
-        font-weight: 900;
+      & .vt-tools-properties-section-title {
+        padding-left: 0.2rem;
+        font-size: 0.91rem;
+        padding-bottom: 0.2rem;
         text-decoration: underline;
+        text-transform: uppercase;
       }
 
-      & .vt-tools-property-value {
-        color: theme($text-color, $secondary-color);
-        font-weight: 300;
-        font-style: italic;
-        font-size: 0.9em;
+      & .vt-tools-properties-hz {
         display: flex;
+        justify-content: space-between;
+      }
+
+      & .vt-tools-property {
+        display: flex;
+        font-size: 0.7rem;
+        margin-bottom: 0.1rem;
+        padding: 0 0.5rem;
+        flex-direction: column;
+        // background-color: lighten($color: theme($bg-color, $primary-color), $amount: 10);
+
+        & .vt-tools-property-label {
+          display: flex;
+
+          font-size: 1.3em;
+          font-weight: 900;
+        }
+
+        & .vt-tools-property-value {
+          display: flex;
+          
+          color: theme($text-color, $secondary-color);
+          font-weight: 300;
+          font-style: italic;
+          font-size: 0.9em;
+        }
       }
     }
   }

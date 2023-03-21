@@ -2,6 +2,8 @@ import { useRef } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import Player from "./Player.Component";
 
+import "../../styles/visualizer.scss";
+
 /**
  * SVG visualizer
  * @param props Component props

@@ -1,13 +1,16 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
+import { SelectedPlayer } from "../../types/reduxStore.Types";
 
-const initialState: { id?: string; [key: string]: any } = {};
+// type State = SelectedPlayer | null;
+const initialState: { selectedId?: string } = {};
 
+// need to explicitly specify types otherwise redux infers them incorrectly when initial state is null
 export const inspectorSlice = createSlice({
   initialState,
   name: "inspector",
   reducers: {
-    select: (state: { id?: string; [key: string]: any }, action: PayloadAction<{ id: string; [key: string]: any }>) => {
-      return action.payload;
+    select: (state, action: PayloadAction<string>) => {
+      state.selectedId = action.payload;
     },
   },
 });
