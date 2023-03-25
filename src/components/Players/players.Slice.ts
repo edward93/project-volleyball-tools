@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Player, Players } from "../../types/reduxStore.Types";
-import { None } from "../../types/volleyballTool.Types";
+import { MiddleBlocker, OppositeHitter, OutsideHitter, Setter } from "../../types/volleyballTool.Types";
 
 import { circles } from "../Visualizer/circles.Slice";
 
 const initialPlayers: Player[] = [
-  { id: circles[0].id, averageScore: 0, circleId: circles[0].id, name: "Player's Name", position: None, stats: [] },
-  { id: circles[1].id, averageScore: 0, circleId: circles[1].id, name: "Player's Name", position: None, stats: [] },
-  { id: circles[2].id, averageScore: 0, circleId: circles[2].id, name: "Player's Name", position: None, stats: [] },
-  { id: circles[3].id, averageScore: 0, circleId: circles[3].id, name: "Player's Name", position: None, stats: [] },
-  { id: circles[4].id, averageScore: 0, circleId: circles[4].id, name: "Player's Name", position: None, stats: [] },
-  { id: circles[5].id, averageScore: 0, circleId: circles[5].id, name: "Player's Name", position: None, stats: [] },
+  { id: circles[0].id, averageScore: 0, circleId: circles[0].id, name: "Player's Name", position: MiddleBlocker, stats: [] },
+  { id: circles[1].id, averageScore: 0, circleId: circles[1].id, name: "Player's Name", position: OutsideHitter, stats: [] },
+  { id: circles[2].id, averageScore: 0, circleId: circles[2].id, name: "Player's Name", position: Setter, stats: [] },
+  { id: circles[3].id, averageScore: 0, circleId: circles[3].id, name: "Player's Name", position: OppositeHitter, stats: [] },
+  { id: circles[4].id, averageScore: 0, circleId: circles[4].id, name: "Player's Name", position: OutsideHitter, stats: [] },
+  { id: circles[5].id, averageScore: 0, circleId: circles[5].id, name: "Player's Name", position: MiddleBlocker, stats: [] },
 ];
 
 const initialState: Players = {

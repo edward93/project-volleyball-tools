@@ -14,7 +14,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const dispatch = useAppDispatch();
   const players = useAppSelector((selector) => selector.playersReducer);
 
-  /** Deconstruct props */
+  /** Destructuring props */
   const {
     id,
     circle: { x, y, r },

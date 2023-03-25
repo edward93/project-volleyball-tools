@@ -20,7 +20,8 @@ export type GameInfo = {
   /**
    * Unique auto generated id
    */
-  id: number;
+  id: string;
+  gameId: string;
   set: number;
   rally?: number;
   currentScore: GameScore;

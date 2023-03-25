@@ -3,6 +3,8 @@ import teamReducer from "../components/VolleyballTool/team.Slice";
 import circlesReducer from "../components/Visualizer/circles.Slice";
 import playersReducer from "../components/Players/players.Slice";
 import inspectorSlice from "../components/Inspector/inspector.Slice";
+import gameSlice from "../components/Scoreboard/game.Slice";
+import gameStatsSlice from "../components/Scoreboard/gameStats.Slice";
 
 /**
  * Main store configuration
@@ -13,6 +15,8 @@ export const store = configureStore({
     inspectorSlice,
     circlesReducer,
     playersReducer,
+    gameSlice,
+    gameStatsSlice,
   },
 });
 

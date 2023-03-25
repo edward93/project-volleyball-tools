@@ -1,6 +1,7 @@
 import {
   ActionScore,
   GameAction,
+  GameInfo,
   GameResult,
   GameSet,
   PlayerLocation,
@@ -33,9 +34,9 @@ export type Game = {
   /** Home team name*/
   home: string;
   /** Away team name */
-  away?: string;
+  away: string;
   /** Results per set, score, violations, etc */
-  results: Record<GameSet, GameResult>;
+  results?: Record<GameSet, GameResult>;
 };
 
 /** Volleyball team */
@@ -55,7 +56,7 @@ export type Team = {
 };
 
 /** Player type */
-export interface Player {
+export type Player = {
   /** Unique auto generated id */
   id: string;
   /** Circle id that represents this player on the rendered SVG */
@@ -77,6 +78,16 @@ export type Players = {
   byId: Record<string, Player>;
   /** List of all ids */
   allIds: string[];
+};
+
+/** GameStats slice type */
+export type GameStats = {
+  /** Game info by id */
+  byId: Record<string, GameInfo>;
+  /** All ids */
+  allIds: string[];
+  /** Game info by game id */
+  byGameId: Record<string, GameInfo>;
 };
 
 /** SVG circle */
