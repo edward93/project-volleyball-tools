@@ -7,7 +7,7 @@
 
   & .vt-tools-main-area {
     display: flex;
-
+    flex-direction: column;
     flex-grow: 9;
     // flex-basis: 32em;
     flex-basis: 1000px;

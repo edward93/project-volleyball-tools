@@ -1,7 +1,7 @@
 @import "./colors.scss";
 @import "./common.scss";
 
-$outer-court-color: #0084ff;
+$outer-court-color: #53a9fa;
 $court-color: #ce8976;
 $boundary-color: rgb(243, 243, 243);
 
@@ -48,11 +48,8 @@ $player-default-color: theme($text-color, $primary-color);
 
     & .vt-svg-player {
       & circle {
-        // fill: $player-default-color;
         stroke: $boundary-color;
       }
-      // fill: $player-default-color;
-      // stroke: $boundary-color;
     }
   }
 }
