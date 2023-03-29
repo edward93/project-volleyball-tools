@@ -37,6 +37,11 @@ $player-default-color: theme($text-color, $primary-color);
         fill: $court-color;
         // transform: translate(-1 * calc($court-size / 2), -1 * calc($court-size / 2));
       }
+
+      & .vt-svg-court-front {
+        stroke: $boundary-color;
+        fill: darken($court-color, 10);
+      }
       & .vt-svg-10-ft-line {
         display: flex;
         stroke: $boundary-color;
