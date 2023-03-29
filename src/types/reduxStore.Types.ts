@@ -39,6 +39,55 @@ export type Game = {
   results?: Record<GameSet, GameResult>;
 };
 
+/** Volleyball game set */
+export type Set = {
+  /** Unique auto generated id */
+  id: string;
+  /** Game id */
+  gameId: string;
+  /** Set number */
+  set: GameSet;
+  /** Final or current score of this particular set for home team */
+  homeScore: number;
+  /** Final or current score of this particular set for away team */
+  awayScore: number;
+};
+
+/** Sets type for redux store */
+export type Sets = {
+  /** Sets by ids */
+  byId: Record<string, Set>;
+  /** Sets by game id */
+  byGameId: Record<string, Set[]>;
+  /** All set ids */
+  allIds: string[];
+};
+
+/** Volleyball point type */
+export type Point = {
+  /** Unique auto generated id */
+  id: string;
+  /** Game id */
+  setId: string;
+  //TODO: use team reference instead
+  /** Whether or not this point was scored by the home team */
+  scoredByHomeTeam: boolean;
+  /** Current point that was scored */
+  point: number;
+};
+
+/** Points type for redux store */
+export type Points = {
+  /** Points by ids */
+  byId: Record<string, Point>;
+  /** Points by set id */
+  bySetId: Record<string, Point[]>;
+  /** Sets by game id */
+  byGameId: Record<string, Point[]>;
+  /** All point ids */
+  allIds: string[];
+};
+
 /** Volleyball team */
 export type Team = {
   /** Unique auto generated id */
@@ -71,7 +120,7 @@ export type Player = {
   stats: Statistic[];
   /** Player's average ranking based on stats */
   averageScore: number;
-}
+};
 
 export type Players = {
   /** Players by id */

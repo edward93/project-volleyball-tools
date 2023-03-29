@@ -4,7 +4,8 @@ import circlesReducer from "../components/Visualizer/circles.Slice";
 import playersReducer from "../components/Players/players.Slice";
 import inspectorSlice from "../components/Inspector/inspector.Slice";
 import gameSlice from "../components/Scoreboard/game.Slice";
-import gameStatsSlice from "../components/Scoreboard/gameStats.Slice";
+import setsSlice from "../components/Scoreboard/sets.Slice";
+import pointsSlice from "../components/Scoreboard/points.slice";
 
 /**
  * Main store configuration
@@ -16,7 +17,8 @@ export const store = configureStore({
     circlesReducer,
     playersReducer,
     gameSlice,
-    gameStatsSlice,
+    setsSlice,
+    pointsSlice,
   },
 });
 

@@ -32,7 +32,9 @@ export type GameInfo = {
  */
 export type GameScore = {
   home: number;
+  homeSet: number;
   away: number;
+  awaySet: number;
 };
 
 type PositionType = {

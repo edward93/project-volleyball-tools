@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
 import { Game } from "../../types/reduxStore.Types";
-// TODO: remove this after refactoring this and gameStats.Slice
+// TODO: remove this after refactoring this
 export const gameId = uuidv4();
 const workspaceId = uuidv4();
 
