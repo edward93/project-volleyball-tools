@@ -19,8 +19,9 @@ const SvgVisualizerComponent = () => {
     <div className="vt-svg-container">
       <svg viewBox="0 0 1600 1200" ref={svgRef} className="vt-svg" preserveAspectRatio="xMidYMin meet">
         <g className="vt-svg-court-group" transform="translate(350, 10)">
-          <line className="vt-svg-net" strokeWidth={5} x1={-150} y1={0} x2={1050} y2={0} />
+          <line className="vt-svg-net" strokeWidth={6} x1={-150} y1={0} x2={1050} y2={0} />
           <rect className="vt-svg-court" strokeWidth={5} width={900} height={900} />
+          <rect className="vt-svg-court-front" strokeWidth={5} width={900} height={300} />
           <line className="vt-svg-10-ft-line" strokeWidth={5} x1={0} y1={300} x2={900} y2={300} />
           <line
             className="vt-svg-10-ft-line-outside"
