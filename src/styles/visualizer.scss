@@ -58,3 +58,17 @@ $player-default-color: theme($text-color, $primary-color);
     }
   }
 }
+
+// overrides
+// .vt-player-context-menu {
+//   & .MuiMenu-paper {
+//     background-color: theme($bg-color, $primary-color);
+//     color: theme($text-color, $secondary-color);
+//     & .MuiMenu-list {
+//       font-size: calc(15px + 0.390625vw);
+//       & .MuiMenuItem-root {
+//         font-size: .8rem;
+//       }
+//     }
+//   }
+// }
