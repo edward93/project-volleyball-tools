@@ -98,9 +98,24 @@ const PlayerComponent = (props: PlayerComponentProps) => {
 
   const onContextMenu = (event: React.MouseEvent<SVGSVGElement>) => {
     event.preventDefault();
-    console.log("right click for ", id);
 
     setIsContextMenuOpen(true);
+  };
+
+  /**
+   * Handles context menu close request
+   */
+  const onContextMenuClose = () => {
+    setIsContextMenuOpen(false);
+  };
+
+  /**
+   * Handles click event
+   * @param event - Mouse click event
+   */
+  const onChangeNameClick = (event: React.MouseEvent<HTMLElement>) => {
+    console.log(event);
+    
   };
   //#endregion
 
@@ -170,14 +185,14 @@ const PlayerComponent = (props: PlayerComponentProps) => {
       <Menu
         className="vt-player-context-menu"
         open={isContextMenuOpen}
-        onClose={() => setIsContextMenuOpen(false)}
+        onClose={onContextMenuClose}
         anchorEl={anchorElRef.current}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "center",
         }}
       >
-        <MenuItem>Change Name</MenuItem>
+        <MenuItem onClick={onChangeNameClick}>Change Name</MenuItem>
         <Divider />
         <MenuItem>New Action</MenuItem>
       </Menu>
