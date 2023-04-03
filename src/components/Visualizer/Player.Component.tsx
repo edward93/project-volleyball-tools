@@ -1,8 +1,16 @@
 import { useRef, useState } from "react";
+// import Modal from "react-modal";
+// import Menu from "@mui/base/MenuUnstyled";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
+
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { PlayerComponentProps } from "../../types/playerComponent.Types";
 import { select } from "../Inspector/inspector.Slice";
 import { updatePosition } from "./circles.Slice";
+import MenuList from "@mui/material/MenuList";
+import List from "@mui/material/List";
 
 /**
  * Player component (renders as SVG circles with player's name under it)
@@ -25,10 +33,15 @@ const PlayerComponent = (props: PlayerComponentProps) => {
     svgRef,
   } = props;
 
+  const anchorElRef = useRef<SVGSVGElement>(null);
+
   /** is this player/circle pressed/touched or not */
   const [isPressed, setIsPressed] = useState(false);
   /** Width of the text's bg rect */
   const [rectWidth, setRectWidth] = useState(200);
+
+  const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
+
   /** Text element's ref */
   const textRef = useRef<SVGTextElement>(null);
 
@@ -82,6 +95,13 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const onTouchMove = (event: React.TouchEvent<SVGSVGElement>) => {
     movePlayer(event.touches[0].clientX, event.touches[0].clientY);
   };
+
+  const onContextMenu = (event: React.MouseEvent<SVGSVGElement>) => {
+    event.preventDefault();
+    console.log("right click for ", id);
+
+    setIsContextMenuOpen(true);
+  };
   //#endregion
 
   /**
@@ -130,7 +150,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
     const newX = transformedPoint.x;
     const newY = transformedPoint.y;
     //#endregion
-    
+
     // update position in the store
     dispatch(updatePosition({ id, newX, newY }));
   };
@@ -143,12 +163,32 @@ const PlayerComponent = (props: PlayerComponentProps) => {
       onTouchMove={onTouchMove}
       onMouseUp={onStopPressing}
       onTouchEnd={onStopPressing}
-      onContextMenu={(event) => {
-        event.preventDefault();
-        console.log("right click for ", id);
-      }}
+      onContextMenu={onContextMenu}
       className="vt-svg-player"
+      ref={anchorElRef}
     >
+      <Menu
+        className="vt-player-context-menu"
+        open={isContextMenuOpen}
+        onClose={() => setIsContextMenuOpen(false)}
+        anchorEl={anchorElRef.current}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+      >
+        <MenuItem>Change Name</MenuItem>
+        <Divider />
+        <MenuItem>New Action</MenuItem>
+      </Menu>
+      {/* <Modal
+        isOpen={isContextMenuOpen}
+        shouldCloseOnOverlayClick={true}
+        onRequestClose={() => setIsContextMenuOpen(false)}
+        contentLabel="Some Text"
+      >
+        <h1>Context Menu</h1>
+      </Modal> */}
       <circle stroke="black" cx={x} cy={y} r={r} fill={color} />
       <g transform={`translate(${x}, ${y + 1.6 * r})`}>
         <rect strokeWidth={2} width={rectWidth} height={30} fill="black" x={-rectWidth / 2} y={-15} rx={5} />
