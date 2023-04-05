@@ -1,16 +1,11 @@
-import { useRef, useState } from "react";
-// import Modal from "react-modal";
-// import Menu from "@mui/base/MenuUnstyled";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Divider from "@mui/material/Divider";
+import { useEffect, useRef, useState } from "react";
 
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { PlayerComponentProps } from "../../types/playerComponent.Types";
+import useFontFaceObserver from "utils/hooks/useFontFaceObserver.hook";
+import { PositionsById } from "types/volleyballTool.Types";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { PlayerComponentProps } from "types/playerComponent.Types";
 import { select } from "../Inspector/inspector.Slice";
 import { updatePosition } from "./circles.Slice";
-import MenuList from "@mui/material/MenuList";
-import List from "@mui/material/List";
 
 /**
  * Player component (renders as SVG circles with player's name under it)
@@ -21,6 +16,7 @@ import List from "@mui/material/List";
 const PlayerComponent = (props: PlayerComponentProps) => {
   const dispatch = useAppDispatch();
   const players = useAppSelector((selector) => selector.playersReducer);
+  const isFontLoaded = useFontFaceObserver([{ family: "Roboto-Mono" }]);
 
   /** Destructuring props */
   const {
@@ -33,27 +29,21 @@ const PlayerComponent = (props: PlayerComponentProps) => {
     svgRef,
   } = props;
 
-  const anchorElRef = useRef<SVGSVGElement>(null);
+  // extract player's name
+  const playerName = players.byId[id].name;
 
   /** is this player/circle pressed/touched or not */
   const [isPressed, setIsPressed] = useState(false);
   /** Width of the text's bg rect */
-  const [rectWidth, setRectWidth] = useState(200);
-
-  const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
+  const [rectWidth, setRectWidth] = useState(220);
 
   /** Text element's ref */
   const textRef = useRef<SVGTextElement>(null);
 
-  // TODO: update rectWidth
-  // useEffect(() => {
-  //   if (textRef.current) {
-  //     console.log("text length - ", textRef.current.getComputedTextLength());
-  //     console.log("text - ", textRef.current.textContent);
-
-  //     setRectWidth(textRef.current.getComputedTextLength() + 20);
-  //   }
-  // }, []);
+  // update rectWidth when player name changes or when font loads
+  useEffect(() => {
+    updateTextRectWidth();
+  }, [playerName, isFontLoaded]);
 
   // TODO: move to a separate hook
   //#region framework handlers
@@ -95,30 +85,12 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const onTouchMove = (event: React.TouchEvent<SVGSVGElement>) => {
     movePlayer(event.touches[0].clientX, event.touches[0].clientY);
   };
-
-  const onContextMenu = (event: React.MouseEvent<SVGSVGElement>) => {
-    event.preventDefault();
-
-    setIsContextMenuOpen(true);
-  };
-
-  /**
-   * Handles context menu close request
-   */
-  const onContextMenuClose = () => {
-    setIsContextMenuOpen(false);
-  };
-
-  /**
-   * Handles click event
-   * @param event - Mouse click event
-   */
-  const onChangeNameClick = (event: React.MouseEvent<HTMLElement>) => {
-    console.log(event);
-    
-  };
   //#endregion
 
+  /** Update player's name bg rect width */
+  const updateTextRectWidth = () => {
+    if (textRef.current) setRectWidth(textRef.current.getComputedTextLength() + 20);
+  };
   /**
    * Press (actively select [mouse down/touch start] ) this player
    * @param id - Current circle id
@@ -178,37 +150,18 @@ const PlayerComponent = (props: PlayerComponentProps) => {
       onTouchMove={onTouchMove}
       onMouseUp={onStopPressing}
       onTouchEnd={onStopPressing}
-      onContextMenu={onContextMenu}
       className="vt-svg-player"
-      ref={anchorElRef}
     >
-      <Menu
-        className="vt-player-context-menu"
-        open={isContextMenuOpen}
-        onClose={onContextMenuClose}
-        anchorEl={anchorElRef.current}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-      >
-        <MenuItem onClick={onChangeNameClick}>Change Name</MenuItem>
-        <Divider />
-        <MenuItem>New Action</MenuItem>
-      </Menu>
-      {/* <Modal
-        isOpen={isContextMenuOpen}
-        shouldCloseOnOverlayClick={true}
-        onRequestClose={() => setIsContextMenuOpen(false)}
-        contentLabel="Some Text"
-      >
-        <h1>Context Menu</h1>
-      </Modal> */}
       <circle stroke="black" cx={x} cy={y} r={r} fill={color} />
+      <g transform={`translate(${x}, ${y})`}>
+        <text textAnchor="middle" alignmentBaseline="middle" fill="white">
+          {PositionsById[players.byId[id].positionId].shortName}
+        </text>
+      </g>
       <g transform={`translate(${x}, ${y + 1.6 * r})`}>
         <rect strokeWidth={2} width={rectWidth} height={30} fill="black" x={-rectWidth / 2} y={-15} rx={5} />
         <text ref={textRef} textAnchor="middle" alignmentBaseline="middle" fill="white">
-          {name || players.byId[id].name}
+          {name || playerName}
         </text>
       </g>
     </g>

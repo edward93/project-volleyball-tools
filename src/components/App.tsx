@@ -2,40 +2,7 @@ import "../styles/app.scss";
 import Header from "./layout/Header.Component";
 import Footer from "./layout/Footer.Component";
 import VolleyballTools from "./VolleyballTool/VolleyballTool.Component";
-import { ThemeProvider, createTheme } from "@mui/material";
-
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-    background: {
-      default: "#020202",
-      paper: "#020202",
-    },
-
-    primary: {
-      main: "#3f51b5",
-    },
-    secondary: {
-      main: "#f50057",
-    },
-  },
-  components: {
-    MuiMenu: {
-      styleOverrides: {
-        paper: {
-          fontSize: "0.8rem",
-        },
-      },
-    },
-    MuiMenuItem: {
-      styleOverrides: {
-        root: {
-          fontSize: "0.8rem",
-        },
-      },
-    },
-  },
-});
+import { MantineProvider } from "@mantine/core";
 
 /**
  * Main App component
@@ -43,7 +10,7 @@ const darkTheme = createTheme({
  */
 const App = () => {
   return (
-    <ThemeProvider theme={darkTheme}>
+    <MantineProvider theme={{ colorScheme: "dark" }}>
       <div className="app-container">
         <Header />
         <div className="app-content">
@@ -51,7 +18,7 @@ const App = () => {
         </div>
         <Footer />
       </div>
-    </ThemeProvider>
+    </MantineProvider>
   );
 };
 
