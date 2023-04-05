@@ -40,8 +40,6 @@ const ScoreboardComponent = () => {
       score.awayScore = s.awayScore;
     });
 
-    console.log(score);
-    
     return score;
   };
 

@@ -45,17 +45,17 @@
         & .vt-tools-property-label {
           display: flex;
 
-          font-size: 1.3em;
-          font-weight: 900;
+          color: theme($text-color, $secondary-color);
+          font-weight: 300;
+          // font-style: italic;
+          // font-size: 0.9em;
         }
 
         & .vt-tools-property-value {
           display: flex;
-          
-          color: theme($text-color, $secondary-color);
-          font-weight: 300;
-          font-style: italic;
-          font-size: 0.9em;
+
+          font-size: 1.3em;
+          font-weight: 900;
         }
       }
     }

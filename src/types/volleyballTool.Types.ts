@@ -38,46 +38,56 @@ export type GameScore = {
 };
 
 type PositionType = {
-  id: number;
+  id: string;
   name: string;
   shortName?: string;
 };
 
+//TODO: move to a new folder called static data (along with enums)
 export const OutsideHitter: PositionType = {
-  id: 1,
+  id: "1",
   name: "Outside Hitter",
   shortName: "OH",
 };
 
 export const OppositeHitter: PositionType = {
-  id: 2,
+  id: "2",
   name: "Opposite Hitter",
   shortName: "Oppo",
 };
 
 export const MiddleBlocker: PositionType = {
-  id: 3,
+  id: "3",
   name: "Middle Blocker",
-  shortName: "Middle",
+  shortName: "MB",
 };
 
 export const Setter: PositionType = {
-  id: 4,
+  id: "4",
   name: "Setter",
-  shortName: "Setter",
+  shortName: "Set",
 };
 
 export const Libero: PositionType = {
-  id: 5,
+  id: "5",
   name: "Libero",
   shortName: "Lib",
 };
 
 export const None: PositionType = {
-  id: 6,
+  id: "6",
   name: "None",
   shortName: "None",
 };
+
+export const PositionsById = {
+  [OutsideHitter.id]: OutsideHitter,
+  [MiddleBlocker.id]: MiddleBlocker,
+  [Setter.id]: Setter,
+  [OppositeHitter.id]: OppositeHitter,
+  [Libero.id]: Libero,
+  [None.id]: None,
+}
 
 /**
  * Position type (major positions only)

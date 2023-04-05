@@ -114,8 +114,8 @@ export type Player = {
   name: string;
   /** Jersey number */
   jerseyNumber?: number;
-  /** Player's position */
-  position: Position;
+  /** Player's position id */
+  positionId: string;
   /** Player's stats */
   stats: Statistic[];
   /** Player's average ranking based on stats */
