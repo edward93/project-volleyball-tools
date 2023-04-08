@@ -151,6 +151,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
       onMouseUp={onStopPressing}
       onTouchEnd={onStopPressing}
       className="vt-svg-player"
+      id={id}
     >
       <circle stroke="black" cx={x} cy={y} r={r} fill={color} />
       <g transform={`translate(${x}, ${y})`}>

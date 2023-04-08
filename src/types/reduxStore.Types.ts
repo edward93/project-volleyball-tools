@@ -5,7 +5,6 @@ import {
   GameResult,
   GameSet,
   PlayerLocation,
-  Position,
   Statistic,
 } from "./volleyballTool.Types";
 
@@ -166,9 +165,9 @@ export type Circles = {
 /** Type that represents selected element, usually a player */
 export type SelectedPlayer = {
   /** Represents internal props that are not very important */
-  internal: { id: string; x: number; y: number; r: number };
+  internal: { id: string; x: number; y: number; r: number, color: string };
   /** Those properties may be more important than internal ones but are not very critical */
-  visual: { color: string; name: string; position: string; jerseyNumber?: number; avgScore: number };
+  visual: { name: string; position: string; jerseyNumber?: number; avgScore: number };
   /** Array of stats. These props are the most critical ones */
   stats: {
     actionName: GameAction;

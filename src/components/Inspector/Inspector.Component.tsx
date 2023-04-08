@@ -1,24 +1,17 @@
-import { Select, SelectItem, TextInput } from "@mantine/core";
+import { Select, SelectItem, TextInput, Collapse } from "@mantine/core";
 
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { SelectedPlayer } from "../../types/reduxStore.Types";
-import { updatePlayerInfo, updatePlayerName } from "../../components/Players/players.Slice";
-import { PositionsById } from "../../types/volleyballTool.Types";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { SelectedPlayer } from "types/reduxStore.Types";
+import { updatePlayerInfo } from "components/Players/players.Slice";
+import { PositionsById } from "types/volleyballTool.Types";
 
-import "../../styles/inspector.scss";
+import "styles/inspector.scss";
+import { useState } from "react";
 
 const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, position]) => ({
   value: key,
   label: position.name,
 }));
-//   [
-//   { value: OutsideHitter.id, label: OutsideHitter.name },
-//   { value: Setter.id, label: Setter.name },
-//   { value: OppositeHitter.id, label: OppositeHitter.name },
-//   { value: MiddleBlocker.id, label: MiddleBlocker.name },
-//   { value: Libero.id, label: Libero.name },
-//   { value: None.id, label: None.name },
-// ];
 
 /**
  * Shows properties and info of selected items
@@ -31,16 +24,19 @@ const InspectorComponent = () => {
   const circles = useAppSelector((selector) => selector.circlesReducer);
   const { selectedId } = useAppSelector((selector) => selector.inspectorSlice);
 
+  // collapse/open internal section
+  const [isInternalOpen, setIsInternalOpen] = useState(false);
+
   const selectedItem: SelectedPlayer | null = selectedId
     ? {
         internal: {
           id: selectedId,
+          color: circles.byId[selectedId].color,
           x: circles.byId[selectedId].cx,
           y: circles.byId[selectedId].cy,
           r: circles.byId[selectedId].r,
         },
         visual: {
-          color: circles.byId[selectedId].color,
           avgScore: players.byId[selectedId].averageScore,
           name: players.byId[selectedId].name,
           position: players.byId[selectedId].positionId,
@@ -50,6 +46,7 @@ const InspectorComponent = () => {
       }
     : null;
 
+  //#region framework methods
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // TODO: refactor
     if (!selectedId) return;
@@ -60,11 +57,27 @@ const InspectorComponent = () => {
   };
 
   const onPositionChange = (value: string) => {
+    // TODO: refactor
     if (!selectedId) return;
 
     const updatedPlayer = { ...players.byId[selectedId], positionId: value };
 
     dispatch(updatePlayerInfo(updatedPlayer));
+  };
+
+  /**
+   * Handles internal properties title click event
+   * @param event - Click event
+   */
+  const onInternalPropertiesTitleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    // toggle the section
+    toggleInternalProperties();
+  };
+
+  //#endregion
+
+  const toggleInternalProperties = () => {
+    setIsInternalOpen(!isInternalOpen);
   };
 
   return (
@@ -73,25 +86,33 @@ const InspectorComponent = () => {
       {selectedItem && (
         <div className="vt-tools-properties">
           <section className="vt-tools-properties-section">
-            <div className="vt-tools-properties-section-title">internal</div>
-            <div className="vt-tools-property">
-              <label className="vt-tools-property-label">id</label>
-              <div className="vt-tools-property-value">{selectedItem.internal.id}</div>
+            <div className="vt-tools-properties-section-title clickable" onClick={onInternalPropertiesTitleClick}>
+              internal
             </div>
-            <div className="vt-tools-properties-hz">
+            <Collapse in={isInternalOpen}>
               <div className="vt-tools-property">
-                <label className="vt-tools-property-label">x</label>
-                <div className="vt-tools-property-value">{selectedItem.internal.x.toFixed(2)}</div>
+                <label className="vt-tools-property-label">id</label>
+                <div className="vt-tools-property-value">{selectedItem.internal.id}</div>
+              </div>
+              <div className="vt-tools-properties-hz">
+                <div className="vt-tools-property">
+                  <label className="vt-tools-property-label">x</label>
+                  <div className="vt-tools-property-value">{selectedItem.internal.x.toFixed(2)}</div>
+                </div>
+                <div className="vt-tools-property">
+                  <label className="vt-tools-property-label">y</label>
+                  <div className="vt-tools-property-value">{selectedItem.internal.y.toFixed(2)}</div>
+                </div>
+                <div className="vt-tools-property">
+                  <label className="vt-tools-property-label">r</label>
+                  <div className="vt-tools-property-value">{selectedItem.internal.r.toFixed(2)}</div>
+                </div>
               </div>
               <div className="vt-tools-property">
-                <label className="vt-tools-property-label">y</label>
-                <div className="vt-tools-property-value">{selectedItem.internal.y.toFixed(2)}</div>
+                <label className="vt-tools-property-label">color</label>
+                <div className="vt-tools-property-value">{selectedItem.internal.color}</div>
               </div>
-              <div className="vt-tools-property">
-                <label className="vt-tools-property-label">r</label>
-                <div className="vt-tools-property-value">{selectedItem.internal.r.toFixed(2)}</div>
-              </div>
-            </div>
+            </Collapse>
           </section>
           <section className="vt-tools-properties-section">
             <div className="vt-tools-properties-section-title">visual</div>
