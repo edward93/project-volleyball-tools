@@ -1,4 +1,4 @@
-import { Select, SelectItem, TextInput, Collapse } from "@mantine/core";
+import { Select, SelectItem, TextInput, Collapse, ColorInput, Button } from "@mantine/core";
 
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { SelectedPlayer } from "types/reduxStore.Types";
@@ -7,6 +7,8 @@ import { PositionsById } from "types/volleyballTool.Types";
 
 import "styles/inspector.scss";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, position]) => ({
   value: key,
@@ -110,7 +112,8 @@ const InspectorComponent = () => {
               </div>
               <div className="vt-tools-property">
                 <label className="vt-tools-property-label">color</label>
-                <div className="vt-tools-property-value">{selectedItem.internal.color}</div>
+                <ColorInput value={selectedItem.internal.color} disabled />
+                {/* <div className="vt-tools-property-value">{selectedItem.internal.color}</div> */}
               </div>
             </Collapse>
           </section>
@@ -134,36 +137,13 @@ const InspectorComponent = () => {
                 onChange={onPositionChange}
               />
             </div>
-            {/* {Object.entries(selectedItem.visual).map(([key, value], index) => (
-              <div key={index}>
-                {value !== undefined && (
-                  <div className="vt-tools-property" key={index}>
-                    <label htmlFor="" className="vt-tools-property-label">
-                      {key}
-                    </label>
-                    {key === "name" ? (
-                      <TextInput name="PlayerName" variant="filled" value={value} onChange={onNameChange} />
-                    ) : (
-                      <div className="vt-tools-property-value">{value?.toString()}</div>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))} */}
           </section>
-          {/* {selectedItem.stats.length > 0 && (
-            <section className="vt-tools-properties-section">
-              <div className="vt-tools-properties-section-title">Stats</div>
-              {Object.entries(selectedItem.stats.pop()).map(([key, value], index) => (
-                <div className="vt-tools-property" key={index}>
-                  <label htmlFor="" className="vt-tools-property-label">
-                    {key}
-                  </label>
-                  <div className="vt-tools-property-value">{value.toString()}</div>
-                </div>
-              ))}
-            </section>
-          )} */}
+          <section className="vt-tools-properties-section">
+            <div className="vt-tools-properties-section-title">stats</div>
+            <Button fullWidth variant="outline" leftIcon={<FontAwesomeIcon icon={faPlus} />}>
+              New Action
+            </Button>
+          </section>
         </div>
       )}
     </div>
