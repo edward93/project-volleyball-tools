@@ -10,7 +10,7 @@ import { MantineProvider } from "@mantine/core";
  */
 const App = () => {
   return (
-    <MantineProvider theme={{ colorScheme: "dark" }}>
+    <MantineProvider theme={{ colorScheme: "dark" }} >
       <div className="app-container">
         <Header />
         <div className="app-content">

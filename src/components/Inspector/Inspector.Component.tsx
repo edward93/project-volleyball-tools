@@ -1,4 +1,5 @@
-import { Select, SelectItem, TextInput, Collapse, ColorInput, Button } from "@mantine/core";
+import { useState } from "react";
+import { Select, SelectItem, TextInput, Collapse, ColorInput, Button, Modal } from "@mantine/core";
 
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { SelectedPlayer } from "types/reduxStore.Types";
@@ -6,9 +7,8 @@ import { updatePlayerInfo } from "components/Players/players.Slice";
 import { PositionsById } from "types/volleyballTool.Types";
 
 import "styles/inspector.scss";
-import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faL, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, position]) => ({
   value: key,
@@ -27,7 +27,10 @@ const InspectorComponent = () => {
   const { selectedId } = useAppSelector((selector) => selector.inspectorSlice);
 
   // collapse/open internal section
-  const [isInternalOpen, setIsInternalOpen] = useState(false);
+  const [isInternalCollapsed, setIsInternalCollapsed] = useState(true);
+
+  // stats modal
+  const [isNewActionModalOpen, setIsNewActionModalOpen] = useState(false);
 
   const selectedItem: SelectedPlayer | null = selectedId
     ? {
@@ -76,10 +79,25 @@ const InspectorComponent = () => {
     toggleInternalProperties();
   };
 
+  /**
+   * Handles 'new action' btn click event
+   * @param event - Click event
+   */
+  const onNewActionButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    openNewActionModal();
+  };
   //#endregion
 
+  const closeNewActionModal = () => {
+    setIsNewActionModalOpen(false);
+  };
+
+  const openNewActionModal = () => {
+    setIsNewActionModalOpen(true);
+  };
+
   const toggleInternalProperties = () => {
-    setIsInternalOpen(!isInternalOpen);
+    setIsInternalCollapsed(!isInternalCollapsed);
   };
 
   return (
@@ -91,7 +109,7 @@ const InspectorComponent = () => {
             <div className="vt-tools-properties-section-title clickable" onClick={onInternalPropertiesTitleClick}>
               internal
             </div>
-            <Collapse in={isInternalOpen}>
+            <Collapse in={!isInternalCollapsed}>
               <div className="vt-tools-property">
                 <label className="vt-tools-property-label">id</label>
                 <div className="vt-tools-property-value">{selectedItem.internal.id}</div>
@@ -140,9 +158,34 @@ const InspectorComponent = () => {
           </section>
           <section className="vt-tools-properties-section">
             <div className="vt-tools-properties-section-title">stats</div>
-            <Button fullWidth variant="outline" leftIcon={<FontAwesomeIcon icon={faPlus} />}>
+            <Button
+              fullWidth
+              variant="outline"
+              leftIcon={<FontAwesomeIcon icon={faPlus} />}
+              onClick={onNewActionButtonClick}
+            >
               New Action
             </Button>
+            <Modal
+              opened={isNewActionModalOpen}
+              title="Create a new Action"
+              onClose={closeNewActionModal}
+              centered
+              yOffset={0}
+              xOffset={0}
+            >
+              <div className="vt-tools-property">
+                <label htmlFor="" className="vt-tools-property-label">
+                  Action Name
+                </label>
+                <TextInput
+                  name="ActionName"
+                  variant="filled"
+                  value={selectedItem.visual.name}
+                  onChange={onNameChange}
+                />
+              </div>
+            </Modal>
           </section>
         </div>
       )}
