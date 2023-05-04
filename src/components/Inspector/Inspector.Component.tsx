@@ -1,18 +1,23 @@
 import { useState } from "react";
-import { Select, SelectItem, TextInput, Collapse, ColorInput, Button, Modal } from "@mantine/core";
+import { Select, SelectItem, TextInput, Collapse, ColorInput, Button, Modal, Rating } from "@mantine/core";
 
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { SelectedPlayer } from "types/reduxStore.Types";
 import { updatePlayerInfo } from "components/Players/players.Slice";
-import { PositionsById } from "types/volleyballTool.Types";
+import { PositionsById, GameEventById } from "types/volleyballTool.Types";
 
 import "styles/inspector.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faL, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, position]) => ({
   value: key,
   label: position.name,
+}));
+
+const selectGameActions: SelectItem[] = Object.entries(GameEventById).map(([key, gameEvent]) => ({
+  value: key,
+  label: gameEvent.name,
 }));
 
 /**
@@ -171,17 +176,38 @@ const InspectorComponent = () => {
               title="Create a new Action"
               onClose={closeNewActionModal}
               centered
+              size="lg"
               yOffset={0}
               xOffset={0}
             >
               <div className="vt-tools-property">
                 <label htmlFor="" className="vt-tools-property-label">
-                  Action Name
+                  Event
+                </label>
+                <Select
+                  name="VolleyballEvent"
+                  data={selectGameActions}
+                  variant="filled"
+                  value={selectedItem.stats?.[0]?.event}
+                  withinPortal
+                  searchable
+                  onChange={onPositionChange}
+                />
+              </div>
+              <div className="vt-tools-property">
+                <label htmlFor="" className="vt-tools-property-label">
+                  Score
+                </label>
+                <Rating count={10} />
+              </div>
+              <div className="vt-tools-property">
+                <label htmlFor="" className="vt-tools-property-label">
+                  Description
                 </label>
                 <TextInput
-                  name="ActionName"
+                  name="EventDescription"
                   variant="filled"
-                  value={selectedItem.visual.name}
+                  // value={""}
                   onChange={onNameChange}
                 />
               </div>

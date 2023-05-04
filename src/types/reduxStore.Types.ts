@@ -1,6 +1,6 @@
 import {
   ActionScore,
-  GameAction,
+  GameEvent,
   GameInfo,
   GameResult,
   GameSet,
@@ -170,7 +170,7 @@ export type SelectedPlayer = {
   visual: { name: string; position: string; jerseyNumber?: number; avgScore: number };
   /** Array of stats. These props are the most critical ones */
   stats: {
-    actionName: GameAction;
+    event: string;
     description?: string;
     score: ActionScore;
     notes?: string;
