@@ -163,6 +163,39 @@ const InspectorComponent = () => {
           </section>
           <section className="vt-tools-properties-section">
             <div className="vt-tools-properties-section-title">stats</div>
+            <section hidden={!isNewActionModalOpen}>
+              <div className="vt-tools-property">
+                <label htmlFor="" className="vt-tools-property-label">
+                  Event
+                </label>
+                <Select
+                  name="VolleyballEvent"
+                  data={selectGameActions}
+                  variant="filled"
+                  value={selectedItem.stats?.[0]?.event}
+                  withinPortal
+                  searchable
+                  onChange={onPositionChange}
+                />
+              </div>
+              <div className="vt-tools-property">
+                <label htmlFor="" className="vt-tools-property-label">
+                  Score
+                </label>
+                <Rating count={10} />
+              </div>
+              <div className="vt-tools-property">
+                <label htmlFor="" className="vt-tools-property-label">
+                  Description
+                </label>
+                <TextInput
+                  name="EventDescription"
+                  variant="filled"
+                  // value={""}
+                  onChange={onNameChange}
+                />
+              </div>
+            </section>
             <Button
               fullWidth
               variant="outline"
@@ -171,7 +204,7 @@ const InspectorComponent = () => {
             >
               New Action
             </Button>
-            <Modal
+            {/* <Modal
               opened={isNewActionModalOpen}
               title="Create a new Action"
               onClose={closeNewActionModal}
@@ -211,7 +244,7 @@ const InspectorComponent = () => {
                   onChange={onNameChange}
                 />
               </div>
-            </Modal>
+            </Modal> */}
           </section>
         </div>
       )}
