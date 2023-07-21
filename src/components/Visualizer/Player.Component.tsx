@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { PlayerComponentProps } from "types/playerComponent.Types";
 import { select } from "../Inspector/inspector.Slice";
 import { updatePosition } from "./circles.Slice";
+import { PlayerLocation } from "types/volleyballTool.New.Types";
 
 /**
  * Player component (renders as SVG circles with player's name under it)
@@ -28,6 +29,9 @@ const PlayerComponent = (props: PlayerComponentProps) => {
     onReleased,
     svgRef,
   } = props;
+
+  // current player location
+  const [playerLocation, setPlayerLocation] = useState<PlayerLocation>({ playerId: id, x, y });
 
   // extract player's name
   const playerName = players.byId[id].name;
@@ -68,6 +72,9 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    */
   const onStopPressing = () => {
     release();
+
+    // update position in the store
+    dispatch(updatePosition({ id: playerLocation.playerId, newX: playerLocation.x, newY: playerLocation.y }));
   };
 
   /**
@@ -138,8 +145,9 @@ const PlayerComponent = (props: PlayerComponentProps) => {
     const newY = transformedPoint.y;
     //#endregion
 
-    // update position in the store
-    dispatch(updatePosition({ id, newX, newY }));
+    // update player location (local state)
+    // this improves the performance compared to updating the store every time
+    setPlayerLocation({ ...playerLocation, x: newX, y: newY });
   };
 
   return (
@@ -153,13 +161,13 @@ const PlayerComponent = (props: PlayerComponentProps) => {
       className="vt-svg-player"
       id={id}
     >
-      <circle stroke="black" cx={x} cy={y} r={r} fill={color} />
-      <g transform={`translate(${x}, ${y})`}>
+      <circle stroke="black" cx={playerLocation.x} cy={playerLocation.y} r={r} fill={color} />
+      <g transform={`translate(${playerLocation.x}, ${playerLocation.y})`}>
         <text textAnchor="middle" alignmentBaseline="middle" fill="white">
           {PositionsById[players.byId[id].positionId].shortName}
         </text>
       </g>
-      <g transform={`translate(${x}, ${y + 1.6 * r})`}>
+      <g transform={`translate(${playerLocation.x}, ${playerLocation.y + 1.6 * r})`}>
         <rect strokeWidth={2} width={rectWidth} height={30} fill="black" x={-rectWidth / 2} y={-15} rx={5} />
         <text ref={textRef} textAnchor="middle" alignmentBaseline="middle" fill="white">
           {name || playerName}

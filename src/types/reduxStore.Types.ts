@@ -1,7 +1,6 @@
 import { GameAction, GameState } from "./volleyballTool.New.Types";
 import {
   ActionScore,
-  GameEvent,
   GameInfo,
   GameResult,
   GameSet,
@@ -177,30 +176,6 @@ export type SelectedPlayer = {
     notes?: string;
     locationOnCourt: PlayerLocation;
   }[];
-};
-
-/** Type that represents stat */
-export type Stat = {
-  /** Unique auto generated id */
-  id: string;
-  /** Player id */
-  playerId: string;
-  /** Id of the event */
-  eventId: string;
-  /** More detailed description */
-  desc?: string;
-  /** How well the said action was performed: 1 - worst, 10 - best score */
-  score: ActionScore;
-  /** Extra notes if applicable */
-  notes?: string;
-};
-
-/** List of stats */
-export type Stats = {
-  /** Players by id */
-  byId: Record<string, Stat>;
-  /** List of all ids */
-  allIds: string[];
 };
 
 /** List of Game actions */
