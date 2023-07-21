@@ -1,0 +1,30 @@
+@import "./colors.scss";
+
+.vt-tools-stats {
+  display: flex;
+  flex-direction: column;
+
+  & section.vt-new-stat {
+    display: flex;
+    flex-direction: column;
+
+    padding: .5rem 0;
+    &[hidden] {
+      display: none;
+      visibility: collapse;
+    }
+  }
+
+  
+
+  & .vt-tools-stats-actions {
+    display: flex;
+
+    justify-content: center;
+
+    & > .vt-tools-new-stat-interaction-actions {
+      display: flex;
+      flex: 1 1 0;
+    }
+  }
+}

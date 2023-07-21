@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Player, Players } from "../../types/reduxStore.Types";
 import { MiddleBlocker, OppositeHitter, OutsideHitter, Setter } from "../../types/volleyballTool.Types";
 
-import { circles } from "../Visualizer/circles.Slice";
+import { circles} from "../Visualizer/circles.Slice";
 
 const initialPlayers: Player[] = [
   {

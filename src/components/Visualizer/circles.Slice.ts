@@ -15,9 +15,12 @@ export const circles: Circle[] = [
   { id: ids[5], cx: 1130, cy: 590, r: 40, color: "#03B5AA", playerId: ids[5] },
 ];
 
+/** Map of circles */
+export const circlesById = circles.reduce((prev, curr) => ({ ...prev, [curr.id]: curr }), {});
+
 /** Initial state */
 const initialState: Circles = {
-  byId: circles.reduce((prev, curr) => ({ ...prev, [curr.id]: curr }), {}),
+  byId: circlesById,
   allIds: circles.map((c) => c.id),
 };
 

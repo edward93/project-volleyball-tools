@@ -1,23 +1,18 @@
 import { useState } from "react";
-import { Select, SelectItem, TextInput, Collapse, ColorInput, Button, Modal, Rating } from "@mantine/core";
+import { Select, SelectItem, TextInput, Collapse, ColorInput } from "@mantine/core";
 
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { SelectedPlayer } from "types/reduxStore.Types";
 import { updatePlayerInfo } from "components/Players/players.Slice";
-import { PositionsById, GameEventById } from "types/volleyballTool.Types";
+import { PositionsById } from "types/volleyballTool.Types";
 
 import "styles/inspector.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
+import NewGameActionComponent from "./NewGameAction.Component";
 
 const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, position]) => ({
   value: key,
   label: position.name,
-}));
-
-const selectGameActions: SelectItem[] = Object.entries(GameEventById).map(([key, gameEvent]) => ({
-  value: key,
-  label: gameEvent.name,
 }));
 
 /**
@@ -34,9 +29,7 @@ const InspectorComponent = () => {
   // collapse/open internal section
   const [isInternalCollapsed, setIsInternalCollapsed] = useState(true);
 
-  // stats modal
-  const [isNewActionModalOpen, setIsNewActionModalOpen] = useState(false);
-
+  // current selection
   const selectedItem: SelectedPlayer | null = selectedId
     ? {
         internal: {
@@ -84,22 +77,7 @@ const InspectorComponent = () => {
     toggleInternalProperties();
   };
 
-  /**
-   * Handles 'new action' btn click event
-   * @param event - Click event
-   */
-  const onNewActionButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    openNewActionModal();
-  };
   //#endregion
-
-  const closeNewActionModal = () => {
-    setIsNewActionModalOpen(false);
-  };
-
-  const openNewActionModal = () => {
-    setIsNewActionModalOpen(true);
-  };
 
   const toggleInternalProperties = () => {
     setIsInternalCollapsed(!isInternalCollapsed);
@@ -136,22 +114,17 @@ const InspectorComponent = () => {
               <div className="vt-tools-property">
                 <label className="vt-tools-property-label">color</label>
                 <ColorInput value={selectedItem.internal.color} disabled />
-                {/* <div className="vt-tools-property-value">{selectedItem.internal.color}</div> */}
               </div>
             </Collapse>
           </section>
           <section className="vt-tools-properties-section">
             <div className="vt-tools-properties-section-title">visual</div>
             <div className="vt-tools-property">
-              <label htmlFor="" className="vt-tools-property-label">
-                Name
-              </label>
+              <label className="vt-tools-property-label">Name</label>
               <TextInput name="PlayerName" variant="filled" value={selectedItem.visual.name} onChange={onNameChange} />
             </div>
             <div className="vt-tools-property">
-              <label htmlFor="" className="vt-tools-property-label">
-                Position
-              </label>
+              <label className="vt-tools-property-label">Position</label>
               <Select
                 name="Position"
                 data={selectPositions}
@@ -163,88 +136,7 @@ const InspectorComponent = () => {
           </section>
           <section className="vt-tools-properties-section">
             <div className="vt-tools-properties-section-title">stats</div>
-            <section hidden={!isNewActionModalOpen}>
-              <div className="vt-tools-property">
-                <label htmlFor="" className="vt-tools-property-label">
-                  Event
-                </label>
-                <Select
-                  name="VolleyballEvent"
-                  data={selectGameActions}
-                  variant="filled"
-                  value={selectedItem.stats?.[0]?.event}
-                  withinPortal
-                  searchable
-                  onChange={onPositionChange}
-                />
-              </div>
-              <div className="vt-tools-property">
-                <label htmlFor="" className="vt-tools-property-label">
-                  Score
-                </label>
-                <Rating count={10} />
-              </div>
-              <div className="vt-tools-property">
-                <label htmlFor="" className="vt-tools-property-label">
-                  Description
-                </label>
-                <TextInput
-                  name="EventDescription"
-                  variant="filled"
-                  // value={""}
-                  onChange={onNameChange}
-                />
-              </div>
-            </section>
-            <Button
-              fullWidth
-              variant="outline"
-              leftIcon={<FontAwesomeIcon icon={faPlus} />}
-              onClick={onNewActionButtonClick}
-            >
-              New Action
-            </Button>
-            {/* <Modal
-              opened={isNewActionModalOpen}
-              title="Create a new Action"
-              onClose={closeNewActionModal}
-              centered
-              size="lg"
-              yOffset={0}
-              xOffset={0}
-            >
-              <div className="vt-tools-property">
-                <label htmlFor="" className="vt-tools-property-label">
-                  Event
-                </label>
-                <Select
-                  name="VolleyballEvent"
-                  data={selectGameActions}
-                  variant="filled"
-                  value={selectedItem.stats?.[0]?.event}
-                  withinPortal
-                  searchable
-                  onChange={onPositionChange}
-                />
-              </div>
-              <div className="vt-tools-property">
-                <label htmlFor="" className="vt-tools-property-label">
-                  Score
-                </label>
-                <Rating count={10} />
-              </div>
-              <div className="vt-tools-property">
-                <label htmlFor="" className="vt-tools-property-label">
-                  Description
-                </label>
-                <TextInput
-                  name="EventDescription"
-                  variant="filled"
-                  // value={""}
-                  onChange={onNameChange}
-                />
-              </div>
-            </Modal> */}
+            <NewGameActionComponent />
           </section>
         </div>
       )}

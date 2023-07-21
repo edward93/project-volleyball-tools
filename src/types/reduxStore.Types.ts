@@ -1,3 +1,4 @@
+import { GameAction, GameState } from "./volleyballTool.New.Types";
 import {
   ActionScore,
   GameEvent,
@@ -165,7 +166,7 @@ export type Circles = {
 /** Type that represents selected element, usually a player */
 export type SelectedPlayer = {
   /** Represents internal props that are not very important */
-  internal: { id: string; x: number; y: number; r: number, color: string };
+  internal: { id: string; x: number; y: number; r: number; color: string };
   /** Those properties may be more important than internal ones but are not very critical */
   visual: { name: string; position: string; jerseyNumber?: number; avgScore: number };
   /** Array of stats. These props are the most critical ones */
@@ -176,4 +177,44 @@ export type SelectedPlayer = {
     notes?: string;
     locationOnCourt: PlayerLocation;
   }[];
+};
+
+/** Type that represents stat */
+export type Stat = {
+  /** Unique auto generated id */
+  id: string;
+  /** Player id */
+  playerId: string;
+  /** Id of the event */
+  eventId: string;
+  /** More detailed description */
+  desc?: string;
+  /** How well the said action was performed: 1 - worst, 10 - best score */
+  score: ActionScore;
+  /** Extra notes if applicable */
+  notes?: string;
+};
+
+/** List of stats */
+export type Stats = {
+  /** Players by id */
+  byId: Record<string, Stat>;
+  /** List of all ids */
+  allIds: string[];
+};
+
+/** List of Game actions */
+export type GameActions = {
+  /** Actions by id */
+  byId: Record<string, GameAction>;
+  /** List of all ids */
+  allIds: string[];
+};
+
+/** List of game states */
+export type GameStates = {
+  /** States by id */
+  byId: Record<string, GameState>;
+  /** List of all ids */
+  allIds: string[];
 };
