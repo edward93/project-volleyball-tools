@@ -1,8 +1,9 @@
 # project-volleyball-tools
 
-Volleyball statistics tracking app
+<img src="docs/imgs/Main-page.png" width="800px" /><br/>
 
 ## Description
+
 <p>
 The volleyball statistics tracking app allows coaches to record and track individual player performance data during volleyball games.
 </p>

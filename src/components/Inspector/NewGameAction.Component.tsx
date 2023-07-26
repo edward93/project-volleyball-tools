@@ -1,4 +1,4 @@
-import { Button, Select, SelectItem, TextInput } from "@mantine/core";
+import { Button, Select, SelectItem, Textarea } from "@mantine/core";
 import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,11 +8,12 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { create as saveNewState } from "components/timeline/gameState.Slice";
 import { create as createNewGameAction } from "./gameAction.Slice";
+import { addGameAction } from "components/Players/players.Slice";
 
 import "styles/stats.scss";
-import { GameAction, GameActionsById, GameState, PlayerLocation } from "types/volleyballTool.New.Types";
+import { GameAction, GameActionTypesById, GameState, PlayerLocation } from "types/volleyballTool.New.Types";
 
-const selectGameActions: SelectItem[] = Object.entries(GameActionsById).map(([key, action]) => ({
+const selectGameActions: SelectItem[] = Object.entries(GameActionTypesById).map(([key, action]) => ({
   value: key,
   label: action.name,
   group: action.category,
@@ -53,7 +54,7 @@ const StatsComponent = () => {
    * Handles stat notes changes
    * @param event - Input event
    */
-  const onStatNotesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onStatNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const updatedAction: GameAction = { ...(currentAction as GameAction), notes: event.currentTarget.value };
 
     // update the current stat
@@ -108,6 +109,9 @@ const StatsComponent = () => {
     // add the stat to the store
     if (currentAction) dispatch(createNewGameAction(currentAction));
 
+    // add action id to the player's actionIds list
+    if (currentAction) dispatch(addGameAction({ playerId: selectedId, actionId: currentAction.id }));
+
     // cleanup
     setCurrentAction(undefined);
     gameState.current = null;
@@ -157,9 +161,7 @@ const StatsComponent = () => {
     <div className="vt-tools-stats">
       <section hidden={!showNewActionSection} className="vt-new-stat">
         <div className="vt-tools-property">
-          <label className="vt-tools-property-label">
-            Event
-          </label>
+          <label className="vt-tools-property-label">Event</label>
           <Select
             name="VolleyballGameAction"
             data={selectGameActions}
@@ -171,10 +173,13 @@ const StatsComponent = () => {
           />
         </div>
         <div className="vt-tools-property">
-          <label className="vt-tools-property-label">
-            Notes
-          </label>
-          <TextInput name="EventNotes" variant="filled" value={currentAction?.notes ?? ""} onChange={onStatNotesChange} />
+          <label className="vt-tools-property-label">Notes</label>
+          <Textarea
+            name="EventNotes"
+            variant="filled"
+            value={currentAction?.notes ?? ""}
+            onChange={onStatNotesChange}
+          />
         </div>
       </section>
       <div className="vt-tools-stats-actions">

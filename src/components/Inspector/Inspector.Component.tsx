@@ -9,6 +9,7 @@ import { PositionsById } from "types/volleyballTool.Types";
 import "styles/inspector.scss";
 
 import NewGameActionComponent from "./NewGameAction.Component";
+import GameActionsComponent from "./GameActions.Component";
 
 const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, position]) => ({
   value: key,
@@ -26,8 +27,11 @@ const InspectorComponent = () => {
   const circles = useAppSelector((selector) => selector.circlesReducer);
   const { selectedId } = useAppSelector((selector) => selector.inspectorSlice);
 
-  // collapse/open internal section
   const [isInternalCollapsed, setIsInternalCollapsed] = useState(true);
+
+  if (!selectedId) return null;
+
+  // collapse/open internal section
 
   // current selection
   const selectedItem: SelectedPlayer | null = selectedId
@@ -51,18 +55,12 @@ const InspectorComponent = () => {
 
   //#region framework methods
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // TODO: refactor
-    if (!selectedId) return;
-
     const updatedPlayer = { ...players.byId[selectedId], name: event.currentTarget.value };
 
     dispatch(updatePlayerInfo(updatedPlayer));
   };
 
   const onPositionChange = (value: string) => {
-    // TODO: refactor
-    if (!selectedId) return;
-
     const updatedPlayer = { ...players.byId[selectedId], positionId: value };
 
     dispatch(updatePlayerInfo(updatedPlayer));
@@ -137,6 +135,7 @@ const InspectorComponent = () => {
           <section className="vt-tools-properties-section">
             <div className="vt-tools-properties-section-title">stats</div>
             <NewGameActionComponent />
+            <GameActionsComponent player={players.byId[selectedId]} />
           </section>
         </div>
       )}

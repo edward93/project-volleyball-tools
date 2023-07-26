@@ -187,7 +187,7 @@ export const DigMiss: GameActionType = {
 };
 
 /** Helper obj */
-export const GameActionsById = {
+export const GameActionTypesById = {
   [Kill.id]: Kill,
   [AttackError.id]: AttackError,
   [AttackAttempt.id]: AttackAttempt,
@@ -215,6 +215,24 @@ export const GameActionsById = {
   [DigMiss.id]: DigMiss,
 };
 //#endregion
+
+/** Player type */
+export type Player = {
+  /** Unique auto generated id */
+  id: string;
+  /** Circle id that represents this player on the rendered SVG */
+  circleId: string;
+  /** Player's name */
+  name: string;
+  /** Jersey number */
+  jerseyNumber?: number;
+  /** Player's position id */
+  positionId: string;
+  /** List of actions (action ids) */
+  actionIds: string[]
+  /** Player's average ranking based on stats */
+  averageScore: number;
+};
 
 /** Player's location on the court */
 export type PlayerLocation = {

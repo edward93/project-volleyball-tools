@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
-import { Player, Team } from "../../types/reduxStore.Types";
+import { Team } from "../../types/reduxStore.Types";
+import { Player } from "types/volleyballTool.New.Types";
 
 const initialState: Team = {
   id: uuidv4(),

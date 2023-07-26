@@ -1,11 +1,10 @@
-import { GameAction, GameState } from "./volleyballTool.New.Types";
+import { GameAction, GameState, Player } from "./volleyballTool.New.Types";
 import {
   ActionScore,
   GameInfo,
   GameResult,
   GameSet,
   PlayerLocation,
-  Statistic,
 } from "./volleyballTool.Types";
 
 /**
@@ -103,24 +102,8 @@ export type Team = {
   coach?: string;
 };
 
-/** Player type */
-export type Player = {
-  /** Unique auto generated id */
-  id: string;
-  /** Circle id that represents this player on the rendered SVG */
-  circleId: string;
-  /** Player's name */
-  name: string;
-  /** Jersey number */
-  jerseyNumber?: number;
-  /** Player's position id */
-  positionId: string;
-  /** Player's stats */
-  stats: Statistic[];
-  /** Player's average ranking based on stats */
-  averageScore: number;
-};
 
+/** Players slice type */
 export type Players = {
   /** Players by id */
   byId: Record<string, Player>;
