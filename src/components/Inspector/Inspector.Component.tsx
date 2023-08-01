@@ -44,7 +44,7 @@ const InspectorComponent = () => {
           r: circles.byId[selectedId].r,
         },
         visual: {
-          avgScore: players.byId[selectedId].averageScore,
+          avgScore: players.byId[selectedId].score,
           name: players.byId[selectedId].name,
           position: players.byId[selectedId].positionId,
           jerseyNumber: players.byId[selectedId].jerseyNumber,

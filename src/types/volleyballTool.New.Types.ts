@@ -230,8 +230,8 @@ export type Player = {
   positionId: string;
   /** List of actions (action ids) */
   actionIds: string[]
-  /** Player's average ranking based on stats */
-  averageScore: number;
+  /** Player's total score */
+  score: number;
 };
 
 /** Player's location on the court */

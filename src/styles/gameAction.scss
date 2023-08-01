@@ -1,4 +1,5 @@
 @import "./colors.scss";
+@import "./panel.scss";
 
 .vt-game-actions-container {
   display: flex;
@@ -6,29 +7,53 @@
   & .vt-game-action-properties {
     flex-grow: 1;
     display: grid;
-    grid-template: auto auto / 1fr 1fr;
+    grid-template: auto auto auto / 1fr 1fr;
 
     justify-content: center;
-    margin: 0.3rem 0;
+    margin-top: 0.3rem;
 
-    & .vt-display-long-text {
-      display: flex;
-      min-height: 4rem;
-      background-color: lighten($color: theme($bg-color, $primary-color), $amount: 6);
-      margin-top: 0.2rem;
+    & .vt-game-actions-latest-action {
+      grid-column: 1 / span 2;
+      display: grid;
+      grid-template: auto auto / 1fr 1fr;
 
-      // border: 1px solid #191b20;
-      // border-radius: 0.01rem;
-      padding: 0.05rem 0.5rem;
+      padding-bottom: 0.3rem;
+
+      // hardcoded for <Collapse/> component
+      & > div {
+        display: grid;
+        grid-template: auto auto / 1fr 1fr;
+
+        grid-column: 1 / span 2;
+
+        & > div {
+          display: grid;
+          grid-template: auto auto / 1fr 1fr;
+
+          grid-column: 1 / span 2;
+        }
+      }
     }
 
     & .vt-game-action-type {
       align-items: flex-end;
     }
+
     & .vt-game-action-notes {
       grid-column: 1 / span 2;
       display: flex;
       flex: 1 1 100%;
+
+      & .vt-display-long-text {
+        display: flex;
+        min-height: 4rem;
+        background-color: lighten($color: theme($bg-color, $primary-color), $amount: 6);
+        margin-top: 0.2rem;
+
+        // border: 1px solid #191b20;
+        // border-radius: 0.01rem;
+        padding: 0.05rem 0.5rem;
+      }
     }
   }
 }

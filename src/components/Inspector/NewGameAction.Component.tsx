@@ -110,7 +110,7 @@ const StatsComponent = () => {
     if (currentAction) dispatch(createNewGameAction(currentAction));
 
     // add action id to the player's actionIds list
-    if (currentAction) dispatch(addGameAction({ playerId: selectedId, actionId: currentAction.id }));
+    if (currentAction) dispatch(addGameAction({ playerId: selectedId, gameAction: currentAction }));
 
     // cleanup
     setCurrentAction(undefined);
