@@ -1,12 +1,10 @@
+import { GameAction, GameState, Player } from "./volleyballTool.New.Types";
 import {
   ActionScore,
-  GameAction,
   GameInfo,
   GameResult,
   GameSet,
   PlayerLocation,
-  Position,
-  Statistic,
 } from "./volleyballTool.Types";
 
 /**
@@ -104,24 +102,8 @@ export type Team = {
   coach?: string;
 };
 
-/** Player type */
-export type Player = {
-  /** Unique auto generated id */
-  id: string;
-  /** Circle id that represents this player on the rendered SVG */
-  circleId: string;
-  /** Player's name */
-  name: string;
-  /** Jersey number */
-  jerseyNumber?: number;
-  /** Player's position id */
-  positionId: string;
-  /** Player's stats */
-  stats: Statistic[];
-  /** Player's average ranking based on stats */
-  averageScore: number;
-};
 
+/** Players slice type */
 export type Players = {
   /** Players by id */
   byId: Record<string, Player>;
@@ -166,15 +148,31 @@ export type Circles = {
 /** Type that represents selected element, usually a player */
 export type SelectedPlayer = {
   /** Represents internal props that are not very important */
-  internal: { id: string; x: number; y: number; r: number };
+  internal: { id: string; x: number; y: number; r: number; color: string };
   /** Those properties may be more important than internal ones but are not very critical */
-  visual: { color: string; name: string; position: string; jerseyNumber?: number; avgScore: number };
+  visual: { name: string; position: string; jerseyNumber?: number; avgScore: number };
   /** Array of stats. These props are the most critical ones */
   stats: {
-    actionName: GameAction;
+    event: string;
     description?: string;
     score: ActionScore;
     notes?: string;
     locationOnCourt: PlayerLocation;
   }[];
+};
+
+/** List of Game actions */
+export type GameActions = {
+  /** Actions by id */
+  byId: Record<string, GameAction>;
+  /** List of all ids */
+  allIds: string[];
+};
+
+/** List of game states */
+export type GameStates = {
+  /** States by id */
+  byId: Record<string, GameState>;
+  /** List of all ids */
+  allIds: string[];
 };

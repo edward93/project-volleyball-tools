@@ -1,8 +1,8 @@
 import { useRef } from "react";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "redux/hooks";
 import Player from "./Player.Component";
 
-import "../../styles/visualizer.scss";
+import "styles/visualizer.scss";
 
 /**
  * SVG visualizer
@@ -11,6 +11,7 @@ import "../../styles/visualizer.scss";
  */
 const SvgVisualizerComponent = () => {
   const circles = useAppSelector((selector) => selector.circlesReducer.byId);
+  // const { selectedId } = useAppSelector((selector) => selector.inspectorSlice);
 
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
@@ -43,6 +44,7 @@ const SvgVisualizerComponent = () => {
             svgRef={svgRef}
           />
         ))}
+        {/* <use xlinkHref={`#${selectedId || ""}`} /> */}
       </svg>
     </div>
   );

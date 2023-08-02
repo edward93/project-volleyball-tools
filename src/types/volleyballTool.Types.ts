@@ -1,5 +1,3 @@
-
-
 /** Game results */
 export type GameResult = {
   /** Game id that his result belongs to */
@@ -87,7 +85,7 @@ export const PositionsById = {
   [OppositeHitter.id]: OppositeHitter,
   [Libero.id]: Libero,
   [None.id]: None,
-}
+};
 
 /**
  * Position type (major positions only)
@@ -108,42 +106,83 @@ export type Statistic = {
   id: string;
   /** Player id */
   playerId: string;
-  /**
-   * What happened
-   */
-  event: GameAction;
-  /**
-   * More detailed description
-   */
+  /** Id of the event */
+  eventId: string;
+  /** More detailed description */
   desc?: string;
-  /**
-   * How well the said action was performed: 1 - worst, 10 - best score
-   */
+  /** How well the said action was performed: 1 - worst, 10 - best score */
   score: ActionScore;
-  /**
-   * Extra notes if applicable
-   */
+  /** Extra notes if applicable */
   notes?: string;
-  /**
-   * Where the action was performed
-   */
+  /** Where the action was performed */
   location?: PlayerLocation;
-  /**
-   * Current game info
-   */
+  /** Current game info */
   gameInfo?: GameInfo;
 };
 
 export type ActionScore = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
-export enum GameAction {
-  Serve,
-  ServeReceive,
-  Set,
-  Spike,
-  Block,
-  Dig,
-  Pass,
+/** Game event type */
+export type GameEventType = {
+  /** Unique id */
+  id: string;
+  /** Name of the event */
+  name: string;
+};
+
+export const Serve: GameEventType = {
+  id: "1",
+  name: "Serve",
+};
+
+export const ServeReceive: GameEventType = {
+  id: "2",
+  name: "ServeReceive",
+};
+
+export const Set: GameEventType = {
+  id: "3",
+  name: "Serve",
+};
+
+export const Spike: GameEventType = {
+  id: "4",
+  name: "Spike",
+};
+
+export const Block: GameEventType = {
+  id: "5",
+  name: "Block",
+};
+
+export const Dig: GameEventType = {
+  id: "6",
+  name: "Dig",
+};
+
+export const Pass: GameEventType = {
+  id: "7",
+  name: "Pass",
+};
+
+export type GameEvent =
+  | typeof Serve
+  | typeof ServeReceive
+  | typeof Set
+  | typeof Spike
+  | typeof Block
+  | typeof Dig
+  | typeof Pass;
+
+
+export const GameEventById = {
+  [Serve.id]: Serve,
+  [ServeReceive.id]: ServeReceive,
+  [Set.id]: Set,
+  [Spike.id]: Spike,
+  [Block.id]: Block,
+  [Dig.id]: Dig,
+  [Pass.id]: Pass,
 }
 
 /**

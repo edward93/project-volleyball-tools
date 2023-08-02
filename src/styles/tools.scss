@@ -1,31 +1,48 @@
 @import "./colors.scss";
 
+// .vt-tools-container {
+//   display: flex;
+//   flex-wrap: wrap;
+//   flex: 1 1 0;
+
+//   & .vt-tools-main-area {
+//     display: flex;
+//     flex-direction: column;
+//     flex-grow: 9;
+//     // flex-basis: 32em;
+//     flex-basis: 1000px;
+//     // use media to switch from auto to 1000px when the screen is small
+//     // flex: 10 5 auto;
+
+//     justify-content: center;
+
+//   }
+
+//   & .vt-tools-inspector {
+//     display: flex;
+//     flex-direction: column;
+
+//     // flex-shrink: 5;
+//     flex-grow: 3;
+//     // flex-basis: 30%;
+//     // flex: 2 5 auto;
+//   }
+// }
+
 .vt-tools-container {
-  display: flex;
-  flex-wrap: wrap;
-  flex: 1 1 0;
+  display: grid;
+
+  @media (min-width: 1200px) {
+    grid-template-columns: 9fr 3fr;
+  }
+
+  width: 100%;
 
   & .vt-tools-main-area {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 9;
-    // flex-basis: 32em;
-    flex-basis: 1000px;
-    // use media to switch from auto to 1000px when the screen is small
-    // flex: 10 5 auto;
-
-    justify-content: center;
-
-    
+    grid-column: 1 / 2;
   }
 
   & .vt-tools-inspector {
-    display: flex;
-    flex-direction: column;
-
-    // flex-shrink: 5;
-    flex-grow: 3;
-    // flex-basis: 30%;
-    // flex: 2 5 auto;
+    grid-column: 2 / -1;
   }
 }
