@@ -1,6 +1,7 @@
 @import "./colors.scss";
 
 .vt-tools-scoreboard-section {
+  grid-row: 1 / span 1;
   background-color: lighten($color: theme($bg-color, $primary-color), $amount: 3);
   display: flex;
   justify-content: center;
@@ -12,7 +13,7 @@
 
     & .scoreboard-team {
       display: flex;
-      padding: 0.5rem;
+      padding: 0.25rem;
       background-color: lighten($color: theme($bg-color, $primary-color), $amount: 15);
     }
 
@@ -25,12 +26,12 @@
       align-items: center;
       background-color: lighten($color: theme($bg-color, $primary-color), $amount: 40);
       color: theme($bg-color, $primary-color);
-      padding: 0.5rem;
+      padding: 0.25rem;
     }
 
     & .scoreboard-sets-won {
       display: flex;
-      padding: 0.5rem;
+      padding: 0.25rem;
       font-size: 0.7rem;
       justify-content: center;
       align-self: center;

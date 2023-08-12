@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "reduxTools/hooks";
 import "../../styles/scoreboard.scss";
 
 const ScoreboardComponent = () => {

@@ -1,4 +1,5 @@
 @import "./colors.scss";
+@import "./common.scss";
 
 .app-container {
   background-color: theme($bg-color, $primary-color);
@@ -9,11 +10,21 @@
   flex-direction: column;
   min-height: 100vh;
 
-  & > .app-content {
+  & .screen-space {
     display: flex;
-    flex: 1 1 0;
-    flex-wrap: wrap;
+    flex-direction: column;
+    max-height: 100vh;
+    height: 100vh;
 
-    color: theme($text-color, $secondary-color);
+    & > .app-content {
+      position: relative;
+      display: flex;
+      flex: 1 1 0;
+      flex-wrap: wrap;
+
+      max-height: calc(100vh - $header-height);
+
+      color: theme($text-color, $secondary-color);
+    }
   }
 }

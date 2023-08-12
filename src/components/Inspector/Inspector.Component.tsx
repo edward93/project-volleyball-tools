@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Select, SelectItem, TextInput, Collapse, ColorInput } from "@mantine/core";
 
-import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { SelectedPlayer } from "types/reduxStore.Types";
 import { updatePlayerInfo } from "components/Players/players.Slice";
 import { PositionsById } from "types/volleyballTool.Types";

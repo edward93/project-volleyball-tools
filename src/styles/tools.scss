@@ -30,6 +30,8 @@
 // }
 
 .vt-tools-container {
+  position: relative;
+  max-height: inherit;
   display: grid;
 
   @media (min-width: 1200px) {
@@ -39,7 +41,11 @@
   width: 100%;
 
   & .vt-tools-main-area {
+    display: grid;
+    grid-template: auto 1fr/1fr;
     grid-column: 1 / 2;
+    position: relative;
+    max-height: inherit;
   }
 
   & .vt-tools-inspector {
