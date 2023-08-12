@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import useFontFaceObserver from "utils/hooks/useFontFaceObserver.hook";
 import { PositionsById } from "types/volleyballTool.Types";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { PlayerComponentProps } from "types/playerComponent.Types";
 import { select } from "../Inspector/inspector.Slice";
 import { updatePosition } from "./circles.Slice";

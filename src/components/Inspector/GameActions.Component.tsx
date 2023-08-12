@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Collapse, Tooltip } from "@mantine/core";
-import { useAppSelector } from "redux/hooks";
+import { useAppSelector } from "reduxTools/hooks";
 
 import { GameActionTypesById, Player } from "types/volleyballTool.New.Types";
 

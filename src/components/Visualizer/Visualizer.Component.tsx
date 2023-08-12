@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useAppSelector } from "redux/hooks";
+import { useAppSelector } from "reduxTools/hooks";
 import Player from "./Player.Component";
 
 import "styles/visualizer.scss";
