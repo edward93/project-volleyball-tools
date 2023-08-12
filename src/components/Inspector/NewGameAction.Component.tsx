@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 
 import { create as saveNewState } from "components/timeline/gameState.Slice";
 import { create as createNewGameAction } from "./gameAction.Slice";
