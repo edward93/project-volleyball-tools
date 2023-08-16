@@ -13,7 +13,7 @@ export const gameStates = createSlice({
       const { id } = action.payload;
       
       state.byId[id] = action.payload;
-      state.allIds.push();
+      state.allIds.push(id);
     }
   },
 });
