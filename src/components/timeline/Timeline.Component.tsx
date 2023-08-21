@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppSelector, useAppDispatch } from "reduxTools/hooks";
 import { selectPlayerAction } from "components/Players/players.Slice";
 import "styles/timeline.scss";
+import { GameState } from "types/volleyballTool.New.Types";
 
 /**
  * Timeline component
@@ -23,34 +24,39 @@ const TimelineComponent = () => {
   const gameActions = useAppSelector((selector) => selector.gameActionSlice);
 
   const hashMarks = gameStates.allIds.length;
-  const distance = 50;
+  // for testing
+  // const hashMarks = 5;
   const svgWidth = 1000;
-
+  const maxIntervalLength = 100;
+  const availableWidth = Math.min(svgWidth - 100, (hashMarks - 1) * maxIntervalLength);
+  // available space boundaries
+  const availableWidthMax = svgWidth / 2 + availableWidth / 2;
+  const availableWidthMin = svgWidth / 2 - availableWidth / 2;
+  // calc max available width
+  const margin = svgWidth / 2 - availableWidth / 2;
+  
   //#region slider position and state mapping helpers
   /**
-   * Maps uniformly hash map range on to the svg
-   *
-   * @param index Mark index
-   * @returns New position on the larger space
+   * Calculates positions of the lines on the SVG and returns 2 maps (position to state id & state id to position)
+   * @returns Array containing 2 items, first one is position to game state map second one game state id to position
    */
-  const posFromIndex = (index: number): number => {
-    const space = svgWidth - distance * 2; // 50 away from each side
-    return (index * space) / (hashMarks - 1);
+  const markPositions = (): [{ [x: number]: GameState }, { [x: string]: number }] => {
+    const positionToGameState: { [x: number]: GameState } = {};
+    const gameStateToPosition: { [x: string]: number } = {};
+
+    for (let i = 0; i < hashMarks; i++) {
+      const position = hashMarks === 1 ? margin : margin + i * (availableWidth / (hashMarks - 1));
+      const gameState = gameStates.byId[gameStates.allIds[i]];
+
+      positionToGameState[position] = gameState;
+      gameStateToPosition[gameState.id] = position;
+    }
+
+    return [positionToGameState, gameStateToPosition];
   };
 
-  // map position to the game state
-  const posToGameStateMap = Array.from<number, number>({ length: hashMarks }, (_: number, k: number) => k)
-    .map((index: number) => ({
-      [distance + posFromIndex(index)]: gameStates.byId[gameStates.allIds[index]],
-    }))
-    .reduce((a, v) => ({ ...a, ...v }), {});
 
-  // map game state id to slider pos (backwards of posToGameStateMap)
-  const gameStateIdToPosMap = Array.from<number, number>({ length: hashMarks }, (_: number, k: number) => k)
-    .map((index: number) => ({
-      [gameStates.byId[gameStates.allIds[index]].id]: distance + posFromIndex(index),
-    }))
-    .reduce((a, v) => ({ ...a, ...v }), {});
+  const [posToGameStateMap, gameStateIdToPosMap] = markPositions();
   //#endregion
 
   //#region slider props and functions
@@ -63,9 +69,14 @@ const TimelineComponent = () => {
   const needleHeight = markHeight * 2 + 5;
 
   // slider x coordinate
-  const [sliderPosition, setSliderPosition] = useState<number>(
-    gameState ? gameStateIdToPosMap[gameState] : distance + posFromIndex(hashMarks - 1)
-  );
+  const [sliderPosition, setSliderPosition] = useState<number>(0);
+
+  // update slider position 
+  useEffect(() => {
+    if (gameState) setSliderPosition(gameStateIdToPosMap[gameState]);
+    else setSliderPosition(+Object.keys(posToGameStateMap)[Object.keys(posToGameStateMap).length - 1]);
+  }, [posToGameStateMap]);
+
   // slider is pressed or not (for movement)
   const [isDragging, setIsDragging] = useState<boolean>(false);
   // svg ref
@@ -123,16 +134,22 @@ const TimelineComponent = () => {
     point.x = x;
     point.y = y;
 
-    // snap increments
-    const snapIncrement = (svgWidth - distance * 2) / (hashMarks - 1);
+    // snap increments (edge case div by 0)
+    const snapIncrement = hashMarks === 1 ? 0 : availableWidth / (hashMarks - 1);
+
+    // availableWidthBoundaries
 
     const transformedPoint = point.matrixTransform(svgRef.current?.getScreenCTM()?.inverse());
     //#endregion
 
-    // calc new coordinates relative to the SVG itself
-    const newX = snap
-      ? distance + Math.round((transformedPoint.x - distance) / snapIncrement) * snapIncrement
-      : transformedPoint.x;
+    // calc new coordinates relative to the SVG itself (don't let it go out of bounds of the available space)
+    const newX = Math.max(
+      availableWidthMin,
+      Math.min(
+        availableWidthMax,
+        snap ? margin + Math.round((transformedPoint.x - margin) / snapIncrement) * snapIncrement : transformedPoint.x
+      )
+    );
 
     setSliderPosition(newX);
     // call slider change function
@@ -154,7 +171,7 @@ const TimelineComponent = () => {
     setGameState(state.id);
   };
 
-  console.log(posToGameStateMap)
+  // console.log(posToGameStateMap)
 
   return (
     <section className="vt-tools-timeline-section">
@@ -182,21 +199,23 @@ const TimelineComponent = () => {
                   />
                 );
               })}
-              <g
-                transform={`translate(${sliderPosition}, ${1})`}
-                onMouseDown={onMouseDown}
-                onMouseUp={onStopPressing}
-                className="vt-timeline-slider"
-              >
-                <circle
-                  className="vt-timeline-slider-head"
-                  stroke="black"
-                  cx={0}
-                  cy={needleHeight + sliderHeadRadius}
-                  r={sliderHeadRadius}
-                />
-                <line x1={0} y1={needleHeight} x2={0} y2={0} className="vt-timeline-slider-needle" />
-              </g>
+              {sliderPosition && (
+                <g
+                  transform={`translate(${sliderPosition}, ${1})`}
+                  onMouseDown={onMouseDown}
+                  onMouseUp={onStopPressing}
+                  className="vt-timeline-slider"
+                >
+                  <circle
+                    className="vt-timeline-slider-head"
+                    stroke="black"
+                    cx={0}
+                    cy={needleHeight + sliderHeadRadius}
+                    r={sliderHeadRadius}
+                  />
+                  <line x1={0} y1={needleHeight} x2={0} y2={0} className="vt-timeline-slider-needle" />
+                </g>
+              )}
             </>
           )}
         </svg>
