@@ -16,7 +16,7 @@ const GameActionsComponent = (props: { player: Player }) => {
   if (!player) return null;
 
   // current player's latest recorded game action
-  const gameAction = gameActions.byId[player.actionIds[0]];
+  const gameAction = gameActions.byId[player.selectedActionId ?? ""];
   const gameActionType = GameActionTypesById?.[gameAction?.type];
 
   // max possible score number of actions multiplied by max score

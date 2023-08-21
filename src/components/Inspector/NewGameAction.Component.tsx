@@ -80,6 +80,8 @@ const StatsComponent = () => {
       homeScore: 0,
       set: 1,
       rally: 0,
+      // TODO: update after gameActionId is created
+      gameActionId: "",
       // stores only the current player's location
       playerLocations: [getPlayerLocation(selectedId)],
     };
@@ -91,6 +93,9 @@ const StatsComponent = () => {
       type: "",
       gameStateId: gameState.current.id,
     };
+
+    // make sure we associate this action with the state
+    gameState.current.gameActionId = action.id;
 
     setCurrentAction(action);
   };

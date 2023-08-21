@@ -232,6 +232,8 @@ export type Player = {
   actionIds: string[]
   /** Player's total score */
   score: number;
+  /** Current (by default latest) player's action id */
+  selectedActionId?: string;
 };
 
 /** Player's location on the court */
@@ -260,6 +262,8 @@ export type GameState = {
   awayScore: number;
   /** List of player locations */
   playerLocations: PlayerLocation[];
+  /** game action associated */
+  gameActionId: string;
   /** Time (optional) */
   time?: string;
 };

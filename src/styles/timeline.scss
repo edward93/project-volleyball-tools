@@ -34,6 +34,8 @@
       }
 
       & > .vt-timeline-slider {
+        // cursor: grab;
+
         & > .vt-timeline-slider-head {
           stroke: theme($text-color, $secondary-color);
           fill: #fff;
