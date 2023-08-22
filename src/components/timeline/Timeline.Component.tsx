@@ -171,8 +171,6 @@ const TimelineComponent = () => {
     setGameState(state.id);
   };
 
-  // console.log(posToGameStateMap)
-
   return (
     <section className="vt-tools-timeline-section">
       <div className="vt-timeline-svg-container">

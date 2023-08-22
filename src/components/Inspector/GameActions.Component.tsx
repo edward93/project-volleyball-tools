@@ -36,12 +36,14 @@ const GameActionsComponent = (props: { player: Player }) => {
 
   return (
     <div className="vt-game-actions-container">
-      {gameAction && (
+      {gameAction && player.selectedActionId && (
         <div className="vt-game-action-properties panel-container">
           <div className="vt-game-actions-info panel-info-bar clickable" onClick={onPanelInfoBarClick}>
             <section className="vt-game-actions-info-left panel-info-bar-txt">
-              <label className="vt-tools-property-label panel-info-bar-label">Total:</label>
-              <div className="vt-tools-property-value panel-info-bar-value">{player.actionIds.length}</div>
+              <label className="vt-tools-property-label panel-info-bar-label">Action:</label>
+              <div className="vt-tools-property-value panel-info-bar-value">
+                {player.actionIds.length- player.actionIds.indexOf(player.selectedActionId)}/{player.actionIds.length}
+              </div>
             </section>
             <section className="vt-game-actions-info-right panel-info-bar-txt">
               <label className="vt-tools-property-label panel-info-bar-label">Total Score:</label>
