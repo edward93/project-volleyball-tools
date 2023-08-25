@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppSelector, useAppDispatch } from "reduxTools/hooks";
-import { selectPlayerAction } from "components/Players/players.Slice";
+import { selectCurrentGameState } from "./gameState.Slice";
 import "styles/timeline.scss";
 import { GameState } from "types/volleyballTool.New.Types";
 
@@ -11,17 +11,11 @@ import { GameState } from "types/volleyballTool.New.Types";
 const TimelineComponent = () => {
   const dispatch = useAppDispatch();
 
-  // currently selected player
-  const { selectedId } = useAppSelector((selector) => selector.inspectorSlice);
-
   // current game state
   const [gameState, setGameState] = useState<string>();
 
   // get all states
   const gameStates = useAppSelector((selector) => selector.gameStateSlice);
-
-  // game actions
-  const gameActions = useAppSelector((selector) => selector.gameActionSlice);
 
   const hashMarks = gameStates.allIds.length;
   // for testing
@@ -34,7 +28,7 @@ const TimelineComponent = () => {
   const availableWidthMin = svgWidth / 2 - availableWidth / 2;
   // calc max available width
   const margin = svgWidth / 2 - availableWidth / 2;
-  
+
   //#region slider position and state mapping helpers
   /**
    * Calculates positions of the lines on the SVG and returns 2 maps (position to state id & state id to position)
@@ -55,7 +49,6 @@ const TimelineComponent = () => {
     return [positionToGameState, gameStateToPosition];
   };
 
-
   const [posToGameStateMap, gameStateIdToPosMap] = markPositions();
   //#endregion
 
@@ -71,7 +64,7 @@ const TimelineComponent = () => {
   // slider x coordinate
   const [sliderPosition, setSliderPosition] = useState<number>(0);
 
-  // update slider position 
+  // update slider position
   useEffect(() => {
     if (gameState) setSliderPosition(gameStateIdToPosMap[gameState]);
     else setSliderPosition(+Object.keys(posToGameStateMap)[Object.keys(posToGameStateMap).length - 1]);
@@ -164,10 +157,13 @@ const TimelineComponent = () => {
    */
   const onSliderChange = (pos: number) => {
     const state = posToGameStateMap[pos];
+    // ignore if state didn't change
+    if (state.id === gameState) return;
 
-    // select action
-    if (selectedId) dispatch(selectPlayerAction({ playerId: selectedId, actionId: state.gameActionId }));
+    // select current game state
+    dispatch(selectCurrentGameState({ id: state.id }));
 
+    // update local selected state
     setGameState(state.id);
   };
 
@@ -184,7 +180,7 @@ const TimelineComponent = () => {
         >
           {hashMarks > 1 && (
             <>
-              {Object.entries(posToGameStateMap).map(([pos, _], index: number) => {
+              {Object.entries(posToGameStateMap).map(([pos,], index: number) => {
                 return (
                   <line
                     key={pos}

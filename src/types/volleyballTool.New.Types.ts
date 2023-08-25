@@ -229,15 +229,28 @@ export type Player = {
   /** Player's position id */
   positionId: string;
   /** List of actions (action ids) */
-  actionIds: string[]
+  actionIds: string[];
   /** Player's total score */
   score: number;
   /** Current (by default latest) player's action id */
   selectedActionId?: string;
 };
 
+/** Players' location on the court */
+export type PlayerLocations = {
+  /** Player */
+  [playerId: string]: {
+    /** X coordinate */
+    x: number;
+    /** Y coordinate */
+    y: number;
+  };
+};
+
 /** Player's location on the court */
 export type PlayerLocation = {
+  /** Unique auto generated id */
+  id: string;
   /** Player */
   playerId: string;
   /** X coordinate */
@@ -261,7 +274,7 @@ export type GameState = {
   /** Away team score before the event */
   awayScore: number;
   /** List of player locations */
-  playerLocations: PlayerLocation[];
+  playerLocations: PlayerLocations;
   /** game action associated */
   gameActionId: string;
   /** Time (optional) */

@@ -8,10 +8,11 @@ import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 
 import { create as saveNewState } from "components/timeline/gameState.Slice";
 import { create as createNewGameAction } from "./gameAction.Slice";
+import { addLocationToGameState } from "components/Visualizer/playerLocation.Slice";
 import { addGameAction } from "components/Players/players.Slice";
 
 import "styles/stats.scss";
-import { GameAction, GameActionTypesById, GameState, PlayerLocation } from "types/volleyballTool.New.Types";
+import { GameAction, GameActionTypesById, GameState, PlayerLocations } from "types/volleyballTool.New.Types";
 
 const selectGameActions: SelectItem[] = Object.entries(GameActionTypesById).map(([key, action]) => ({
   value: key,
@@ -66,6 +67,7 @@ const StatsComponent = () => {
    * @param event - Click event
    */
   const onNewActionButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (!selectedId) return;
 
     // show the section
@@ -83,7 +85,7 @@ const StatsComponent = () => {
       // TODO: update after gameActionId is created
       gameActionId: "",
       // stores only the current player's location
-      playerLocations: [getPlayerLocation(selectedId)],
+      playerLocations: getPlayerLocations(),
     };
 
     // init a new obj
@@ -105,14 +107,20 @@ const StatsComponent = () => {
    * @param event - Click event
    */
   const onSaveStatButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
     // TODO: refactor
     if (!selectedId) return;
 
     // save the game state first
     if (gameState.current) dispatch(saveNewState(gameState.current));
 
-    // add the stat to the store
-    if (currentAction) dispatch(createNewGameAction(currentAction));
+    // create mew game action
+    if (currentAction && gameState.current) {
+      // associate locations with this state
+      dispatch(addLocationToGameState({ gameStateId: gameState.current.id }));
+      dispatch(createNewGameAction({ gameAction: currentAction, gameStateId: gameState.current.id }));
+    }
 
     // add action id to the player's actionIds list
     if (currentAction) dispatch(addGameAction({ playerId: selectedId, gameAction: currentAction }));
@@ -130,6 +138,7 @@ const StatsComponent = () => {
    * @param event - Click event
    */
   const onCancelStatButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     // hide the section
     toggleStatsSection();
 
@@ -147,17 +156,19 @@ const StatsComponent = () => {
   };
 
   /**
-   * Returns player location by player id
+   * Returns all players' location
    *
-   * @param playerId - player id
-   * @returns player location (x,y)
+   * @returns players' location (x,y)
    */
-  const getPlayerLocation = (playerId: string): PlayerLocation => {
-    const location: PlayerLocation = {
-      playerId,
-      x: circles.byId[playerId].cx,
-      y: circles.byId[playerId].cy,
-    };
+  const getPlayerLocations = (): PlayerLocations => {
+    const location: PlayerLocations = circles.allIds
+      .map((id) => ({
+        [id]: {
+          x: circles.byId[id].cx,
+          y: circles.byId[id].cy,
+        },
+      }))
+      .reduce((a, v) => ({ ...a, ...v }), {});
 
     return location;
   };

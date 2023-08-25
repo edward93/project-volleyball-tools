@@ -3,7 +3,8 @@ export type PlayerComponentProps = {
   /** Unique id */
   id: string;
   /** SVG circle props, X,Y and radius */
-  circle: { x: number, y: number, r: number };
+  // circle: { x: number, y: number, r: number };
+  radius: number;
   /** Circle color */
   color: string;
   /** Optional circle name */

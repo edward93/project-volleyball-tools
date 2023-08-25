@@ -11,6 +11,9 @@ import "styles/visualizer.scss";
  */
 const SvgVisualizerComponent = () => {
   const circles = useAppSelector((selector) => selector.circlesReducer.byId);
+
+  // const { byId: gameStates, currentState } = useAppSelector((selector) => selector.gameStateSlice);
+
   // const { selectedId } = useAppSelector((selector) => selector.inspectorSlice);
 
   // svg ref
@@ -40,7 +43,8 @@ const SvgVisualizerComponent = () => {
             key={circle.id}
             id={circle.id}
             color={circle.color}
-            circle={{ x: circle.cx, y: circle.cy, r: circle.r }}
+            // TODO: improve this
+            radius={circle.r}
             svgRef={svgRef}
           />
         ))}

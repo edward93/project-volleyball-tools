@@ -1,11 +1,5 @@
-import { GameAction, GameState, Player } from "./volleyballTool.New.Types";
-import {
-  ActionScore,
-  GameInfo,
-  GameResult,
-  GameSet,
-  PlayerLocation,
-} from "./volleyballTool.Types";
+import { GameAction, GameState, Player, PlayerLocation } from "./volleyballTool.New.Types";
+import { ActionScore, GameInfo, GameResult, GameSet } from "./volleyballTool.Types";
 
 /**
  * This is the workspace type! Root level type that contains everything regarding the workspace
@@ -102,7 +96,6 @@ export type Team = {
   coach?: string;
 };
 
-
 /** Players slice type */
 export type Players = {
   /** Players by id */
@@ -157,7 +150,6 @@ export type SelectedPlayer = {
     description?: string;
     score: ActionScore;
     notes?: string;
-    locationOnCourt: PlayerLocation;
   }[];
 };
 
@@ -165,6 +157,8 @@ export type SelectedPlayer = {
 export type GameActions = {
   /** Actions by id */
   byId: Record<string, GameAction>;
+  /** Actions by game state id */
+  byGameStateId: Record<string, GameAction>;
   /** List of all ids */
   allIds: string[];
 };
@@ -175,4 +169,18 @@ export type GameStates = {
   byId: Record<string, GameState>;
   /** List of all ids */
   allIds: string[];
+  /** Current, selected game state */
+  currentState?: string;
+};
+
+/** List of all players' locations */
+export type PlayersLocations = {
+  /** Player locations by location id */
+  byId: Record<string, PlayerLocation>;
+  /** Player locations by player id - only fixed number of those exist (6 - 13) */
+  byPlayerId: Record<string, PlayerLocation>;
+  /** All location ids */
+  allIds: string[];
+  /** Location by game state id - [gameStateId][playerId] */
+  byGameStateId: Record<string, Record<string, PlayerLocation>>;
 };
