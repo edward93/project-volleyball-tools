@@ -25,11 +25,18 @@ const InspectorComponent = () => {
 
   const players = useAppSelector((selector) => selector.playersReducer);
   const circles = useAppSelector((selector) => selector.circlesReducer);
+  // player locations
+  const playersLocations = useAppSelector((selector) => selector.playersLocationsSlice);
+  // current game state
+  const { currentState } = useAppSelector((selector) => selector.gameStateSlice);
+
   const { selectedId } = useAppSelector((selector) => selector.inspectorSlice);
 
   const [isInternalCollapsed, setIsInternalCollapsed] = useState(true);
 
   if (!selectedId) return null;
+
+  const location = playersLocations.byGameStateId[currentState ?? ""]?.[selectedId] ?? playersLocations.byPlayerId[selectedId];
 
   // collapse/open internal section
 
@@ -39,8 +46,8 @@ const InspectorComponent = () => {
         internal: {
           id: selectedId,
           color: circles.byId[selectedId].color,
-          x: circles.byId[selectedId].cx,
-          y: circles.byId[selectedId].cy,
+          x: location.x,
+          y: location.y,
           r: circles.byId[selectedId].r,
         },
         visual: {
@@ -71,6 +78,7 @@ const InspectorComponent = () => {
    * @param event - Click event
    */
   const onInternalPropertiesTitleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
     // toggle the section
     toggleInternalProperties();
   };

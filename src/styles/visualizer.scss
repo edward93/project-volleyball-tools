@@ -8,17 +8,17 @@ $boundary-color: rgb(243, 243, 243);
 $player-default-color: theme($text-color, $primary-color);
 
 .vt-svg-container {
+  grid-row: 2 / span 1;
+
   display: flex;
-  // flex-direction: column;
-  flex-wrap: wrap;
-  flex: 1 1 0;
   justify-content: center;
-  padding: 0 0.5rem 1rem 0.5rem;
+  padding: 0 0.5rem 0 0.5rem;
+  // position: relative;
+  overflow: hidden;
 
   & .vt-svg {
     background-color: $outer-court-color;
     width: 100%;
-    height: 100%;
     touch-action: none;
 
     & text {

@@ -6,17 +6,28 @@ import { GameActionTypesById, Player } from "types/volleyballTool.New.Types";
 
 import "styles/gameAction.scss";
 
+/**
+ * GameAction component - shows selected player's actions
+ * 
+ * @param props - GameActions props
+ * @returns GameActions component
+ */
 const GameActionsComponent = (props: { player: Player }) => {
   const { player } = props;
   const [isContentCollapsed, setIsContentCollapsed] = useState(true);
   // all game actions
   const gameActions = useAppSelector((selector) => selector.gameActionSlice);
+  // game states
+  const { currentState } = useAppSelector((selector) => selector.gameStateSlice);
 
   // don't do anything if nothing is selected
   if (!player) return null;
 
-  // current player's latest recorded game action
-  const gameAction = gameActions.byId[player.actionIds[0]];
+  // current player's latest recorded game action or current select action (depends on the game state)
+  const gameAction =
+    gameActions.byGameStateId[currentState ?? ""] ??
+    gameActions.byId[gameActions.allIds[gameActions.allIds.length - 1]];
+  
   const gameActionType = GameActionTypesById?.[gameAction?.type];
 
   // max possible score number of actions multiplied by max score
@@ -30,18 +41,21 @@ const GameActionsComponent = (props: { player: Player }) => {
    * @param event Click event
    */
   const onPanelInfoBarClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
     // toggle
     setIsContentCollapsed(!isContentCollapsed);
   };
 
   return (
     <div className="vt-game-actions-container">
-      {gameAction && (
+      {gameAction && player.id === gameAction.playerId && (
         <div className="vt-game-action-properties panel-container">
           <div className="vt-game-actions-info panel-info-bar clickable" onClick={onPanelInfoBarClick}>
             <section className="vt-game-actions-info-left panel-info-bar-txt">
-              <label className="vt-tools-property-label panel-info-bar-label">Total:</label>
-              <div className="vt-tools-property-value panel-info-bar-value">{player.actionIds.length}</div>
+              <label className="vt-tools-property-label panel-info-bar-label">Action:</label>
+              <div className="vt-tools-property-value panel-info-bar-value">
+                {player.actionIds.length - player.actionIds.indexOf(gameAction.id)}/{player.actionIds.length}
+              </div>
             </section>
             <section className="vt-game-actions-info-right panel-info-bar-txt">
               <label className="vt-tools-property-label panel-info-bar-label">Total Score:</label>

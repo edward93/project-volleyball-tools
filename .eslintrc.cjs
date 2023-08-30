@@ -7,6 +7,7 @@ module.exports = {
   plugins: ["react-refresh"],
   rules: {
     "no-unused-vars": "off",
+    "react-hooks/exhaustive-deps": "off",
     "@typescript-eslint/no-unused-vars": "warn",
     "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
   },

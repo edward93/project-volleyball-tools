@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import useFontFaceObserver from "utils/hooks/useFontFaceObserver.hook";
 import { PositionsById } from "types/volleyballTool.Types";
@@ -6,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { PlayerComponentProps } from "types/playerComponent.Types";
 import { select } from "../Inspector/inspector.Slice";
 import { updatePosition } from "./circles.Slice";
+import { updateLocation } from "./playerLocation.Slice";
 import { PlayerLocation } from "types/volleyballTool.New.Types";
 
 /**
@@ -16,22 +18,26 @@ import { PlayerLocation } from "types/volleyballTool.New.Types";
  */
 const PlayerComponent = (props: PlayerComponentProps) => {
   const dispatch = useAppDispatch();
+  // players
   const players = useAppSelector((selector) => selector.playersReducer);
+  // player locations
+  const playersLocations = useAppSelector((selector) => selector.playersLocationsSlice);
+  // current game state
+  const { currentState } = useAppSelector((selector) => selector.gameStateSlice);
+
   const isFontLoaded = useFontFaceObserver([{ family: "Roboto-Mono" }]);
 
   /** Destructuring props */
-  const {
-    id,
-    circle: { x, y, r },
-    color,
-    name,
-    onPressed,
-    onReleased,
-    svgRef,
-  } = props;
+  const { id, radius, color, name, onPressed, onReleased, svgRef } = props;
 
+  const location = playersLocations.byGameStateId[currentState ?? ""]?.[id] ?? playersLocations.byPlayerId[id];
   // current player location
-  const [playerLocation, setPlayerLocation] = useState<PlayerLocation>({ playerId: id, x, y });
+  const [playerLocation, setPlayerLocation] = useState<PlayerLocation>(location);
+
+  // update local position when store changes
+  useEffect(() => {
+    setPlayerLocation(playersLocations.byGameStateId[currentState ?? ""]?.[id] ?? playersLocations.byPlayerId[id]);
+  }, [currentState]);
 
   // extract player's name
   const playerName = players.byId[id].name;
@@ -56,6 +62,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    * @param event Mouse event
    */
   const onMouseDown = (event: React.MouseEvent<SVGSVGElement>) => {
+    event.preventDefault();
     press(id);
   };
 
@@ -64,6 +71,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    * @param event Touch event
    */
   const onTouchStart = (event: React.TouchEvent<SVGSVGElement>) => {
+    event.preventDefault();
     press(id);
   };
 
@@ -75,6 +83,11 @@ const PlayerComponent = (props: PlayerComponentProps) => {
 
     // update position in the store
     dispatch(updatePosition({ id: playerLocation.playerId, newX: playerLocation.x, newY: playerLocation.y }));
+    dispatch(
+      updateLocation({
+        location: { id: uuidv4(), playerId: playerLocation.playerId, x: playerLocation.x, y: playerLocation.y },
+      })
+    );
   };
 
   /**
@@ -153,21 +166,21 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   return (
     <g
       onMouseDown={onMouseDown}
+      onMouseUp={onStopPressing}
       onTouchStart={onTouchStart}
+      onTouchEnd={onStopPressing}
       onMouseMove={onMouseMove}
       onTouchMove={onTouchMove}
-      onMouseUp={onStopPressing}
-      onTouchEnd={onStopPressing}
       className="vt-svg-player"
       id={id}
     >
-      <circle stroke="black" cx={playerLocation.x} cy={playerLocation.y} r={r} fill={color} />
+      <circle stroke="black" cx={playerLocation.x} cy={playerLocation.y} r={radius} fill={color} />
       <g transform={`translate(${playerLocation.x}, ${playerLocation.y})`}>
         <text textAnchor="middle" alignmentBaseline="middle" fill="white">
           {PositionsById[players.byId[id].positionId].shortName}
         </text>
       </g>
-      <g transform={`translate(${playerLocation.x}, ${playerLocation.y + 1.6 * r})`}>
+      <g transform={`translate(${playerLocation.x}, ${playerLocation.y + 1.6 * radius})`}>
         <rect strokeWidth={2} width={rectWidth} height={30} fill="black" x={-rectWidth / 2} y={-15} rx={5} />
         <text ref={textRef} textAnchor="middle" alignmentBaseline="middle" fill="white">
           {name || playerName}

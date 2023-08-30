@@ -115,7 +115,7 @@ export type Statistic = {
   /** Extra notes if applicable */
   notes?: string;
   /** Where the action was performed */
-  location?: PlayerLocation;
+  // location?: PlayerLocation;
   /** Current game info */
   gameInfo?: GameInfo;
 };
@@ -184,14 +184,6 @@ export const GameEventById = {
   [Dig.id]: Dig,
   [Pass.id]: Pass,
 }
-
-/**
- * Players position on the SVG
- */
-export type PlayerLocation = {
-  x: number;
-  y: number;
-};
 
 /**
  * Key - time

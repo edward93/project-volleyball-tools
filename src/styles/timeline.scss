@@ -1,0 +1,51 @@
+@import "./colors.scss";
+
+.vt-tools-timeline-section {
+  grid-row: 3 / span 1;
+  background-color: lighten($color: theme($bg-color, $primary-color), $amount: 3);
+
+  display: flex;
+  justify-content: center;
+  padding: 0.1rem 0;
+  margin: 0 0.5rem;
+  margin-bottom: 0.1rem;
+
+  & .vt-timeline-svg-container {
+    display: flex;
+    position: relative;
+    min-height: 2rem;
+    flex: 1;
+    // max-height: inherit;
+
+    & > .timeline-svg {
+      transform-origin: 50% 50%; /* center of rotation is set to the center of the element */
+      transform: scale(1, -1);
+      background-color: lighten($color: theme($bg-color, $primary-color), $amount: 10);
+      width: 100%;
+      touch-action: none;
+      height: 100%;
+
+      & > .vt-timeline-hash-mark {
+        stroke: rgba(243, 243, 243, 0.5);
+      }
+
+      & > .vt-timeline-gauge-separator {
+        stroke: rgba(243, 243, 243, .3);
+      }
+
+      & > .vt-timeline-slider {
+        // cursor: grab;
+
+        & > .vt-timeline-slider-head {
+          stroke: theme($text-color, $secondary-color);
+          fill: #fff;
+        }
+
+        & > .vt-timeline-slider-needle {
+          stroke: #fff;
+          stroke-width: 1;
+        }
+      }
+    }
+  }
+}

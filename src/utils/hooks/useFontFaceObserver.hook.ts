@@ -68,7 +68,6 @@ function useFontFaceObserver(
       .then(() => setIsResolved(true))
       .catch(() => {
         if (showErrors) {
-          // eslint-disable-next-line no-console
           console.error(`An error occurred during font loading`)
         }
       })
