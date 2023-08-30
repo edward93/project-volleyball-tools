@@ -48,7 +48,7 @@ const GameActionsComponent = (props: { player: Player }) => {
 
   return (
     <div className="vt-game-actions-container">
-      {gameAction && player.selectedActionId && (
+      {gameAction && player.id === gameAction.playerId && (
         <div className="vt-game-action-properties panel-container">
           <div className="vt-game-actions-info panel-info-bar clickable" onClick={onPanelInfoBarClick}>
             <section className="vt-game-actions-info-left panel-info-bar-txt">

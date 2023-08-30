@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppSelector, useAppDispatch } from "reduxTools/hooks";
 import { selectCurrentGameState } from "./gameState.Slice";
+import { select } from "components/Inspector/inspector.Slice";
+
 import "styles/timeline.scss";
 import { GameState } from "types/volleyballTool.New.Types";
 
@@ -16,6 +18,8 @@ const TimelineComponent = () => {
 
   // get all states
   const gameStates = useAppSelector((selector) => selector.gameStateSlice);
+  // all game actions
+  const gameActions = useAppSelector((selector) => selector.gameActionSlice);
 
   const hashMarks = gameStates.allIds.length;
   // for testing
@@ -163,6 +167,10 @@ const TimelineComponent = () => {
     // select current game state
     dispatch(selectCurrentGameState({ id: state.id }));
 
+    const selectedAction = gameActions.byGameStateId[state.id];
+    // select current player
+    dispatch(select(selectedAction.playerId));
+
     // update local selected state
     setGameState(state.id);
   };
@@ -180,7 +188,7 @@ const TimelineComponent = () => {
         >
           {hashMarks > 1 && (
             <>
-              {Object.entries(posToGameStateMap).map(([pos,], index: number) => {
+              {Object.entries(posToGameStateMap).map(([pos], index: number) => {
                 return (
                   <line
                     key={pos}
