@@ -1,5 +1,8 @@
 # project-volleyball-tools
 
+![version](https://badgen.net/badge/version/v0.0.2/yellow)
+![dev status](https://badgen.net/badge/status/In%20Development/orange)
+
 <img src="docs/imgs/Main-page.png" width="800px" /><br/>
 
 ## Description
