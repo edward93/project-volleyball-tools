@@ -17,6 +17,8 @@ import { PlayerLocation } from "types/volleyballTool.New.Types";
  * @returns React component
  */
 const PlayerComponent = (props: PlayerComponentProps) => {
+  /** Destructuring props */
+  const { id, radius, color, name, onPressed, onReleased, svgRef } = props;
   const dispatch = useAppDispatch();
   // players
   const players = useAppSelector((selector) => selector.playersReducer);
@@ -24,11 +26,12 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const playersLocations = useAppSelector((selector) => selector.playersLocationsSlice);
   // current game state
   const { currentState } = useAppSelector((selector) => selector.gameStateSlice);
+  // selected player id
+  const { selectedId } = useAppSelector((selector) => selector.inspectorSlice);
+  // is current player selected or not
+  const isPlayerSelected = selectedId === id;
 
   const isFontLoaded = useFontFaceObserver([{ family: "Roboto-Mono" }]);
-
-  /** Destructuring props */
-  const { id, radius, color, name, onPressed, onReleased, svgRef } = props;
 
   const location = playersLocations.byGameStateId[currentState ?? ""]?.[id] ?? playersLocations.byPlayerId[id];
   // current player location
@@ -163,6 +166,9 @@ const PlayerComponent = (props: PlayerComponentProps) => {
     setPlayerLocation({ ...playerLocation, x: newX, y: newY });
   };
 
+  // calculate the final radius of the player circle element
+  const effectiveRadius = isPlayerSelected ? radius * 1.1 : radius;
+
   return (
     <g
       onMouseDown={onMouseDown}
@@ -174,13 +180,20 @@ const PlayerComponent = (props: PlayerComponentProps) => {
       className="vt-svg-player"
       id={id}
     >
-      <circle stroke="black" cx={playerLocation.x} cy={playerLocation.y} r={radius} fill={color} />
+      <circle
+        stroke="black"
+        cx={playerLocation.x}
+        cy={playerLocation.y}
+        r={effectiveRadius}
+        fill={color}
+        strokeWidth={isPlayerSelected ? 5 : 1}
+      />
       <g transform={`translate(${playerLocation.x}, ${playerLocation.y})`}>
         <text textAnchor="middle" alignmentBaseline="middle" fill="white">
           {PositionsById[players.byId[id].positionId].shortName}
         </text>
       </g>
-      <g transform={`translate(${playerLocation.x}, ${playerLocation.y + 1.6 * radius})`}>
+      <g transform={`translate(${playerLocation.x}, ${playerLocation.y + 1.6 * effectiveRadius})`}>
         <rect strokeWidth={2} width={rectWidth} height={30} fill="black" x={-rectWidth / 2} y={-15} rx={5} />
         <text ref={textRef} textAnchor="middle" alignmentBaseline="middle" fill="white">
           {name || playerName}
