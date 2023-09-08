@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
-import { Point, Points } from "../../types/reduxStore.Types";
+import { Points } from "../../types/reduxStore.Types";
+import { GameSet, Point } from "types/volleyballTool.New.Types";
 
 // import { setId } from "./sets.Slice";
 
 const initialState: Points = {
   byId: {},
-  bySetId: {},
-  byGameId: {},
+  byGameStateId: {},
   allIds: [],
 };
 
@@ -22,33 +22,37 @@ export const pointsSlice = createSlice({
     //   state.byId[id] = action.payload;
     //   state.bySetId =
     // },
-    incrementHomeScore: (state, action: PayloadAction<{ gameId: string; setId: string; point: number }>) => {
-      const { gameId, setId, point } = action.payload;
+    incrementHomeScore: (state, action: PayloadAction<{ gameStateId: string, gameId: string; setId: string; point: number }>) => {
+      const { gameStateId, gameId, setId, point } = action.payload;
       const newPoint: Point = {
         id: uuidv4(),
-        point,
+        gameId,
+        setId,
         scoredByHomeTeam: true,
-        setId,
+        point,
       };
 
       state.allIds.push(newPoint.id);
       state.byId[newPoint.id] = newPoint;
-      state.bySetId[setId] = [...state.bySetId[setId], newPoint];
-      state.byGameId[gameId] = [...state.byGameId[gameId], newPoint];
+      state.byGameStateId[gameStateId] = newPoint;
+      // state.bySetId[setId] = [...state.bySetId[setId], newPoint];
+      // state.byGameId[gameId] = [...state.byGameId[gameId], newPoint];
     },
-    incrementAwayScore: (state, action: PayloadAction<{ gameId: string; setId: string; point: number }>) => {
-      const { gameId, setId, point } = action.payload;
+    incrementAwayScore: (state, action: PayloadAction<{ gameStateId: string, gameId: string; setId: string; point: number }>) => {
+      const { gameStateId, gameId, setId, point } = action.payload;
       const newPoint: Point = {
         id: uuidv4(),
-        point,
-        scoredByHomeTeam: false,
+        gameId,
         setId,
+        scoredByHomeTeam: false,
+        point,
       };
 
       state.allIds.push(newPoint.id);
       state.byId[newPoint.id] = newPoint;
-      state.bySetId[setId] = [...state.bySetId[setId], newPoint];
-      state.byGameId[gameId] = [...state.byGameId[gameId], newPoint];
+      state.byGameStateId[gameStateId] = newPoint;
+      // state.bySetId[setId] = [...state.bySetId[setId], newPoint];
+      // state.byGameId[gameId] = [...state.byGameId[gameId], newPoint];
     },
   },
 });

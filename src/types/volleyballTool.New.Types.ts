@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from "uuid";
-import { GameSet } from "./volleyballTool.Types";
 
 /** Categories of unique game actions */
 export enum GameActionCategory {
@@ -265,18 +264,6 @@ export type GameState = {
   id: string;
   /** Game id */
   gameId: string;
-  /** What set */
-  set: GameSet;
-  /** Which rally */
-  rally: number;
-  /** Home team score before the event */
-  homeScore: number;
-  /** Away team score before the event */
-  awayScore: number;
-  /** List of player locations */
-  playerLocations: PlayerLocations;
-  /** game action associated */
-  gameActionId: string;
   /** Time (optional) */
   time?: string;
 };
@@ -293,4 +280,80 @@ export type GameAction = {
   type: string;
   /** Manual notes */
   notes?: string;
+};
+
+/** Volleyball game set */
+export type Set = {
+  /** Unique auto generated id */
+  id: string;
+  /** Game id */
+  gameId: string;
+  /** Set number */
+  set: GameSet;
+  /** Final or current score of this particular set for home team */
+  homeScore: number;
+  /** Final or current score of this particular set for away team */
+  awayScore: number;
+};
+
+/** Volleyball game sets */
+export type GameSet = 1 | 2 | 3 | 4 | 5;
+
+/** Volleyball point type */
+export type Point = {
+  /** Unique auto generated id */
+  id: string;
+  /** Game id */
+  gameId: string;
+  /** set id */
+  setId: string;
+  //TODO: use team reference instead
+  /** Whether or not this point was scored by the home team */
+  scoredByHomeTeam: boolean;
+  /** Current point that was scored */
+  point: number;
+};
+
+/** Represents game's score at any given point in time */
+export type Score = {
+  /** Unique auto generated id */
+  id: string;
+  /** Game id */
+  gameId: string;
+  /** Current set id */
+  // setId: string;
+  /** Current set */
+  set: GameSet | number;
+  /** Current home ( >= 0) */
+  homePoints: number;
+  /** Current home sets won (0 - 5) */
+  homeSetsWon: number;
+  /** Current away points ( >= 0) */
+  awayPoints: number;
+  /** Current away sets won (0 - 5) */
+  awaySetsWon: number;
+};
+
+/** Volleyball game type */
+export type Game = {
+  /** Unique auto generated id */
+  id: string;
+  /** Workspace Id */
+  workspaceId: string;
+  /** Home team id */
+  homeTeamId: string;
+  /** Away team id */
+  awayTeamId: string;
+  /** Has this game ended or not */
+  hasEnded: boolean;
+};
+
+/** Team type */
+export type Team = {
+  /** Unique auto generated id */
+  id: string;
+  /** name of the */
+  name: string;
+  /** is home team */
+  isHome: boolean;
 };

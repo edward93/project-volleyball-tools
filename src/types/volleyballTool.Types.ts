@@ -1,15 +1,13 @@
 /** Game results */
-export type GameResult = {
-  /** Game id that his result belongs to */
-  gameId: string;
-  /** Set number */
-  set: GameSet;
-  /** Final score of the set */
-  score: GameScore;
-};
+// export type GameResult = {
+//   /** Game id that his result belongs to */
+//   gameId: string;
+//   /** Set number */
+//   set: GameSet;
+//   /** Final score of the set */
+//   score: GameScore;
+// };
 
-/** Volleyball game sets */
-export type GameSet = 1 | 2 | 3 | 4 | 5;
 
 /**
  * Game info, set, rally, score

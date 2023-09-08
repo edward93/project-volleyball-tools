@@ -12,7 +12,7 @@ import { addLocationToGameState } from "components/Visualizer/playerLocation.Sli
 import { addGameAction } from "components/Players/players.Slice";
 
 import "styles/stats.scss";
-import { GameAction, GameActionTypesById, GameState, PlayerLocations } from "types/volleyballTool.New.Types";
+import { GameAction, GameActionTypesById, GameState } from "types/volleyballTool.New.Types";
 
 const selectGameActions: SelectItem[] = Object.entries(GameActionTypesById).map(([key, action]) => ({
   value: key,
@@ -25,6 +25,9 @@ const selectGameActions: SelectItem[] = Object.entries(GameActionTypesById).map(
  */
 const StatsComponent = () => {
   const dispatch = useAppDispatch();
+
+  // current game
+  const game = useAppSelector((selector) => selector.gameSlice);
 
   // current selected item (player)
   const { selectedId } = useAppSelector((selector) => selector.inspectorSlice);
@@ -76,16 +79,7 @@ const StatsComponent = () => {
     // create new game state
     gameState.current = {
       id: uuidv4(),
-      // TODO: get this from Game slice
-      gameId: uuidv4(),
-      awayScore: 0,
-      homeScore: 0,
-      set: 1,
-      rally: 0,
-      // TODO: update after gameActionId is created
-      gameActionId: "",
-      // stores only the current player's location
-      playerLocations: getPlayerLocations(),
+      gameId: game.id,
     };
 
     // init a new obj
@@ -95,9 +89,6 @@ const StatsComponent = () => {
       type: "",
       gameStateId: gameState.current.id,
     };
-
-    // make sure we associate this action with the state
-    gameState.current.gameActionId = action.id;
 
     setCurrentAction(action);
   };
@@ -153,24 +144,6 @@ const StatsComponent = () => {
    */
   const toggleStatsSection = () => {
     setShowNewActionSection(!showNewActionSection);
-  };
-
-  /**
-   * Returns all players' location
-   *
-   * @returns players' location (x,y)
-   */
-  const getPlayerLocations = (): PlayerLocations => {
-    const location: PlayerLocations = circles.allIds
-      .map((id) => ({
-        [id]: {
-          x: circles.byId[id].cx,
-          y: circles.byId[id].cy,
-        },
-      }))
-      .reduce((a, v) => ({ ...a, ...v }), {});
-
-    return location;
   };
 
   return (
