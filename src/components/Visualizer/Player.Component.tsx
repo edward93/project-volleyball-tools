@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import useFontFaceObserver from "utils/hooks/useFontFaceObserver.hook";
-import { PositionsById } from "types/volleyballTool.Types";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { PlayerComponentProps } from "types/playerComponent.Types";
+import { PlayerLocation } from "types/volleyballTool.New.Types";
+import { PositionsById } from "types/volleyballTool.Types";
+import useFontFaceObserver from "utils/hooks/useFontFaceObserver.hook";
 import { select } from "../Inspector/inspector.Slice";
 import { updatePosition } from "./circles.Slice";
 import { updateLocation } from "./playerLocation.Slice";
-import { PlayerLocation } from "types/volleyballTool.New.Types";
 
 /**
  * Player component (renders as SVG circles with player's name under it)
@@ -89,7 +89,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
     dispatch(
       updateLocation({
         location: { id: uuidv4(), playerId: playerLocation.playerId, x: playerLocation.x, y: playerLocation.y },
-      })
+      }),
     );
   };
 
@@ -179,21 +179,16 @@ const PlayerComponent = (props: PlayerComponentProps) => {
       onTouchMove={onTouchMove}
       className="vt-svg-player"
       id={id}
+      transform={`translate(${playerLocation.x}, ${playerLocation.y})`}
+      style={!isPressed ? { transition: "transform 0.3s" } : {}}
     >
-      <circle
-        stroke="black"
-        cx={playerLocation.x}
-        cy={playerLocation.y}
-        r={effectiveRadius}
-        fill={color}
-        strokeWidth={isPlayerSelected ? 5 : 1}
-      />
-      <g transform={`translate(${playerLocation.x}, ${playerLocation.y})`}>
+      <circle stroke="black" r={effectiveRadius} fill={color} strokeWidth={isPlayerSelected ? 5 : 1} />
+      <g>
         <text textAnchor="middle" alignmentBaseline="middle" fill="white">
           {PositionsById[players.byId[id].positionId].shortName}
         </text>
       </g>
-      <g transform={`translate(${playerLocation.x}, ${playerLocation.y + 1.6 * effectiveRadius})`}>
+      <g transform={`translate(${0}, ${1.6 * effectiveRadius})`}>
         <rect strokeWidth={2} width={rectWidth} height={30} fill="black" x={-rectWidth / 2} y={-15} rx={5} />
         <text ref={textRef} textAnchor="middle" alignmentBaseline="middle" fill="white">
           {name || playerName}

@@ -1,12 +1,12 @@
 import React from "react";
+import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { v4 as uuidv4 } from "uuid";
-import { useAppSelector, useAppDispatch } from "reduxTools/hooks";
 
 import { create as createNewState } from "components/Timeline/gameState.Slice";
 import { createNewScore } from "./score.Slice";
 
-import "../../styles/scoreboard.scss";
 import { GameState, Score } from "types/volleyballTool.New.Types";
+import "../../styles/scoreboard.scss";
 
 /**
  * Scoreboard component
