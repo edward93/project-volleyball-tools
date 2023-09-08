@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { Points } from "../../types/reduxStore.Types";
-import { GameSet, Point } from "types/volleyballTool.New.Types";
+import { Point } from "types/volleyballTool.New.Types";
 
 // import { setId } from "./sets.Slice";
 
@@ -22,7 +22,10 @@ export const pointsSlice = createSlice({
     //   state.byId[id] = action.payload;
     //   state.bySetId =
     // },
-    incrementHomeScore: (state, action: PayloadAction<{ gameStateId: string, gameId: string; setId: string; point: number }>) => {
+    incrementHomeScore: (
+      state,
+      action: PayloadAction<{ gameStateId: string; gameId: string; setId: string; point: number }>
+    ) => {
       const { gameStateId, gameId, setId, point } = action.payload;
       const newPoint: Point = {
         id: uuidv4(),
@@ -38,7 +41,10 @@ export const pointsSlice = createSlice({
       // state.bySetId[setId] = [...state.bySetId[setId], newPoint];
       // state.byGameId[gameId] = [...state.byGameId[gameId], newPoint];
     },
-    incrementAwayScore: (state, action: PayloadAction<{ gameStateId: string, gameId: string; setId: string; point: number }>) => {
+    incrementAwayScore: (
+      state,
+      action: PayloadAction<{ gameStateId: string; gameId: string; setId: string; point: number }>
+    ) => {
       const { gameStateId, gameId, setId, point } = action.payload;
       const newPoint: Point = {
         id: uuidv4(),

@@ -39,9 +39,6 @@ const StatsComponent = () => {
 
   const gameState = useRef<GameState | null>(null);
 
-  // circles
-  const circles = useAppSelector((selector) => selector.circlesReducer);
-
   //#region user input handlers
   /**
    * Select new game action
