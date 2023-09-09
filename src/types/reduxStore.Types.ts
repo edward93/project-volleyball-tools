@@ -1,5 +1,5 @@
-import { GameAction, GameState, Player, PlayerLocation } from "./volleyballTool.New.Types";
-import { ActionScore, GameInfo, GameResult, GameSet } from "./volleyballTool.Types";
+import { GameAction, Set, GameState, Player, PlayerLocation, Point, Score, Team } from "./volleyballTool.New.Types";
+import { ActionScore, GameInfo } from "./volleyballTool.Types";
 
 /**
  * This is the workspace type! Root level type that contains everything regarding the workspace
@@ -18,32 +18,16 @@ export type Workspace = {
 /**
  * Volleyball game
  */
-export type Game = {
-  /** Unique auto generated id */
-  id: string;
-  /** Workspace Id */
-  workspaceId: string;
-  /** Home team name*/
-  home: string;
-  /** Away team name */
-  away: string;
-  /** Results per set, score, violations, etc */
-  results?: Record<GameSet, GameResult>;
-};
-
-/** Volleyball game set */
-export type Set = {
-  /** Unique auto generated id */
-  id: string;
-  /** Game id */
-  gameId: string;
-  /** Set number */
-  set: GameSet;
-  /** Final or current score of this particular set for home team */
-  homeScore: number;
-  /** Final or current score of this particular set for away team */
-  awayScore: number;
-};
+// export type Game = {
+//   /** Unique auto generated id */
+//   id: string;
+//   /** Workspace Id */
+//   workspaceId: string;
+//   /** Home team name*/
+//   home: string;
+//   /** Away team name */
+//   away: string;
+// };
 
 /** Sets type for redux store */
 export type Sets = {
@@ -55,46 +39,36 @@ export type Sets = {
   allIds: string[];
 };
 
-/** Volleyball point type */
-export type Point = {
-  /** Unique auto generated id */
-  id: string;
-  /** Game id */
-  setId: string;
-  //TODO: use team reference instead
-  /** Whether or not this point was scored by the home team */
-  scoredByHomeTeam: boolean;
-  /** Current point that was scored */
-  point: number;
-};
-
 /** Points type for redux store */
 export type Points = {
   /** Points by ids */
   byId: Record<string, Point>;
-  /** Points by set id */
-  bySetId: Record<string, Point[]>;
-  /** Sets by game id */
-  byGameId: Record<string, Point[]>;
+  // /** Points by set id */
+  // bySetId: Record<string, Point[]>;
+  // /** Sets by game id */
+  // byGameId: Record<string, Point[]>;
+
+  /** Point by the state id */
+  byGameStateId: Record<string, Point>;
   /** All point ids */
   allIds: string[];
 };
 
 /** Volleyball team */
-export type Team = {
-  /** Unique auto generated id */
-  id: string;
-  /** Game id */
-  gameId: string;
-  /** All 6 players, currently no subs are allowed */
-  players: Record<string, Player>;
-  /** Name of the team */
-  name: string;
-  /** Is the home team */
-  isHome: boolean;
-  /** Name of the coach */
-  coach?: string;
-};
+// export type Team = {
+//   /** Unique auto generated id */
+//   id: string;
+//   /** Game id */
+//   gameId: string;
+//   /** All 6 players, currently no subs are allowed */
+//   players: Record<string, Player>;
+//   /** Name of the team */
+//   name: string;
+//   /** Is the home team */
+//   isHome: boolean;
+//   /** Name of the coach */
+//   coach?: string;
+// };
 
 /** Players slice type */
 export type Players = {
@@ -183,4 +157,24 @@ export type PlayersLocations = {
   allIds: string[];
   /** Location by game state id - [gameStateId][playerId] */
   byGameStateId: Record<string, Record<string, PlayerLocation>>;
+};
+
+/** List of all game scores */
+export type Scores = {
+  /** Scores by score id */
+  byId: Record<string, Score>;
+  /** Scores by game id by game state id [gameId][gameStateId] */
+  byGameStateId: Record<string, Record<string, Score>>;
+  /** All score ids per game */
+  allIdsByGameId: Record<string, string[]>;
+  /** All scores */
+  allIds: string[];
+};
+
+/** List of all teams */
+export type Teams = {
+  /** Scores by score id */
+  byId: Record<string, Team>;
+  /** ALl teams */
+  allIds: string[];
 };

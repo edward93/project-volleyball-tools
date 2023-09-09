@@ -1,6 +1,8 @@
 @import "./colors.scss";
+@import "./common.scss";
 
 .vt-tools-scoreboard-section {
+  @include prevent-select;
   grid-row: 1 / span 1;
   background-color: lighten($color: theme($bg-color, $primary-color), $amount: 3);
   display: flex;
@@ -19,7 +21,6 @@
 
     & .scoreboard-score {
       aspect-ratio: 1 / 1;
-      width: 100%;
       max-height: 100%;
       display: flex;
       justify-content: center;
@@ -27,6 +28,7 @@
       background-color: lighten($color: theme($bg-color, $primary-color), $amount: 40);
       color: theme($bg-color, $primary-color);
       padding: 0.25rem;
+      cursor: pointer;
     }
 
     & .scoreboard-sets-won {

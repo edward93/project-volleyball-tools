@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
-import { Set, Sets } from "../../types/reduxStore.Types";
-import { GameSet } from "../../types/volleyballTool.Types";
-
+import { GameSet, Set } from "types/volleyballTool.New.Types";
 import { gameId } from "./game.Slice";
+import { Sets } from "types/reduxStore.Types";
 
 //#region test sets
 // const set: Set = {

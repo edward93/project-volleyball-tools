@@ -38,15 +38,15 @@ const TimelineComponent = () => {
    * Calculates positions of the lines on the SVG and returns 2 maps (position to state id & state id to position)
    * @returns Array containing 2 items, first one is position to game state map second one game state id to position
    */
-  const markPositions = (): [{ [x: number]: GameState }, { [x: string]: number }] => {
-    const positionToGameState: { [x: number]: GameState } = {};
+  const markPositions = (): [{ [x: string]: GameState }, { [x: string]: number }] => {
+    const positionToGameState: { [x: string]: GameState } = {};
     const gameStateToPosition: { [x: string]: number } = {};
 
     for (let i = 0; i < hashMarks; i++) {
       const position = hashMarks === 1 ? margin : margin + i * (availableWidth / (hashMarks - 1));
       const gameState = gameStates.byId[gameStates.allIds[i]];
 
-      positionToGameState[position] = gameState;
+      positionToGameState[position.toFixed(8)] = gameState;
       gameStateToPosition[gameState.id] = position;
     }
 
@@ -160,7 +160,7 @@ const TimelineComponent = () => {
    * @param pos Slider position, which corresponds to one game state
    */
   const onSliderChange = (pos: number) => {
-    const state = posToGameStateMap[pos];
+    const state = posToGameStateMap[pos.toFixed(8)];
     // ignore if state didn't change
     if (state.id === gameState) return;
 
@@ -169,7 +169,7 @@ const TimelineComponent = () => {
 
     const selectedAction = gameActions.byGameStateId[state.id];
     // select current player
-    dispatch(select(selectedAction.playerId));
+    if (selectedAction) dispatch(select(selectedAction.playerId));
 
     // update local selected state
     setGameState(state.id);
