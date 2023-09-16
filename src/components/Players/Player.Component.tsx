@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { updatePosition } from "components/Players/players.Slice";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { PlayerComponentProps } from "types/playerComponent.Types";
 import { PlayerLocation } from "types/volleyballTool.New.Types";
 import useFontFaceObserver from "utils/hooks/useFontFaceObserver.hook";
+import { getTransformedCoordinates } from "utils/svg/svgHelpers";
 import { select } from "../Inspector/inspector.Slice";
 import { updateLocation } from "./playerLocation.Slice";
 
@@ -35,17 +35,38 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const location = playersLocations.byGameStateId[currentState ?? ""]?.[id] ?? playersLocations.byPlayerId[id];
   // current player location
   const [playerLocation, setPlayerLocation] = useState<PlayerLocation>(location);
+  /** is this player/circle pressed/touched or not */
+  const [isPressed, setIsPressed] = useState(false);
+  // capture isPressed to be used inside a listener callback
+  const dragging = useRef<boolean>(isPressed);
+
+  /** set `dragging` value */
+  const isDragging = (value: boolean) => {
+    dragging.current = value;
+    setIsPressed(value);
+  };
+
+  /** Register movement event listeners on the parent SVG element */
+  useEffect(() => {
+    if (svgRef.current) {
+      svgRef.current.addEventListener("mousemove", onMouseMove);
+      svgRef.current.addEventListener("touchmove", onTouchMove);
+    }
+
+    return () => {
+      svgRef.current?.removeEventListener("mousemove", onMouseMove);
+      svgRef.current?.removeEventListener("touchmove", onTouchMove);
+    };
+  }, [svgRef]);
 
   // update local position when store changes
   useEffect(() => {
-    setPlayerLocation(playersLocations.byGameStateId[currentState ?? ""]?.[id] ?? playersLocations.byPlayerId[id]);
+    setPlayerLocation(location);
   }, [currentState]);
 
   // extract player's name
   const playerName = players.byId[id].name;
 
-  /** is this player/circle pressed/touched or not */
-  const [isPressed, setIsPressed] = useState(false);
   /** Width of the text's bg rect */
   const [rectWidth, setRectWidth] = useState(220);
 
@@ -84,7 +105,6 @@ const PlayerComponent = (props: PlayerComponentProps) => {
     release();
 
     // update position in the store
-    dispatch(updatePosition({ id: playerLocation.playerId, newX: playerLocation.x, newY: playerLocation.y }));
     dispatch(
       updateLocation({
         location: { id: uuidv4(), playerId: playerLocation.playerId, x: playerLocation.x, y: playerLocation.y },
@@ -96,7 +116,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    * Handles mouse move event
    * @param event Mouse event
    */
-  const onMouseMove = (event: React.MouseEvent<SVGSVGElement>) => {
+  const onMouseMove = (event: MouseEvent) => {
     movePlayer(event.clientX, event.clientY);
   };
 
@@ -104,7 +124,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    * Handles touch move event
    * @param event Touch event
    */
-  const onTouchMove = (event: React.TouchEvent<SVGSVGElement>) => {
+  const onTouchMove = (event: TouchEvent) => {
     movePlayer(event.touches[0].clientX, event.touches[0].clientY);
   };
   //#endregion
@@ -113,12 +133,13 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const updateTextRectWidth = () => {
     if (textRef.current) setRectWidth(textRef.current.getComputedTextLength() + 20);
   };
+
   /**
    * Press (actively select [mouse down/touch start] ) this player
    * @param id - Current circle id
    */
   const press = (id: string) => {
-    setIsPressed(true);
+    isDragging(true);
 
     // select current player
     dispatch(select(id));
@@ -133,7 +154,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    * Release (stop selecting [mouse up/touch end] ) this player
    */
   const release = () => {
-    setIsPressed(false);
+    isDragging(false);
     // TODO: log
     // if onReleased is provided, call it
     onReleased && onReleased();
@@ -144,22 +165,10 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    * @param event Mouse move event
    */
   const movePlayer = (x: number, y: number) => {
-    if (!isPressed) return;
+    if (!dragging.current) return;
 
-    //#region find transformed coordinates
-    const point = svgRef.current?.createSVGPoint();
-    if (!point) return;
-
-    point.x = x;
-    point.y = y;
-
-    const transformedPoint = point.matrixTransform(svgRef.current?.getScreenCTM()?.inverse());
-
-    // calc new coordinates relative to the SVG itself
-    const newX = transformedPoint.x;
-    const newY = transformedPoint.y;
-    //#endregion
-
+    // get new coordinates
+    const [newX, newY] = getTransformedCoordinates(svgRef.current, x, y);
     // update player location (local state)
     // this improves the performance compared to updating the store every time
     setPlayerLocation({ ...playerLocation, x: newX, y: newY });
@@ -170,14 +179,12 @@ const PlayerComponent = (props: PlayerComponentProps) => {
 
   return (
     <g
+      id={id}
       onMouseDown={onMouseDown}
       onMouseUp={onStopPressing}
       onTouchStart={onTouchStart}
       onTouchEnd={onStopPressing}
-      onMouseMove={onMouseMove}
-      onTouchMove={onTouchMove}
       className="vt-svg-player"
-      id={id}
       transform={`translate(${playerLocation.x}, ${playerLocation.y})`}
       style={!isPressed ? { transition: "transform 0.3s" } : {}}
     >

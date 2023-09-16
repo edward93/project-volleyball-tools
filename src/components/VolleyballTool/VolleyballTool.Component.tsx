@@ -1,7 +1,7 @@
 import InspectorComponent from "components/Inspector/Inspector.Component";
 import ScoreboardComponent from "components/Scoreboard/Scoreboard.Component";
 import TimelineComponent from "components/Timeline/Timeline.Component";
-import CourtComponent from "components/Visualizer/Court.Component";
+import CourtComponent from "components/Court/Court.Component";
 
 import "styles/tools.scss";
 

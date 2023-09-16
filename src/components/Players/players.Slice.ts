@@ -132,16 +132,9 @@ export const playersSlice = createSlice({
       // update player's score
       state.byId[playerId].score += gameActionType.score;
     },
-    /** Updates the x & y coordinates */
-    updatePosition: (state: Players, action: PayloadAction<{ id: string; newX: number; newY: number }>) => {
-      const { id, newX, newY } = action.payload;
-
-      state.byId[id].cx = newX;
-      state.byId[id].cy = newY;
-    },
   },
 });
 
-export const { updatePlayerInfo, updatePosition, updatePlayerName, addGameAction, selectPlayerAction } = playersSlice.actions;
+export const { updatePlayerInfo, updatePlayerName, addGameAction, selectPlayerAction } = playersSlice.actions;
 
 export default playersSlice.reducer;
