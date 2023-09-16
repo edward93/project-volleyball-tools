@@ -17,6 +17,8 @@ $player-default-color: theme($text-color, $primary-color);
   overflow: hidden;
 
   & .vt-svg {
+    // transform-origin: 50% 50%; /* center of rotation is set to the center of the element */
+    // transform: rotate(90deg);
     background-color: $outer-court-color;
     width: 100%;
     touch-action: none;
@@ -31,6 +33,9 @@ $player-default-color: theme($text-color, $primary-color);
     }
 
     & .vt-svg-court-group {
+      // transform-origin: 50% 50%; /* center of rotation is set to the center of the element */
+      // transform: translate(300, 150);
+
       & .vt-svg-court {
         display: flex;
         stroke: $boundary-color;
@@ -54,6 +59,12 @@ $player-default-color: theme($text-color, $primary-color);
     & .vt-svg-player {
       & circle {
         stroke: $boundary-color;
+      }
+
+      & .player-circle-txt {
+        // transform-origin: 50% 50%;
+        // transform: translate(20, 20);
+        font-size: 1.5rem;
       }
     }
   }

@@ -88,30 +88,6 @@ export type GameStats = {
   byGameId: Record<string, GameInfo>;
 };
 
-/** SVG circle */
-export type Circle = {
-  /** Player Id that this circle is attached to */
-  playerId: string;
-  /** Unique auto generated id */
-  id: string;
-  /** Center x coordinate */
-  cx: number;
-  /** Center y coordinate */
-  cy: number;
-  /** Radius */
-  r: number;
-  /** Color of the circle */
-  color: string;
-};
-
-/** SVG circles store type */
-export type Circles = {
-  /** Circles by id */
-  byId: Record<string, Circle>;
-  /** List of all ids */
-  allIds: string[];
-};
-
 /** Type that represents selected element, usually a player */
 export type SelectedPlayer = {
   /** Represents internal props that are not very important */

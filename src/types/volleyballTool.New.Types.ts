@@ -219,12 +219,10 @@ export const GameActionTypesById = {
 export type Player = {
   /** Unique auto generated id */
   id: string;
-  /** Circle id that represents this player on the rendered SVG */
-  circleId: string;
   /** Player's name */
   name: string;
   /** Jersey number */
-  jerseyNumber?: number;
+  jerseyNumber: number;
   /** Player's position id */
   positionId: string;
   /** List of actions (action ids) */
@@ -233,6 +231,16 @@ export type Player = {
   score: number;
   /** Current (by default latest) player's action id */
   selectedActionId?: string;
+
+  // TODO: encapsulate in a new type 
+  /** INTERNAL PROPS */
+  cx: number;
+  /** Center y coordinate */
+  cy: number;
+  /** Radius */
+  r: number;
+  /** Color of the circle */
+  color: string;
 };
 
 /** Players' location on the court */

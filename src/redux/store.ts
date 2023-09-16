@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import circlesReducer from "../components/Visualizer/circles.Slice";
-import playersReducer from "../components/Players/players.Slice";
+import playersSlice from "../components/Players/players.Slice";
 import inspectorSlice from "../components/Inspector/inspector.Slice";
 import gameSlice from "../components/Scoreboard/game.Slice";
 import teamSlice from "components/Scoreboard/team.Slice";
@@ -8,7 +7,7 @@ import setsSlice from "../components/Scoreboard/sets.Slice";
 import pointsSlice from "../components/Scoreboard/points.slice";
 import gameStateSlice from "components/Timeline/gameState.Slice";
 import gameActionSlice from "components/Inspector/gameAction.Slice";
-import playersLocationsSlice from "components/Visualizer/playerLocation.Slice";
+import playersLocationsSlice from "components/Players/playerLocation.Slice";
 import scoreSlice from "components/Scoreboard/score.Slice";
 
 /**
@@ -17,8 +16,7 @@ import scoreSlice from "components/Scoreboard/score.Slice";
 export const store = configureStore({
   reducer: {
     inspectorSlice,
-    circlesReducer,
-    playersReducer,
+    playersSlice,
     playersLocationsSlice,
     gameSlice,
     teamSlice,

@@ -1,15 +1,16 @@
-import "../../styles/tools.scss";
-import PlayersComponent from "../Players/Players.Component";
-import InspectorComponent from "../Inspector/Inspector.Component";
-import ScoreboardComponent from "../Scoreboard/Scoreboard.Component";
+import InspectorComponent from "components/Inspector/Inspector.Component";
+import ScoreboardComponent from "components/Scoreboard/Scoreboard.Component";
 import TimelineComponent from "components/Timeline/Timeline.Component";
+import CourtComponent from "components/Visualizer/Court.Component";
+
+import "styles/tools.scss";
 
 const Tools = () => {
   return (
     <div className="vt-tools-container">
       <section className="vt-tools-main-area">
         <ScoreboardComponent />
-        <PlayersComponent />
+        <CourtComponent />
         <TimelineComponent />
       </section>
       <section className="vt-tools-inspector">

@@ -1,58 +1,81 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Players } from "../../types/reduxStore.Types";
 import { GameAction, GameActionTypesById, Player } from "types/volleyballTool.New.Types";
+import { v4 as uuidv4 } from "uuid";
+import { Players } from "../../types/reduxStore.Types";
 import { MiddleBlocker, OppositeHitter, OutsideHitter, Setter } from "../../types/volleyballTool.Types";
 
-import { circles } from "../Visualizer/circles.Slice";
-
-const initialPlayers: Player[] = [
+export const initialPlayers: Player[] = [
   {
-    id: circles[0].id,
+    id: uuidv4(),
     score: 0,
-    circleId: circles[0].id,
     name: "Shoyo Hinata",
     positionId: MiddleBlocker.id,
+    jerseyNumber: 10,
     actionIds: [],
+    cx: 1055,
+    cy: 350,
+    r: 40,
+    color: "#03B5AA",
   },
   {
-    id: circles[1].id,
+    id: uuidv4(),
     score: 0,
-    circleId: circles[1].id,
     name: "Asahi Azumane",
     positionId: OutsideHitter.id,
+    jerseyNumber: 3,
     actionIds: [],
+    cx: 1055,
+    cy: 700,
+    r: 40,
+    color: "#03B5AA",
   },
   {
-    id: circles[2].id,
+    id: uuidv4(),
     score: 0,
-    circleId: circles[2].id,
     name: "Tobio Kageyama",
     positionId: Setter.id,
+    jerseyNumber: 9,
     actionIds: [],
+    cx: 1055,
+    cy: 1040,
+    r: 40,
+    color: "#03B5AA",
   },
   {
-    id: circles[3].id,
+    id: uuidv4(),
     score: 0,
-    circleId: circles[3].id,
     name: "Daichi Sawamura",
     positionId: OppositeHitter.id,
+    jerseyNumber: 1,
     actionIds: [],
+    cx: 600,
+    cy: 350,
+    r: 40,
+    color: "#03B5AA",
   },
   {
-    id: circles[4].id,
+    id: uuidv4(),
     score: 0,
-    circleId: circles[4].id,
     name: "Ryunosuke Tanaka",
     positionId: OutsideHitter.id,
+    jerseyNumber: 5,
     actionIds: [],
+    cx: 600,
+    cy: 700,
+    r: 40,
+    color: "#03B5AA",
   },
   {
-    id: circles[5].id,
+    id: uuidv4(),
     score: 0,
-    circleId: circles[5].id,
     name: "Kei Tsukishima",
     positionId: MiddleBlocker.id,
+    jerseyNumber: 11,
     actionIds: [],
+    cx: 600,
+    cy: 1040,
+    r: 40,
+    color: "#03B5AA",
   },
 ];
 
@@ -109,9 +132,16 @@ export const playersSlice = createSlice({
       // update player's score
       state.byId[playerId].score += gameActionType.score;
     },
+    /** Updates the x & y coordinates */
+    updatePosition: (state: Players, action: PayloadAction<{ id: string; newX: number; newY: number }>) => {
+      const { id, newX, newY } = action.payload;
+
+      state.byId[id].cx = newX;
+      state.byId[id].cy = newY;
+    },
   },
 });
 
-export const { updatePlayerInfo, updatePlayerName, addGameAction, selectPlayerAction } = playersSlice.actions;
+export const { updatePlayerInfo, updatePosition, updatePlayerName, addGameAction, selectPlayerAction } = playersSlice.actions;
 
 export default playersSlice.reducer;

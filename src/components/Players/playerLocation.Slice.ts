@@ -2,11 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
 import { PlayersLocations } from "types/reduxStore.Types";
-import { circles } from "../Visualizer/circles.Slice";
 import { PlayerLocation } from "types/volleyballTool.New.Types";
 
+import { initialPlayers } from "./players.Slice";
+
 // default initial locations
-const initialLocations: PlayerLocation[] = circles.map((c) => ({
+const initialLocations: PlayerLocation[] = initialPlayers.map((c) => ({
   id: uuidv4(),
   playerId: c.id,
   x: c.cx,

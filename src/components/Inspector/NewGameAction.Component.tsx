@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 
 import { create as saveNewState } from "components/Timeline/gameState.Slice";
 import { create as createNewGameAction } from "./gameAction.Slice";
-import { addLocationToGameState } from "components/Visualizer/playerLocation.Slice";
+import { addLocationToGameState } from "components/Players/playerLocation.Slice";
 import { addGameAction } from "components/Players/players.Slice";
 
 import "styles/stats.scss";

@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import { updatePosition } from "components/Players/players.Slice";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { PlayerComponentProps } from "types/playerComponent.Types";
 import { PlayerLocation } from "types/volleyballTool.New.Types";
-import { PositionsById } from "types/volleyballTool.Types";
 import useFontFaceObserver from "utils/hooks/useFontFaceObserver.hook";
 import { select } from "../Inspector/inspector.Slice";
-import { updatePosition } from "./circles.Slice";
 import { updateLocation } from "./playerLocation.Slice";
 
 /**
@@ -21,7 +20,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const { id, radius, color, name, onPressed, onReleased, svgRef } = props;
   const dispatch = useAppDispatch();
   // players
-  const players = useAppSelector((selector) => selector.playersReducer);
+  const players = useAppSelector((selector) => selector.playersSlice);
   // player locations
   const playersLocations = useAppSelector((selector) => selector.playersLocationsSlice);
   // current game state
@@ -182,10 +181,10 @@ const PlayerComponent = (props: PlayerComponentProps) => {
       transform={`translate(${playerLocation.x}, ${playerLocation.y})`}
       style={!isPressed ? { transition: "transform 0.3s" } : {}}
     >
-      <circle stroke="black" r={effectiveRadius} fill={color} strokeWidth={isPlayerSelected ? 5 : 1} />
       <g>
-        <text textAnchor="middle" alignmentBaseline="middle" fill="white">
-          {PositionsById[players.byId[id].positionId].shortName}
+        <circle stroke="black" r={effectiveRadius} fill={color} strokeWidth={isPlayerSelected ? 5 : 1} />
+        <text className="player-circle-txt" textAnchor="middle" alignmentBaseline="middle" fill="white">
+          {players.byId[id].jerseyNumber}
         </text>
       </g>
       <g transform={`translate(${0}, ${1.6 * effectiveRadius})`}>
