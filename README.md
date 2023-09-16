@@ -1,9 +1,9 @@
 # project-volleyball-tools
 
-![version](https://badgen.net/badge/version/v0.0.2/yellow)
+![version](https://badgen.net/badge/version/v0.0.10/yellow)
 ![dev status](https://badgen.net/badge/status/In%20Development/orange)
 
-<img src="docs/imgs/Main-page.png" width="800px" /><br/>
+<img src="docs/assets/VolleyballStatsTrackerDemo.gif" width="800px" /><br/>
 
 ## Description
 

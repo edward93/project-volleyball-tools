@@ -4,10 +4,9 @@ import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { PlayerComponentProps } from "types/playerComponent.Types";
 import { PlayerLocation } from "types/volleyballTool.New.Types";
-import { PositionsById } from "types/volleyballTool.Types";
 import useFontFaceObserver from "utils/hooks/useFontFaceObserver.hook";
+import { useMoveable } from "utils/hooks/useMoveable.hoot";
 import { select } from "../Inspector/inspector.Slice";
-import { updatePosition } from "./circles.Slice";
 import { updateLocation } from "./playerLocation.Slice";
 
 /**
@@ -18,10 +17,10 @@ import { updateLocation } from "./playerLocation.Slice";
  */
 const PlayerComponent = (props: PlayerComponentProps) => {
   /** Destructuring props */
-  const { id, radius, color, name, onPressed, onReleased, svgRef } = props;
+  const { id, radius, color, name, svgRef } = props;
   const dispatch = useAppDispatch();
   // players
-  const players = useAppSelector((selector) => selector.playersReducer);
+  const players = useAppSelector((selector) => selector.playersSlice);
   // player locations
   const playersLocations = useAppSelector((selector) => selector.playersLocationsSlice);
   // current game state
@@ -37,16 +36,30 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   // current player location
   const [playerLocation, setPlayerLocation] = useState<PlayerLocation>(location);
 
+  // movable hook
+  const [isPressed, press, release, move] = useMoveable<PlayerLocation>(playerLocation, setPlayerLocation);
+
+  /** Register movement event listeners on the parent SVG element */
+  useEffect(() => {
+    if (svgRef.current) {
+      svgRef.current.addEventListener("mousemove", onMouseMove);
+      svgRef.current.addEventListener("touchmove", onTouchMove);
+    }
+
+    return () => {
+      svgRef.current?.removeEventListener("mousemove", onMouseMove);
+      svgRef.current?.removeEventListener("touchmove", onTouchMove);
+    };
+  }, [svgRef]);
+
   // update local position when store changes
   useEffect(() => {
-    setPlayerLocation(playersLocations.byGameStateId[currentState ?? ""]?.[id] ?? playersLocations.byPlayerId[id]);
+    setPlayerLocation(location);
   }, [currentState]);
 
   // extract player's name
   const playerName = players.byId[id].name;
 
-  /** is this player/circle pressed/touched or not */
-  const [isPressed, setIsPressed] = useState(false);
   /** Width of the text's bg rect */
   const [rectWidth, setRectWidth] = useState(220);
 
@@ -66,7 +79,9 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    */
   const onMouseDown = (event: React.MouseEvent<SVGSVGElement>) => {
     event.preventDefault();
-    press(id);
+
+    press();
+    dispatch(select(id));
   };
 
   /**
@@ -75,7 +90,9 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    */
   const onTouchStart = (event: React.TouchEvent<SVGSVGElement>) => {
     event.preventDefault();
-    press(id);
+
+    press();
+    dispatch(select(id));
   };
 
   /**
@@ -85,7 +102,6 @@ const PlayerComponent = (props: PlayerComponentProps) => {
     release();
 
     // update position in the store
-    dispatch(updatePosition({ id: playerLocation.playerId, newX: playerLocation.x, newY: playerLocation.y }));
     dispatch(
       updateLocation({
         location: { id: uuidv4(), playerId: playerLocation.playerId, x: playerLocation.x, y: playerLocation.y },
@@ -97,16 +113,16 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    * Handles mouse move event
    * @param event Mouse event
    */
-  const onMouseMove = (event: React.MouseEvent<SVGSVGElement>) => {
-    movePlayer(event.clientX, event.clientY);
+  const onMouseMove = (event: MouseEvent) => {
+    move(event.clientX, event.clientY, svgRef.current);
   };
 
   /**
    * Handles touch move event
    * @param event Touch event
    */
-  const onTouchMove = (event: React.TouchEvent<SVGSVGElement>) => {
-    movePlayer(event.touches[0].clientX, event.touches[0].clientY);
+  const onTouchMove = (event: TouchEvent) => {
+    move(event.touches[0].clientX, event.touches[0].clientY, svgRef.current);
   };
   //#endregion
 
@@ -114,78 +130,25 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const updateTextRectWidth = () => {
     if (textRef.current) setRectWidth(textRef.current.getComputedTextLength() + 20);
   };
-  /**
-   * Press (actively select [mouse down/touch start] ) this player
-   * @param id - Current circle id
-   */
-  const press = (id: string) => {
-    setIsPressed(true);
-
-    // select current player
-    dispatch(select(id));
-
-    // TODO: log
-
-    // call onPressed if exists
-    onPressed && onPressed(id);
-  };
-
-  /**
-   * Release (stop selecting [mouse up/touch end] ) this player
-   */
-  const release = () => {
-    setIsPressed(false);
-    // TODO: log
-    // if onReleased is provided, call it
-    onReleased && onReleased();
-  };
-
-  /**
-   * Moves circles when dragged
-   * @param event Mouse move event
-   */
-  const movePlayer = (x: number, y: number) => {
-    if (!isPressed) return;
-
-    //#region find transformed coordinates
-    const point = svgRef.current?.createSVGPoint();
-    if (!point) return;
-
-    point.x = x;
-    point.y = y;
-
-    const transformedPoint = point.matrixTransform(svgRef.current?.getScreenCTM()?.inverse());
-
-    // calc new coordinates relative to the SVG itself
-    const newX = transformedPoint.x;
-    const newY = transformedPoint.y;
-    //#endregion
-
-    // update player location (local state)
-    // this improves the performance compared to updating the store every time
-    setPlayerLocation({ ...playerLocation, x: newX, y: newY });
-  };
 
   // calculate the final radius of the player circle element
   const effectiveRadius = isPlayerSelected ? radius * 1.1 : radius;
 
   return (
     <g
+      id={id}
       onMouseDown={onMouseDown}
       onMouseUp={onStopPressing}
       onTouchStart={onTouchStart}
       onTouchEnd={onStopPressing}
-      onMouseMove={onMouseMove}
-      onTouchMove={onTouchMove}
       className="vt-svg-player"
-      id={id}
       transform={`translate(${playerLocation.x}, ${playerLocation.y})`}
       style={!isPressed ? { transition: "transform 0.3s" } : {}}
     >
-      <circle stroke="black" r={effectiveRadius} fill={color} strokeWidth={isPlayerSelected ? 5 : 1} />
       <g>
-        <text textAnchor="middle" alignmentBaseline="middle" fill="white">
-          {PositionsById[players.byId[id].positionId].shortName}
+        <circle stroke="black" r={effectiveRadius} fill={color} strokeWidth={isPlayerSelected ? 5 : 1} />
+        <text className="player-circle-txt" textAnchor="middle" alignmentBaseline="middle" fill="white">
+          {players.byId[id].jerseyNumber}
         </text>
       </g>
       <g transform={`translate(${0}, ${1.6 * effectiveRadius})`}>

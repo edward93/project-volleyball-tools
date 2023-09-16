@@ -23,8 +23,7 @@ const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, p
 const InspectorComponent = () => {
   const dispatch = useAppDispatch();
 
-  const players = useAppSelector((selector) => selector.playersReducer);
-  const circles = useAppSelector((selector) => selector.circlesReducer);
+  const players = useAppSelector((selector) => selector.playersSlice);
   // player locations
   const playersLocations = useAppSelector((selector) => selector.playersLocationsSlice);
   // current game state
@@ -45,10 +44,10 @@ const InspectorComponent = () => {
     ? {
         internal: {
           id: selectedId,
-          color: circles.byId[selectedId].color,
+          color: players.byId[selectedId].color,
           x: location.x,
           y: location.y,
-          r: circles.byId[selectedId].r,
+          r: players.byId[selectedId].r,
         },
         visual: {
           avgScore: players.byId[selectedId].score,
