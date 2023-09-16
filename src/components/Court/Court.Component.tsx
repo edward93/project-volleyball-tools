@@ -1,7 +1,5 @@
-import { updateLocation } from "components/Players/playerLocation.Slice";
-import { useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
-import { v4 as uuidv4 } from "uuid";
+import { useRef } from "react";
+import { useAppSelector } from "reduxTools/hooks";
 import Player from "../Players/Player.Component";
 
 import "styles/court.scss";
@@ -12,76 +10,7 @@ import "styles/court.scss";
  * @returns React component
  */
 const CourtComponent = () => {
-  const dispatch = useAppDispatch();
-
   const players = useAppSelector((selector) => selector.playersSlice.byId);
-  // currently selected player
-  // const { selectedId } = useAppSelector((selector) => selector.inspectorSlice);
-
-  //#region attempt at smooth dragging
-  // // currently pressed player (different from selected, used for moving the players)
-  // const [pressedPlayer, setPressedPlayer] = useState("");
-
-  // /**
-  //  * Handles mouse move event
-  //  * @param event Mouse event
-  //  */
-  // const onMouseMove = (event: React.MouseEvent<SVGSVGElement>) => {
-  //   movePlayer(event.clientX, event.clientY);
-  // };
-
-  // const onPressed = (id: string) => {
-  //   // console.log("pressed ID: ", id, " selected ID: ", selectedId);
-  //   setPressedPlayer(id);
-  //   console.log("Pressed: ", id);
-  // };
-
-  // const onReleased = () => {
-  //   setPressedPlayer("");
-  //   console.log("Released: ", pressedPlayer);
-  // };
-
-  // /**
-  //  * Handles events when player is no longer being pressed (touch end, mouse up)
-  //  */
-  // const onStopPressing = () => {
-  //   onReleased();
-  // };
-
-  // /**
-  //  * Moves circles when dragged
-  //  * @param event Mouse move event
-  //  */
-  // const movePlayer = (x: number, y: number) => {
-  //   if (!pressedPlayer) return;
-
-  //   //#region find transformed coordinates
-  //   const point = svgRef.current?.createSVGPoint();
-  //   if (!point) return;
-
-  //   point.x = x;
-  //   point.y = y;
-
-  //   const transformedPoint = point.matrixTransform(svgRef.current?.getScreenCTM()?.inverse());
-
-  //   // calc new coordinates relative to the SVG itself
-  //   const newX = transformedPoint.x;
-  //   const newY = transformedPoint.y;
-  //   //#endregion
-
-  //   // update player location (local state)
-  //   // this improves the performance compared to updating the store every time
-  //   // setPlayerLocation({ ...playerLocation, x: newX, y: newY });
-  //   // update position in the store
-  //   // dispatch(updatePosition({ id: pressedPlayer, newX, newY }));
-  //   dispatch(
-  //     updateLocation({
-  //       location: { id: uuidv4(), playerId: pressedPlayer, x: newX, y: newY },
-  //     }),
-  //   );
-  // };
-  //#endregion
-  // const { byId: gameStates, currentState } = useAppSelector((selector) => selector.gameStateSlice);
 
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
