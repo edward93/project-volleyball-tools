@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { PlayerComponentProps } from "types/playerComponent.Types";
 import { PlayerLocation } from "types/volleyballTool.New.Types";
 import useFontFaceObserver from "utils/hooks/useFontFaceObserver.hook";
-import { getTransformedCoordinates } from "utils/svg/svgHelpers";
+import { useMoveable } from "utils/hooks/useMoveable.hoot";
 import { select } from "../Inspector/inspector.Slice";
 import { updateLocation } from "./playerLocation.Slice";
 
@@ -17,7 +17,7 @@ import { updateLocation } from "./playerLocation.Slice";
  */
 const PlayerComponent = (props: PlayerComponentProps) => {
   /** Destructuring props */
-  const { id, radius, color, name, onPressed, onReleased, svgRef } = props;
+  const { id, radius, color, name, svgRef } = props;
   const dispatch = useAppDispatch();
   // players
   const players = useAppSelector((selector) => selector.playersSlice);
@@ -35,16 +35,9 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const location = playersLocations.byGameStateId[currentState ?? ""]?.[id] ?? playersLocations.byPlayerId[id];
   // current player location
   const [playerLocation, setPlayerLocation] = useState<PlayerLocation>(location);
-  /** is this player/circle pressed/touched or not */
-  const [isPressed, setIsPressed] = useState(false);
-  // capture isPressed to be used inside a listener callback
-  const dragging = useRef<boolean>(isPressed);
 
-  /** set `dragging` value */
-  const isDragging = (value: boolean) => {
-    dragging.current = value;
-    setIsPressed(value);
-  };
+  // movable hook
+  const [isPressed, press, release, move] = useMoveable<PlayerLocation>(playerLocation, setPlayerLocation);
 
   /** Register movement event listeners on the parent SVG element */
   useEffect(() => {
@@ -86,7 +79,9 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    */
   const onMouseDown = (event: React.MouseEvent<SVGSVGElement>) => {
     event.preventDefault();
-    press(id);
+
+    press();
+    dispatch(select(id));
   };
 
   /**
@@ -95,7 +90,9 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    */
   const onTouchStart = (event: React.TouchEvent<SVGSVGElement>) => {
     event.preventDefault();
-    press(id);
+
+    press();
+    dispatch(select(id));
   };
 
   /**
@@ -117,7 +114,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    * @param event Mouse event
    */
   const onMouseMove = (event: MouseEvent) => {
-    movePlayer(event.clientX, event.clientY);
+    move(event.clientX, event.clientY, svgRef.current);
   };
 
   /**
@@ -125,53 +122,13 @@ const PlayerComponent = (props: PlayerComponentProps) => {
    * @param event Touch event
    */
   const onTouchMove = (event: TouchEvent) => {
-    movePlayer(event.touches[0].clientX, event.touches[0].clientY);
+    move(event.touches[0].clientX, event.touches[0].clientY, svgRef.current);
   };
   //#endregion
 
   /** Update player's name bg rect width */
   const updateTextRectWidth = () => {
     if (textRef.current) setRectWidth(textRef.current.getComputedTextLength() + 20);
-  };
-
-  /**
-   * Press (actively select [mouse down/touch start] ) this player
-   * @param id - Current circle id
-   */
-  const press = (id: string) => {
-    isDragging(true);
-
-    // select current player
-    dispatch(select(id));
-
-    // TODO: log
-
-    // call onPressed if exists
-    onPressed && onPressed(id);
-  };
-
-  /**
-   * Release (stop selecting [mouse up/touch end] ) this player
-   */
-  const release = () => {
-    isDragging(false);
-    // TODO: log
-    // if onReleased is provided, call it
-    onReleased && onReleased();
-  };
-
-  /**
-   * Moves circles when dragged
-   * @param event Mouse move event
-   */
-  const movePlayer = (x: number, y: number) => {
-    if (!dragging.current) return;
-
-    // get new coordinates
-    const [newX, newY] = getTransformedCoordinates(svgRef.current, x, y);
-    // update player location (local state)
-    // this improves the performance compared to updating the store every time
-    setPlayerLocation({ ...playerLocation, x: newX, y: newY });
   };
 
   // calculate the final radius of the player circle element

@@ -6,7 +6,12 @@ export type Moveable2dComp = {
   y: number;
 };
 
-export const useMoveable = <T extends Moveable2dComp>(id: string, location: T, setLocation: (newVal: T) => void) => {
+type MoveableReturnType = [boolean, () => void, () => void, (x: number, y: number, svg: SVGSVGElement | null) => void];
+
+export const useMoveable = <T extends Moveable2dComp>(
+  location: T,
+  setLocation: (newVal: T) => void,
+): MoveableReturnType => {
   /** readonly state */
   const [isPressed, setIsPressed] = useState<boolean>(false);
   // capture isPressed to be used inside a listener callback
@@ -25,24 +30,26 @@ export const useMoveable = <T extends Moveable2dComp>(id: string, location: T, s
 
   /**
    * When pressed sets `dragging: true`
-   *
-   * @param id - draggable component id
    */
-  const press = (id: string, callback: (() => void) | undefined) => {
+  const press = (): void => {
     isDragging(true);
-
-    // if callback is defined call it
-    if (callback) callback();
   };
 
-  const release = (callback: (() => void) | undefined) => {
+  /**
+   * When released sets `dragging: false`
+   */
+  const release = (): void => {
     isDragging(false);
-
-    // if callback is defined call it
-    if (callback) callback();
   };
 
-  const move = (x: number, y: number, svg: SVGSVGElement) => {
+  /**
+   * Moves the element to the new location relative to `svg`
+   *
+   * @param x - new X coordinate
+   * @param y - new Y coordinate
+   * @param svg - SVG element that renders those elements
+   */
+  const move = (x: number, y: number, svg: SVGSVGElement | null): void => {
     if (!dragging.current) return;
 
     // get new coordinates
@@ -52,5 +59,5 @@ export const useMoveable = <T extends Moveable2dComp>(id: string, location: T, s
     setLocation({ ...location, x: newX, y: newY });
   };
 
-  return [isPressed, dragging, press, release, move];
+  return [isPressed, press, release, move];
 };
