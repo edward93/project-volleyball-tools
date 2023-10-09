@@ -96,27 +96,27 @@ export type Position =
   | typeof Libero
   | typeof None;
 
-/**
- * Detailed description of a certain action and how well it was performed
- */
-export type Statistic = {
-  /** Unique auto generated id */
-  id: string;
-  /** Player id */
-  playerId: string;
-  /** Id of the event */
-  eventId: string;
-  /** More detailed description */
-  desc?: string;
-  /** How well the said action was performed: 1 - worst, 10 - best score */
-  score: ActionScore;
-  /** Extra notes if applicable */
-  notes?: string;
-  /** Where the action was performed */
-  // location?: PlayerLocation;
-  /** Current game info */
-  gameInfo?: GameInfo;
-};
+// /**
+//  * Detailed description of a certain action and how well it was performed
+//  */
+// export type Statistic = {
+//   /** Unique auto generated id */
+//   id: string;
+//   /** Player id */
+//   playerId: string;
+//   /** Id of the event */
+//   eventId: string;
+//   /** More detailed description */
+//   desc?: string;
+//   /** How well the said action was performed: 1 - worst, 10 - best score */
+//   score: ActionScore;
+//   /** Extra notes if applicable */
+//   notes?: string;
+//   /** Where the action was performed */
+//   // location?: PlayerLocation;
+//   /** Current game info */
+//   gameInfo?: GameInfo;
+// };
 
 export type ActionScore = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
@@ -183,8 +183,8 @@ export const GameEventById = {
   [Pass.id]: Pass,
 }
 
-/**
- * Key - time
- * Value - statistic
- */
-export type PlayerStats = Map<number, Statistic>;
+// /**
+//  * Key - time
+//  * Value - statistic
+//  */
+// export type PlayerStats = Map<number, Statistic>;
