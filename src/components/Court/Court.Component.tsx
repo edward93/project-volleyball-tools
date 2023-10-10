@@ -10,7 +10,7 @@ import "styles/court.scss";
  * @returns React component
  */
 const CourtComponent = () => {
-  const players = useAppSelector((selector) => selector.playersSlice.byId);
+  const players = useAppSelector((selector) => selector.players.byId);
 
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);

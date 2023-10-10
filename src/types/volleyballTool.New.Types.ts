@@ -219,6 +219,8 @@ export const GameActionTypesById = {
 export type Player = {
   /** Unique auto generated id */
   id: string;
+  /** player's team id */
+  teamId: string;
   /** Player's name */
   name: string;
   /** Jersey number */

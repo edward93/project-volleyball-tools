@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { Game } from "types/volleyballTool.New.Types";
-import { homeTeam, awayTeam } from "./team.Slice";
+import { homeTeam, awayTeam } from "../Players/teams.Slice";
 
 // TODO: remove this after refactoring this
 export const gameId = uuidv4();

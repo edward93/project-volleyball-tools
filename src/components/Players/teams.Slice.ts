@@ -20,10 +20,10 @@ const initialState: Teams = {
   allIds: [homeTeam.id, awayTeam.id],
 };
 
-export const teamSlice = createSlice({
+export const teamsSlice = createSlice({
   initialState,
   name: "Teams",
   reducers: {},
 });
 
-export default teamSlice.reducer;
+export default teamsSlice.reducer;

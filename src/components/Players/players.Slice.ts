@@ -3,10 +3,12 @@ import { GameAction, GameActionTypesById, Player } from "types/volleyballTool.Ne
 import { v4 as uuidv4 } from "uuid";
 import { Players } from "../../types/reduxStore.Types";
 import { MiddleBlocker, OppositeHitter, OutsideHitter, Setter } from "../../types/volleyballTool.Types";
+import { homeTeam } from "./teams.Slice";
 
 export const initialPlayers: Player[] = [
   {
     id: uuidv4(),
+    teamId: homeTeam.id,
     score: 0,
     name: "Shoyo Hinata",
     positionId: MiddleBlocker.id,
@@ -19,6 +21,7 @@ export const initialPlayers: Player[] = [
   },
   {
     id: uuidv4(),
+    teamId: homeTeam.id,
     score: 0,
     name: "Asahi Azumane",
     positionId: OutsideHitter.id,
@@ -31,6 +34,7 @@ export const initialPlayers: Player[] = [
   },
   {
     id: uuidv4(),
+    teamId: homeTeam.id,
     score: 0,
     name: "Tobio Kageyama",
     positionId: Setter.id,
@@ -43,6 +47,7 @@ export const initialPlayers: Player[] = [
   },
   {
     id: uuidv4(),
+    teamId: homeTeam.id,
     score: 0,
     name: "Daichi Sawamura",
     positionId: OppositeHitter.id,
@@ -55,6 +60,7 @@ export const initialPlayers: Player[] = [
   },
   {
     id: uuidv4(),
+    teamId: homeTeam.id,
     score: 0,
     name: "Ryunosuke Tanaka",
     positionId: OutsideHitter.id,
@@ -67,6 +73,7 @@ export const initialPlayers: Player[] = [
   },
   {
     id: uuidv4(),
+    teamId: homeTeam.id,
     score: 0,
     name: "Kei Tsukishima",
     positionId: MiddleBlocker.id,

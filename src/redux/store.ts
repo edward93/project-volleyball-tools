@@ -1,30 +1,30 @@
 import { configureStore } from "@reduxjs/toolkit";
-import playersSlice from "../components/Players/players.Slice";
-import inspectorSlice from "../components/Inspector/inspector.Slice";
-import gameSlice from "../components/Scoreboard/game.Slice";
-import teamSlice from "components/Scoreboard/team.Slice";
-import setsSlice from "../components/Scoreboard/sets.Slice";
-import pointsSlice from "../components/Scoreboard/points.slice";
-import gameStateSlice from "components/Timeline/gameState.Slice";
-import gameActionSlice from "components/Inspector/gameAction.Slice";
-import playersLocationsSlice from "components/Players/playerLocation.Slice";
-import scoreSlice from "components/Scoreboard/score.Slice";
+import gameAction from "components/Inspector/gameAction.Slice";
+import playersLocations from "components/Players/playerLocation.Slice";
+import teams from "components/Players/teams.Slice";
+import score from "components/Scoreboard/score.Slice";
+import gameState from "components/Timeline/gameState.Slice";
+import inspector from "../components/Inspector/inspector.Slice";
+import players from "../components/Players/players.Slice";
+import game from "../components/Scoreboard/game.Slice";
+import points from "../components/Scoreboard/points.slice";
+import sets from "../components/Scoreboard/sets.Slice";
 
 /**
  * Main store configuration
  */
 export const store = configureStore({
   reducer: {
-    inspectorSlice,
-    playersSlice,
-    playersLocationsSlice,
-    gameSlice,
-    teamSlice,
-    setsSlice,
-    pointsSlice,
-    scoreSlice,
-    gameStateSlice,
-    gameActionSlice,
+    inspector,
+    players,
+    playersLocations,
+    game,
+    teams,
+    sets,
+    points,
+    score,
+    gameState,
+    gameAction,
   },
 });
 

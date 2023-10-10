@@ -23,13 +23,13 @@ const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, p
 const InspectorComponent = () => {
   const dispatch = useAppDispatch();
 
-  const players = useAppSelector((selector) => selector.playersSlice);
+  const players = useAppSelector((selector) => selector.players);
   // player locations
-  const playersLocations = useAppSelector((selector) => selector.playersLocationsSlice);
+  const playersLocations = useAppSelector((selector) => selector.playersLocations);
   // current game state
-  const { currentState } = useAppSelector((selector) => selector.gameStateSlice);
+  const { currentState } = useAppSelector((selector) => selector.gameState);
 
-  const { selectedId } = useAppSelector((selector) => selector.inspectorSlice);
+  const { selectedId } = useAppSelector((selector) => selector.inspector);
 
   const [isInternalCollapsed, setIsInternalCollapsed] = useState(true);
 

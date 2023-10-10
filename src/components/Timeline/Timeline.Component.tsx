@@ -17,9 +17,9 @@ const TimelineComponent = () => {
   const [gameState, setGameState] = useState<string>();
 
   // get all states
-  const gameStates = useAppSelector((selector) => selector.gameStateSlice);
+  const gameStates = useAppSelector((selector) => selector.gameState);
   // all game actions
-  const gameActions = useAppSelector((selector) => selector.gameActionSlice);
+  const gameActions = useAppSelector((selector) => selector.gameAction);
 
   const hashMarks = gameStates.allIds.length;
   // for testing
