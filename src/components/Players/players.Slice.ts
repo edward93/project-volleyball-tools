@@ -3,7 +3,10 @@ import { GameAction, GameActionTypesById, Player } from "types/volleyballTool.Ne
 import { v4 as uuidv4 } from "uuid";
 import { Players } from "../../types/reduxStore.Types";
 import { MiddleBlocker, OppositeHitter, OutsideHitter, Setter } from "../../types/volleyballTool.Types";
-import { homeTeam } from "./teams.Slice";
+import { awayTeam, homeTeam } from "./teams.Slice";
+
+const homeColor = "#03B5AA";
+const awayColor = "#188aff";
 
 export const initialPlayers: Player[] = [
   {
@@ -17,7 +20,7 @@ export const initialPlayers: Player[] = [
     cx: 1055,
     cy: 350,
     r: 40,
-    color: "#03B5AA",
+    color: homeColor,
   },
   {
     id: uuidv4(),
@@ -30,7 +33,7 @@ export const initialPlayers: Player[] = [
     cx: 1055,
     cy: 700,
     r: 40,
-    color: "#03B5AA",
+    color: homeColor,
   },
   {
     id: uuidv4(),
@@ -43,7 +46,7 @@ export const initialPlayers: Player[] = [
     cx: 1055,
     cy: 1040,
     r: 40,
-    color: "#03B5AA",
+    color: homeColor,
   },
   {
     id: uuidv4(),
@@ -56,7 +59,7 @@ export const initialPlayers: Player[] = [
     cx: 600,
     cy: 350,
     r: 40,
-    color: "#03B5AA",
+    color: homeColor,
   },
   {
     id: uuidv4(),
@@ -69,7 +72,7 @@ export const initialPlayers: Player[] = [
     cx: 600,
     cy: 700,
     r: 40,
-    color: "#03B5AA",
+    color: homeColor,
   },
   {
     id: uuidv4(),
@@ -82,7 +85,85 @@ export const initialPlayers: Player[] = [
     cx: 600,
     cy: 1040,
     r: 40,
-    color: "#03B5AA",
+    color: homeColor,
+  },
+  {
+    id: uuidv4(),
+    teamId: awayTeam.id,
+    score: 0,
+    name: "Tōru Oikawa",
+    positionId: Setter.id,
+    jerseyNumber: 1,
+    actionIds: [],
+    cx: 1345,
+    cy: 350,
+    r: 40,
+    color: awayColor,
+  },
+  {
+    id: uuidv4(),
+    teamId: awayTeam.id,
+    score: 0,
+    name: "Takahiro Hanamaki",
+    positionId: OutsideHitter.id,
+    jerseyNumber: 3,
+    actionIds: [],
+    cx: 1345,
+    cy: 700,
+    r: 40,
+    color: awayColor,
+  },
+  {
+    id: uuidv4(),
+    teamId: awayTeam.id,
+    score: 0,
+    name: "Issei Matsukawa",
+    positionId: MiddleBlocker.id,
+    jerseyNumber: 2,
+    actionIds: [],
+    cx: 1345,
+    cy: 1040,
+    r: 40,
+    color: awayColor,
+  },
+  {
+    id: uuidv4(),
+    teamId: awayTeam.id,
+    score: 0,
+    name: "Yūtarō Kindaichi",
+    positionId: MiddleBlocker.id,
+    jerseyNumber: 12,
+    actionIds: [],
+    cx: 1800,
+    cy: 350,
+    r: 40,
+    color: awayColor,
+  },
+  {
+    id: uuidv4(),
+    teamId: awayTeam.id,
+    score: 0,
+    name: "Hajime Iwaizumi",
+    positionId: OutsideHitter.id,
+    jerseyNumber: 4,
+    actionIds: [],
+    cx: 1800,
+    cy: 700,
+    r: 40,
+    color: awayColor,
+  },
+  {
+    id: uuidv4(),
+    teamId: awayTeam.id,
+    score: 0,
+    name: "Akira Kunimi",
+    positionId: OppositeHitter.id,
+    jerseyNumber: 13,
+    actionIds: [],
+    cx: 1800,
+    cy: 1040,
+    r: 40,
+    color: awayColor,
   },
 ];
 
