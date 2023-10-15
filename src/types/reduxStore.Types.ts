@@ -1,4 +1,4 @@
-import { GameAction, Set, GameState, Player, PlayerLocation, Point, Score, Team } from "./volleyballTool.New.Types";
+import { GameAction, GameState, Player, PlayerLocation, Point, Score, Set, Team } from "./volleyballTool.New.Types";
 import { ActionScore, GameInfo } from "./volleyballTool.Types";
 
 /**
@@ -74,6 +74,8 @@ export type Points = {
 export type Players = {
   /** Players by id */
   byId: Record<string, Player>;
+  /** Active player ids by game state id */
+  activePlayerIdsByGameStateId: Record<string, string[]>;
   /** List of all ids */
   allIds: string[];
 };

@@ -231,6 +231,8 @@ export type Player = {
   actionIds: string[];
   /** Player's total score */
   score: number;
+  /** Is this player playing or is benched */
+  isActive: boolean;
   /** Current (by default latest) player's action id */
   selectedActionId?: string;
 

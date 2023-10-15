@@ -11,6 +11,12 @@ import "styles/court.scss";
  */
 const CourtComponent = () => {
   const players = useAppSelector((selector) => selector.players.byId);
+  
+  // current game state
+  const { currentState } = useAppSelector((selector) => selector.gameState);
+
+  // player ids that are on the court
+  const activePlayerIds = useAppSelector((selector) => selector.players.activePlayerIdsByGameStateId[currentState ?? ""]);
 
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);
@@ -57,12 +63,12 @@ const CourtComponent = () => {
           />
         </g>
 
-        {Object.values(players).map((player) => (
+        {activePlayerIds.map((playerId) => (
           <Player
-            key={player.id}
-            id={player.id}
-            color={player.color}
-            radius={player.r}
+            key={playerId}
+            id={playerId}
+            color={players[playerId].color}
+            radius={players[playerId].r}
             svgRef={svgRef}
             // onPressed={onPressed}
             // onReleased={onReleased}
