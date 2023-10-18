@@ -16,9 +16,9 @@ const GameActionsComponent = (props: { player: Player }) => {
   const { player } = props;
   const [isContentCollapsed, setIsContentCollapsed] = useState(true);
   // all game actions
-  const gameActions = useAppSelector((selector) => selector.gameActionSlice);
+  const gameActions = useAppSelector((selector) => selector.gameAction);
   // game states
-  const { currentState } = useAppSelector((selector) => selector.gameStateSlice);
+  const { currentState } = useAppSelector((selector) => selector.gameState);
 
   // don't do anything if nothing is selected
   if (!player) return null;

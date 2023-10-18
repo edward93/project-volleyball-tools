@@ -15,12 +15,12 @@ import "../../styles/scoreboard.scss";
 const ScoreboardComponent = () => {
   const dispatch = useAppDispatch();
   // game states
-  const { currentState } = useAppSelector((selector) => selector.gameStateSlice);
+  const { currentState } = useAppSelector((selector) => selector.gameState);
   // current game
-  const game = useAppSelector((selector) => selector.gameSlice);
-
+  const game = useAppSelector((selector) => selector.game);
   // all teams
-  const teams = useAppSelector((selector) => selector.teamSlice);
+  const teams = useAppSelector((selector) => selector.teams);
+
   // home and away teams
   const homeTeam = teams.byId[game.homeTeamId];
   const awayTeam = teams.byId[game.awayTeamId];
@@ -38,7 +38,7 @@ const ScoreboardComponent = () => {
   };
 
   // all scores
-  const scores = useAppSelector((selector) => selector.scoreSlice);
+  const scores = useAppSelector((selector) => selector.score);
 
   // current score
   const currentScore =

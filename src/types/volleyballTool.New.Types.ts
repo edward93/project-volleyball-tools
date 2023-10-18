@@ -219,6 +219,8 @@ export const GameActionTypesById = {
 export type Player = {
   /** Unique auto generated id */
   id: string;
+  /** player's team id */
+  teamId: string;
   /** Player's name */
   name: string;
   /** Jersey number */
@@ -229,10 +231,12 @@ export type Player = {
   actionIds: string[];
   /** Player's total score */
   score: number;
+  /** Is this player playing or is benched */
+  isActive: boolean;
   /** Current (by default latest) player's action id */
   selectedActionId?: string;
 
-  // TODO: encapsulate in a new type 
+  // TODO: encapsulate in a new type
   /** INTERNAL PROPS */
   cx: number;
   /** Center y coordinate */
@@ -364,4 +368,20 @@ export type Team = {
   name: string;
   /** is home team */
   isHome: boolean;
+};
+
+/** Game subs */
+export type Substitutions = {
+  /** Unique auto generated id */
+  id: string;
+  /** game id */
+  gameId: string;
+  /** team id */
+  teamId: string;
+  /** player being subbed out */
+  playerOutId: string;
+  /** player being subbed in */
+  playerInId: string;
+  /** when the sub happened */
+  SubstitutionTime?: Date;
 };

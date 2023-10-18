@@ -27,10 +27,10 @@ const StatsComponent = () => {
   const dispatch = useAppDispatch();
 
   // current game
-  const game = useAppSelector((selector) => selector.gameSlice);
+  const game = useAppSelector((selector) => selector.game);
 
   // current selected item (player)
-  const { selectedId } = useAppSelector((selector) => selector.inspectorSlice);
+  const { selectedId } = useAppSelector((selector) => selector.inspector);
 
   // collapse/open stats section
   const [showNewActionSection, setShowNewActionSection] = useState(false);
