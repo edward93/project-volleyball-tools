@@ -235,9 +235,15 @@ export const playersSlice = createSlice({
       // update player's score
       state.byId[playerId].score += gameActionType.score;
     },
+    addActivePlayersToGameState: (state: Players, action: PayloadAction<string>) => {
+      const gameStateId = action.payload;
+
+      // add current active players to the game state
+      state.activePlayerIdsByGameStateId[gameStateId] = state.allIds.filter(c => state.byId[c].isActive);
+    }
   },
 });
 
-export const { updatePlayerInfo, updatePlayerName, addGameAction, selectPlayerAction } = playersSlice.actions;
+export const { updatePlayerInfo, updatePlayerName, addGameAction, selectPlayerAction, addActivePlayersToGameState } = playersSlice.actions;
 
 export default playersSlice.reducer;

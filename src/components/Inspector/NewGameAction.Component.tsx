@@ -1,15 +1,15 @@
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Select, SelectItem, Textarea } from "@mantine/core";
 import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 
+import { addLocationToGameState } from "components/Players/playerLocation.Slice";
+import { addActivePlayersToGameState, addGameAction } from "components/Players/players.Slice";
 import { create as saveNewState } from "components/Timeline/gameState.Slice";
 import { create as createNewGameAction } from "./gameAction.Slice";
-import { addLocationToGameState } from "components/Players/playerLocation.Slice";
-import { addGameAction } from "components/Players/players.Slice";
 
 import "styles/stats.scss";
 import { GameAction, GameActionTypesById, GameState } from "types/volleyballTool.New.Types";
@@ -107,6 +107,7 @@ const StatsComponent = () => {
     if (currentAction && gameState.current) {
       // associate locations with this state
       dispatch(addLocationToGameState({ gameStateId: gameState.current.id }));
+      dispatch(addActivePlayersToGameState(gameState.current.id));
       dispatch(createNewGameAction({ gameAction: currentAction, gameStateId: gameState.current.id }));
     }
 
