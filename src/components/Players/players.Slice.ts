@@ -1,183 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GameAction, GameActionTypesById, Player } from "types/volleyballTool.New.Types";
-import { v4 as uuidv4 } from "uuid";
+import { teamJapanPlayers, teamUsaPlayers } from "utils/data/players";
 import { Players } from "../../types/reduxStore.Types";
-import { MiddleBlocker, OppositeHitter, OutsideHitter, Setter } from "../../types/volleyballTool.Types";
-import { awayTeam, homeTeam } from "./teams.Slice";
 
-const homeColor = "#03B5AA";
-const awayColor = "#188aff";
-
-export const initialPlayers: Player[] = [
-  {
-    id: uuidv4(),
-    teamId: homeTeam.id,
-    score: 0,
-    name: "Shoyo Hinata",
-    positionId: MiddleBlocker.id,
-    jerseyNumber: 10,
-    actionIds: [],
-    isActive: true,
-    cx: 1055,
-    cy: 350,
-    r: 40,
-    color: homeColor,
-  },
-  {
-    id: uuidv4(),
-    teamId: homeTeam.id,
-    score: 0,
-    name: "Asahi Azumane",
-    positionId: OutsideHitter.id,
-    jerseyNumber: 3,
-    actionIds: [],
-    isActive: true,
-    cx: 1055,
-    cy: 700,
-    r: 40,
-    color: homeColor,
-  },
-  {
-    id: uuidv4(),
-    teamId: homeTeam.id,
-    score: 0,
-    name: "Tobio Kageyama",
-    positionId: Setter.id,
-    jerseyNumber: 9,
-    actionIds: [],
-    isActive: true,
-    cx: 1055,
-    cy: 1040,
-    r: 40,
-    color: homeColor,
-  },
-  {
-    id: uuidv4(),
-    teamId: homeTeam.id,
-    score: 0,
-    name: "Daichi Sawamura",
-    positionId: OppositeHitter.id,
-    jerseyNumber: 1,
-    actionIds: [],
-    isActive: true,
-    cx: 600,
-    cy: 350,
-    r: 40,
-    color: homeColor,
-  },
-  {
-    id: uuidv4(),
-    teamId: homeTeam.id,
-    score: 0,
-    name: "Ryunosuke Tanaka",
-    positionId: OutsideHitter.id,
-    jerseyNumber: 5,
-    actionIds: [],
-    isActive: true,
-    cx: 600,
-    cy: 700,
-    r: 40,
-    color: homeColor,
-  },
-  {
-    id: uuidv4(),
-    teamId: homeTeam.id,
-    score: 0,
-    name: "Kei Tsukishima",
-    positionId: MiddleBlocker.id,
-    jerseyNumber: 11,
-    actionIds: [],
-    isActive: true,
-    cx: 600,
-    cy: 1040,
-    r: 40,
-    color: homeColor,
-  },
-  {
-    id: uuidv4(),
-    teamId: awayTeam.id,
-    score: 0,
-    name: "Tōru Oikawa",
-    positionId: Setter.id,
-    jerseyNumber: 1,
-    actionIds: [],
-    isActive: true,
-    cx: 1345,
-    cy: 350,
-    r: 40,
-    color: awayColor,
-  },
-  {
-    id: uuidv4(),
-    teamId: awayTeam.id,
-    score: 0,
-    name: "Takahiro Hanamaki",
-    positionId: OutsideHitter.id,
-    jerseyNumber: 3,
-    actionIds: [],
-    isActive: true,
-    cx: 1345,
-    cy: 700,
-    r: 40,
-    color: awayColor,
-  },
-  {
-    id: uuidv4(),
-    teamId: awayTeam.id,
-    score: 0,
-    name: "Issei Matsukawa",
-    positionId: MiddleBlocker.id,
-    jerseyNumber: 2,
-    actionIds: [],
-    isActive: true,
-    cx: 1345,
-    cy: 1040,
-    r: 40,
-    color: awayColor,
-  },
-  {
-    id: uuidv4(),
-    teamId: awayTeam.id,
-    score: 0,
-    name: "Yūtarō Kindaichi",
-    positionId: MiddleBlocker.id,
-    jerseyNumber: 12,
-    actionIds: [],
-    isActive: true,
-    cx: 1800,
-    cy: 350,
-    r: 40,
-    color: awayColor,
-  },
-  {
-    id: uuidv4(),
-    teamId: awayTeam.id,
-    score: 0,
-    name: "Hajime Iwaizumi",
-    positionId: OutsideHitter.id,
-    jerseyNumber: 4,
-    actionIds: [],
-    isActive: true,
-    cx: 1800,
-    cy: 700,
-    r: 40,
-    color: awayColor,
-  },
-  {
-    id: uuidv4(),
-    teamId: awayTeam.id,
-    score: 0,
-    name: "Akira Kunimi",
-    positionId: OppositeHitter.id,
-    jerseyNumber: 13,
-    actionIds: [],
-    isActive: true,
-    cx: 1800,
-    cy: 1040,
-    r: 40,
-    color: awayColor,
-  },
-];
+// TODO: Tmp, list of players will be provided in the beginning of the app
+export const initialPlayers: Player[] = [...teamJapanPlayers, ...teamUsaPlayers];
 
 const initialState: Players = {
   byId: initialPlayers.reduce((prev, curr) => ({ ...prev, [curr.id]: curr }), {}),
@@ -239,11 +66,12 @@ export const playersSlice = createSlice({
       const gameStateId = action.payload;
 
       // add current active players to the game state
-      state.activePlayerIdsByGameStateId[gameStateId] = state.allIds.filter(c => state.byId[c].isActive);
-    }
+      state.activePlayerIdsByGameStateId[gameStateId] = state.allIds.filter((c) => state.byId[c].isActive);
+    },
   },
 });
 
-export const { updatePlayerInfo, updatePlayerName, addGameAction, selectPlayerAction, addActivePlayersToGameState } = playersSlice.actions;
+export const { updatePlayerInfo, updatePlayerName, addGameAction, selectPlayerAction, addActivePlayersToGameState } =
+  playersSlice.actions;
 
 export default playersSlice.reducer;

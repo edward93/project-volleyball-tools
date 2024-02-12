@@ -47,7 +47,7 @@ const InspectorComponent = () => {
           color: players.byId[selectedId].color,
           x: location.x,
           y: location.y,
-          r: players.byId[selectedId].r,
+          r: 40, // TODO: fix it later, should not be hardcoded
         },
         visual: {
           avgScore: players.byId[selectedId].score,

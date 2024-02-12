@@ -113,10 +113,10 @@ export const PassError: GameActionType = {
   desc: "Resulted in opponents point",
 };
 
-export const Ace: GameActionType = {
+export const ServiceAce: GameActionType = {
   id: uuidv4(),
   category: GameActionCategory.Serve,
-  name: "Ace",
+  name: "Service Ace",
   score: 3,
   desc: "Service Ace",
 };
@@ -201,7 +201,7 @@ export const GameActionTypesById = {
   [BadPass.id]: BadPass,
   [PassError.id]: PassError,
 
-  [Ace.id]: Ace,
+  [ServiceAce.id]: ServiceAce,
   [ServiceError.id]: ServiceError,
   [ServeAttempt.id]: ServeAttempt,
 
@@ -235,14 +235,8 @@ export type Player = {
   isActive: boolean;
   /** Current (by default latest) player's action id */
   selectedActionId?: string;
-
-  // TODO: encapsulate in a new type
-  /** INTERNAL PROPS */
-  cx: number;
-  /** Center y coordinate */
-  cy: number;
-  /** Radius */
-  r: number;
+  /** Current rotational position number */
+  currentRotationPosition?: RotationPositionNumber;
   /** Color of the circle */
   color: string;
 };
@@ -368,6 +362,10 @@ export type Team = {
   name: string;
   /** is home team */
   isHome: boolean;
+
+  // This is for internal use only
+  /** Which side of the court this team is on */
+  courtSide: HalfCourt;
 };
 
 /** Game subs */
@@ -385,3 +383,135 @@ export type Substitutions = {
   /** when the sub happened */
   SubstitutionTime?: Date;
 };
+
+/** Enum for half court. This assume the court orientation is always horizontal */
+export enum HalfCourt {
+  Left = 1,
+  Right = 2,
+}
+
+/** Rotation position numbers type */
+type RotationPositionNumber = 1 | 2 | 3 | 4 | 5 | 6;
+
+/** Court position type */
+export type CourtPositionCoordinates = {
+  /** Rotation number */
+  id: RotationPositionNumber;
+  /** Side */
+  halfCourt: HalfCourt;
+  /** X coordinate */
+  x: number;
+  /** Y Coordinate */
+  y: number;
+};
+
+//#region Court rotation position const values
+export const LeftCourtPos1: CourtPositionCoordinates = {
+  id: 1,
+  halfCourt: HalfCourt.Left,
+  x: 600,
+  y: 1040,
+};
+export const RightCourtPos1: CourtPositionCoordinates = {
+  id: 1,
+  halfCourt: HalfCourt.Right,
+  x: 1800,
+  y: 350,
+};
+
+export const LeftCourtPos2: CourtPositionCoordinates = {
+  id: 2,
+  halfCourt: HalfCourt.Left,
+  x: 1055,
+  y: 1040,
+};
+export const RightCourtPos2: CourtPositionCoordinates = {
+  id: 2,
+  halfCourt: HalfCourt.Right,
+  x: 1345,
+  y: 350,
+};
+
+export const LeftCourtPos3: CourtPositionCoordinates = {
+  id: 3,
+  halfCourt: HalfCourt.Left,
+  x: 1055,
+  y: 700,
+};
+export const RightCourtPos3: CourtPositionCoordinates = {
+  id: 3,
+  halfCourt: HalfCourt.Right,
+  x: 1345,
+  y: 700,
+};
+
+export const LeftCourtPos4: CourtPositionCoordinates = {
+  id: 4,
+  halfCourt: HalfCourt.Left,
+  x: 1055,
+  y: 350,
+};
+export const RightCourtPos4: CourtPositionCoordinates = {
+  id: 4,
+  halfCourt: HalfCourt.Right,
+  x: 1345,
+  y: 1040,
+};
+
+export const LeftCourtPos5: CourtPositionCoordinates = {
+  id: 5,
+  halfCourt: HalfCourt.Left,
+  x: 600,
+  y: 350,
+};
+export const RightCourtPos5: CourtPositionCoordinates = {
+  id: 5,
+  halfCourt: HalfCourt.Right,
+  x: 1800,
+  y: 1040,
+};
+
+export const LeftCourtPos6: CourtPositionCoordinates = {
+  id: 6,
+  halfCourt: HalfCourt.Left,
+  x: 600,
+  y: 700,
+};
+export const RightCourtPos6: CourtPositionCoordinates = {
+  id: 6,
+  halfCourt: HalfCourt.Right,
+  x: 1800,
+  y: 700,
+};
+
+/** Map of all rotational positions */
+type RotationPositionType = Record<RotationPositionNumber, Record<HalfCourt, CourtPositionCoordinates>>;
+
+/** Rotation positional coordinates */
+export const RotationPositions: RotationPositionType = {
+  1: {
+    [HalfCourt.Left]: LeftCourtPos1,
+    [HalfCourt.Right]: RightCourtPos1,
+  },
+  2: {
+    [HalfCourt.Left]: LeftCourtPos2,
+    [HalfCourt.Right]: RightCourtPos2,
+  },
+  3: {
+    [HalfCourt.Left]: LeftCourtPos3,
+    [HalfCourt.Right]: RightCourtPos3,
+  },
+  4: {
+    [HalfCourt.Left]: LeftCourtPos4,
+    [HalfCourt.Right]: RightCourtPos4,
+  },
+  5: {
+    [HalfCourt.Left]: LeftCourtPos5,
+    [HalfCourt.Right]: RightCourtPos5,
+  },
+  6: {
+    [HalfCourt.Left]: LeftCourtPos6,
+    [HalfCourt.Right]: RightCourtPos6,
+  },
+};
+//#endregion

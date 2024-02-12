@@ -4,6 +4,9 @@ import Player from "../Players/Player.Component";
 
 import "styles/court.scss";
 
+/** Circle radius */
+const radius = 40;
+
 /**
  * SVG visualizer
  * @param props Component props
@@ -68,7 +71,7 @@ const CourtComponent = () => {
             key={playerId}
             id={playerId}
             color={players[playerId].color}
-            radius={players[playerId].r}
+            radius={radius}
             svgRef={svgRef}
             // onPressed={onPressed}
             // onReleased={onReleased}

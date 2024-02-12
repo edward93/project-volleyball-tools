@@ -2,16 +2,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
 import { PlayersLocations } from "types/reduxStore.Types";
-import { PlayerLocation } from "types/volleyballTool.New.Types";
+import { PlayerLocation, RotationPositions } from "types/volleyballTool.New.Types";
 
 import { initialPlayers } from "./players.Slice";
+import { defaultTeams } from "./teams.Slice";
 
 // default initial locations
 const initialLocations: PlayerLocation[] = initialPlayers.map((c) => ({
   id: uuidv4(),
   playerId: c.id,
-  x: c.cx,
-  y: c.cy,
+  x: RotationPositions[c.currentRotationPosition ?? 6][defaultTeams[c.teamId].courtSide].x,
+  y: RotationPositions[c.currentRotationPosition ?? 6][defaultTeams[c.teamId].courtSide].y
 }));
 
 // initial stats
