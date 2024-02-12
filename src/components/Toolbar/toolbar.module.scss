@@ -1,0 +1,13 @@
+@import "../../styles/colors.scss";
+@import "../../styles/common.scss";
+
+.container {
+  display: grid;
+  grid-template: 1fr / 4fr 3fr 4fr;
+  place-items: center;
+  background-color: lighten($color: theme($bg-color, $primary-color), $amount: 3);
+
+  .score-board-container {
+    display: grid;
+  }
+}

@@ -104,6 +104,18 @@ export const teamJapanPlayers: Player[] = [
 
     color: homeColor,
   },
+  {
+    id: uuidv4(),
+    teamId: homeTeam.id,
+    score: 0,
+    name: "Yuji Nishida",
+    positionId: OppositeHitter.id,
+    jerseyNumber: 1,
+    actionIds: [],
+    isActive: false,
+
+    color: homeColor,
+  },
 ];
 
 // USA
@@ -194,6 +206,18 @@ export const teamUsaPlayers: Player[] = [
     name: "Erik Shoji",
     positionId: Libero.id,
     jerseyNumber: 22,
+    actionIds: [],
+    isActive: false,
+
+    color: awayColor,
+  },
+  {
+    id: uuidv4(),
+    teamId: awayTeam.id,
+    score: 0,
+    name: "Maxwell Holt",
+    positionId: MiddleBlocker.id,
+    jerseyNumber: 12,
     actionIds: [],
     isActive: false,
 
