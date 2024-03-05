@@ -133,6 +133,8 @@ const PlayerComponent = (props: PlayerComponentProps) => {
 
   // calculate the final radius of the player circle element
   const effectiveRadius = isPlayerSelected ? radius * 1.1 : radius;
+  // effective stroke width
+  const strokeWidth = isPlayerSelected ? 5 : 1;
 
   return (
     <g
@@ -146,8 +148,8 @@ const PlayerComponent = (props: PlayerComponentProps) => {
       style={!isPressed ? { transition: "transform 0.3s" } : {}}
     >
       <g>
-        <circle stroke="black" r={effectiveRadius} fill={color} strokeWidth={isPlayerSelected ? 5 : 1} />
-        <text className="player-circle-txt" textAnchor="middle" alignmentBaseline="middle" fill="white">
+        <circle stroke="black" r={effectiveRadius} fill={color} strokeWidth={strokeWidth}/>
+        <text x={0.2} y={2.5} className="player-circle-txt" fill="white" textAnchor="middle" alignmentBaseline="middle">
           {players.byId[id].jerseyNumber}
         </text>
       </g>
