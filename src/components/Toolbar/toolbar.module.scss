@@ -7,7 +7,19 @@
   place-items: center;
   background-color: lighten($color: theme($bg-color, $primary-color), $amount: 3);
 
-  .score-board-container {
+  & .score-board-container {
     display: grid;
+  }
+
+  & .toolbar-section {
+    display: grid;
+    margin: 0.1rem 0;
+    font-size: 0.8rem;
+
+    & Button {
+      font-size: 0.8rem;
+      // border-color: lighten($color: theme($bg-color, $primary-color), $amount: 40);
+      // color: lighten($color: theme($bg-color, $primary-color), $amount: 40);
+    }
   }
 }
