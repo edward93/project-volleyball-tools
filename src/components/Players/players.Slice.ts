@@ -68,10 +68,28 @@ export const playersSlice = createSlice({
       // add current active players to the game state
       state.activePlayerIdsByGameStateId[gameStateId] = state.allIds.filter((c) => state.byId[c].isActive);
     },
+
+    /**
+     * Rotates all active (on the court) player's court position after a side-out
+     * @param state - Current state
+     */
+    rotatePlayers: (state: Players, action: PayloadAction<Player[]>) => {
+      const players = action.payload;
+      // iterate over active players and change their court position
+      players.forEach((player: Player) => {
+        state.byId[player.id].currentRotationPosition = player.currentRotationPosition;
+      });
+    },
   },
 });
 
-export const { updatePlayerInfo, updatePlayerName, addGameAction, selectPlayerAction, addActivePlayersToGameState } =
-  playersSlice.actions;
+export const {
+  updatePlayerInfo,
+  updatePlayerName,
+  addGameAction,
+  selectPlayerAction,
+  addActivePlayersToGameState,
+  rotatePlayers,
+} = playersSlice.actions;
 
 export default playersSlice.reducer;

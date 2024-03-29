@@ -129,12 +129,12 @@ export type GameStates = {
 export type PlayersLocations = {
   /** Player locations by location id */
   byId: Record<string, PlayerLocation>;
-  /** Player locations by player id - only fixed number of those exist (6 - 13) */
-  byPlayerId: Record<string, PlayerLocation>;
+  /** Player location ids by player id - only fixed number of those exist (6 - 13) */
+  byPlayerId: Record<string, string>;
   /** All location ids */
   allIds: string[];
-  /** Location by game state id - [gameStateId][playerId] */
-  byGameStateId: Record<string, Record<string, PlayerLocation>>;
+  /** Location id by game state id - [gameStateId][playerId] */
+  byGameStateId: Record<string, Record<string, string>>;
 };
 
 /** List of all game scores */

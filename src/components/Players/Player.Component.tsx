@@ -32,7 +32,10 @@ const PlayerComponent = (props: PlayerComponentProps) => {
 
   const isFontLoaded = useFontFaceObserver([{ family: "Roboto-Mono" }]);
 
-  const location = playersLocations.byGameStateId[currentState ?? ""]?.[id] ?? playersLocations.byPlayerId[id];
+  // current location id
+  const locationId = playersLocations.byGameStateId[currentState ?? ""]?.[id] ?? playersLocations.byPlayerId[id];
+  const location = playersLocations.byId[locationId];
+  
   // current player location
   const [playerLocation, setPlayerLocation] = useState<PlayerLocation>(location);
 
@@ -55,7 +58,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   // update local position when store changes
   useEffect(() => {
     setPlayerLocation(location);
-  }, [currentState]);
+  }, [currentState, location]);
 
   // extract player's name
   const playerName = players.byId[id].name;

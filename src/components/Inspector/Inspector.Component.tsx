@@ -1,15 +1,15 @@
+import { Collapse, ColorInput, Select, SelectItem, TextInput } from "@mantine/core";
 import { useState } from "react";
-import { Select, SelectItem, TextInput, Collapse, ColorInput } from "@mantine/core";
 
+import { updatePlayerInfo } from "components/Players/players.Slice";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { SelectedPlayer } from "types/reduxStore.Types";
-import { updatePlayerInfo } from "components/Players/players.Slice";
 import { PositionsById } from "types/volleyballTool.Types";
 
 import "styles/inspector.scss";
 
-import NewGameActionComponent from "./NewGameAction.Component";
 import GameActionsComponent from "./GameActions.Component";
+import NewGameActionComponent from "./NewGameAction.Component";
 
 const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, position]) => ({
   value: key,
@@ -35,7 +35,9 @@ const InspectorComponent = () => {
 
   if (!selectedId) return null;
 
-  const location = playersLocations.byGameStateId[currentState ?? ""]?.[selectedId] ?? playersLocations.byPlayerId[selectedId];
+  const locationId =
+    playersLocations.byGameStateId[currentState ?? ""]?.[selectedId] ?? playersLocations.byPlayerId[selectedId];
+  const location = playersLocations.byId[locationId];
 
   // collapse/open internal section
 

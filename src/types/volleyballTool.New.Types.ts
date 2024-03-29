@@ -391,7 +391,7 @@ export enum HalfCourt {
 }
 
 /** Rotation position numbers type */
-type RotationPositionNumber = 1 | 2 | 3 | 4 | 5 | 6;
+export type RotationPositionNumber = 1 | 2 | 3 | 4 | 5 | 6;
 
 /** Court position type */
 export type CourtPositionCoordinates = {
