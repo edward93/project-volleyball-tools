@@ -106,6 +106,7 @@ const StatsComponent = () => {
     // create mew game action
     if (currentAction && gameState.current) {
       // associate locations with this state
+      // TODO: not saving current locations
       dispatch(addLocationToGameState({ gameStateId: gameState.current.id }));
       dispatch(addActivePlayersToGameState(gameState.current.id));
       dispatch(createNewGameAction({ gameAction: currentAction, gameStateId: gameState.current.id }));

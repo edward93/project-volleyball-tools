@@ -8,17 +8,20 @@ import { initialPlayers } from "./players.Slice";
 import { defaultTeams } from "./teams.Slice";
 
 // default initial locations
-const initialLocations: PlayerLocation[] = initialPlayers.map((c) => ({
-  id: uuidv4(),
-  playerId: c.id,
-  x: RotationPositions[c.currentRotationPosition ?? 6][defaultTeams[c.teamId].courtSide].x,
-  y: RotationPositions[c.currentRotationPosition ?? 6][defaultTeams[c.teamId].courtSide].y,
-}));
+const initialLocations: PlayerLocation[] = initialPlayers
+  .filter((c) => c.isActive)
+  .map((c) => ({
+    id: uuidv4(),
+    playerId: c.id,
+    x: RotationPositions[c.currentRotationPosition ?? 6][defaultTeams[c.teamId].courtSide].x,
+    y: RotationPositions[c.currentRotationPosition ?? 6][defaultTeams[c.teamId].courtSide].y,
+  }));
 
 // initial stats
 const initialState: PlayersLocations = {
   byId: initialLocations.reduce((a, v) => ({ ...a, [v.id]: v }), {}),
   byPlayerId: initialLocations.reduce((a, v) => ({ ...a, [v.playerId]: v.id }), {}),
+  // currentLocationIdByPlayerId: initialLocations.reduce((a, v) => ({ ...a, [v.playerId]: v.id }), {}),
   byGameStateId: {},
   allIds: initialLocations.map((c) => c.id),
 };
@@ -84,7 +87,7 @@ export const playersLocationsSlice = createSlice({
 
         // add the location to the state
         state.byId[location.id] = location;
-        state.byPlayerId[playerId] = location.id;
+        // state.byPlayerId[playerId] = location.id;
         state.allIds.push(location.id);
       });
     },

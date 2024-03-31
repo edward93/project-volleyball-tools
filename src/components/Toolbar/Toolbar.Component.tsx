@@ -1,13 +1,21 @@
 import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mantine/core";
+import { v4 as uuidv4 } from "uuid";
 
 import ScoreboardComponent from "components/Scoreboard/Scoreboard.Component";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 
-import { updateLocations } from "components/Players/playerLocation.Slice";
-import { rotatePlayers } from "components/Players/players.Slice";
-import { HalfCourt, Player, RotationPositionNumber, RotationPositions } from "types/volleyballTool.New.Types";
+import { addLocationToGameState, updateLocations } from "components/Players/playerLocation.Slice";
+import { addActivePlayersToGameState, rotatePlayers } from "components/Players/players.Slice";
+import { create as saveNewState } from "components/Timeline/gameState.Slice";
+import {
+  GameState,
+  HalfCourt,
+  Player,
+  RotationPositionNumber,
+  RotationPositions,
+} from "types/volleyballTool.New.Types";
 import styles from "./toolbar.module.scss";
 
 /**
@@ -15,6 +23,8 @@ import styles from "./toolbar.module.scss";
  * @returns - Toolbar react component
  */
 const ToolbarComponent = () => {
+  // current game
+  const game = useAppSelector((selector) => selector.game);
   // all teams
   const teams = useAppSelector((selector) => selector.teams);
 
@@ -35,7 +45,7 @@ const ToolbarComponent = () => {
   };
 
   /**
-   * Rotates all active players on the team
+   * Rotates all active players on the team, creates and saves a new game state
    *
    * @param teamId - team players of which should be rotated
    */
@@ -60,8 +70,18 @@ const ToolbarComponent = () => {
       ...rotationCoordinates(c.currentRotationPosition, teams.byId[teamId].courtSide),
     }));
 
+    // create a new game state
+    const gameState: GameState = {
+      gameId: game.id,
+      id: uuidv4(),
+    };
+
+    // to fix the rotation bug (state change loads location associated with the state and not the current one,
+    // while rotation changes the current one) we should save the game's state each time one of the teams rotates
     dispatch(updateLocations(playerLocations));
     dispatch(rotatePlayers(activePlayers));
+
+    saveGameState(gameState);
   };
 
   /**
@@ -81,6 +101,20 @@ const ToolbarComponent = () => {
     };
 
     return coordinates;
+  };
+
+  /**
+   * Saves the new game state to the store and associates all dependant entities
+   * 
+   * @param gameState - game state
+   */
+  const saveGameState = (gameState: GameState) => {
+    // save the state to the store
+    dispatch(saveNewState(gameState));
+
+    // associate all the entities that are state dependant
+    dispatch(addLocationToGameState({ gameStateId: gameState.id }));
+    dispatch(addActivePlayersToGameState(gameState.id));
   };
 
   return (
