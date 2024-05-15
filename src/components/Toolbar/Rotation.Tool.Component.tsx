@@ -126,6 +126,7 @@ const RotationToolComponent = (props: RotationToolProps) => {
       <Button
         variant="outline"
         size="xs"
+        fullWidth
         radius="xs"
         color="gray"
         leftIcon={<FontAwesomeIcon icon={faRotateRight} />}

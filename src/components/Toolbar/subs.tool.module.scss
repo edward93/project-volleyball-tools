@@ -1,9 +1,10 @@
 @import "../../styles/colors.scss";
 @import "../../styles/common.scss";
 
-.container {
-  display: grid;
 
+
+.container {
+  // width: 100%;
   & Button {
     font-size: 0.8rem;
     // border-color: lighten($color: theme($bg-color, $primary-color), $amount: 40);

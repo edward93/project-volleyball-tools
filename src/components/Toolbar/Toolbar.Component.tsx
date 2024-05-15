@@ -1,11 +1,8 @@
-import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "@mantine/core";
-
 import ScoreboardComponent from "components/Scoreboard/Scoreboard.Component";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import RotationToolComponent from "./Rotation.Tool.Component";
 
+import SubsToolComponent from "./SubsTool.Component";
 import styles from "./toolbar.module.scss";
 
 /**
@@ -18,11 +15,6 @@ const ToolbarComponent = () => {
   // all teams
   const teams = useAppSelector((selector) => selector.teams);
 
-  // all players
-  const players = useAppSelector((selector) => selector.players);
-
-  const dispatch = useAppDispatch();
-
   return (
     <div className={styles.container}>
       <section className={styles.toolbarSection}>
@@ -30,15 +22,7 @@ const ToolbarComponent = () => {
           <RotationToolComponent teamId={teams.allIds[0]} gameId={game.id} />
         </section>
         <section className={styles.subSection}>
-          <Button
-            variant="outline"
-            size="xs"
-            radius="xs"
-            color="gray"
-            leftIcon={<FontAwesomeIcon icon={faArrowRightArrowLeft} />}
-          >
-            Subs
-          </Button>
+          <SubsToolComponent />
         </section>
       </section>
       <section className={styles.scoreBoardContainer}>
