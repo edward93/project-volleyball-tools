@@ -1,0 +1,10 @@
+@import "../../styles/colors.scss";
+@import "../../styles/common.scss";
+
+.container {
+  & Button {
+    font-size: 0.8rem;
+    // border-color: lighten($color: theme($bg-color, $primary-color), $amount: 40);
+    // color: lighten($color: theme($bg-color, $primary-color), $amount: 40);
+  }
+}

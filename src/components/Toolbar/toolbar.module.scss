@@ -13,6 +13,10 @@
 
   & .toolbar-section {
     display: grid;
+    grid-template: 1fr / 1fr 1fr;
+    column-gap: 0.5rem;
+    // justify-self: stretch;
+    
     margin: 0.1rem 0;
     font-size: 0.8rem;
 
@@ -20,6 +24,14 @@
       font-size: 0.8rem;
       // border-color: lighten($color: theme($bg-color, $primary-color), $amount: 40);
       // color: lighten($color: theme($bg-color, $primary-color), $amount: 40);
+    }
+
+    & .rotate-section {
+      display: grid;
+    }
+
+    & .sub-section {
+      display: grid;
     }
   }
 }
