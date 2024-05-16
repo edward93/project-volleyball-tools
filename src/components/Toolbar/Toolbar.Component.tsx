@@ -1,5 +1,5 @@
 import ScoreboardComponent from "components/Scoreboard/Scoreboard.Component";
-import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
+import { useAppSelector } from "reduxTools/hooks";
 import RotationToolComponent from "./Rotation.Tool.Component";
 
 import SubsToolComponent from "./SubsTool.Component";
@@ -22,7 +22,7 @@ const ToolbarComponent = () => {
           <RotationToolComponent teamId={teams.allIds[0]} gameId={game.id} />
         </section>
         <section className={styles.subSection}>
-          <SubsToolComponent />
+          <SubsToolComponent teamId={teams.allIds[0]} />
         </section>
       </section>
       <section className={styles.scoreBoardContainer}>

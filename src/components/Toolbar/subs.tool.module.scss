@@ -1,13 +1,32 @@
 @import "../../styles/colors.scss";
 @import "../../styles/common.scss";
 
-
-
 .container {
-  // width: 100%;
   & Button {
     font-size: 0.8rem;
     // border-color: lighten($color: theme($bg-color, $primary-color), $amount: 40);
     // color: lighten($color: theme($bg-color, $primary-color), $amount: 40);
   }
+}
+
+.modal-content {
+  display: grid;
+  grid-template: 1fr auto/ 1fr 1fr;
+  column-gap: 0.5rem;
+  row-gap: 0.5rem;
+}
+
+.sub-in {
+  display: grid;
+}
+
+.sub-out {
+  display: grid;
+}
+
+.actions {
+  display: grid;
+  place-items: center;
+  grid-row: 2;
+  grid-column: 1 /span 2;
 }
