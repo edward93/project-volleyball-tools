@@ -4,7 +4,8 @@ import { Button, Modal, Select, SelectItem, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useAppSelector } from "reduxTools/hooks";
 
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
+import { Player } from "types/volleyballTool.New.Types";
 import { PositionsById } from "types/volleyballTool.Types";
 import styles from "./subs.tool.module.scss";
 
@@ -28,6 +29,10 @@ const SubsToolComponent = (props: SubsToolProps) => {
   // props deconstruct
   const { teamId } = props;
 
+  // current sub in/out
+  const [subIn, setSubIn] = useState<Player>();
+  const [subOut, setSubOut] = useState<Player>();
+
   // modal controls
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -36,6 +41,8 @@ const SubsToolComponent = (props: SubsToolProps) => {
 
   // team players
   const players = useAppSelector((selector) => Object.values(selector.players.byId).filter((c) => c.teamId === teamId));
+  // TODO: get only current team's players
+  const playersById = useAppSelector((selector) => selector.players.byId);
 
   // active and inactive players
   const inactivePlayers = players.filter((c) => !c.isActive);
@@ -50,6 +57,22 @@ const SubsToolComponent = (props: SubsToolProps) => {
     open();
   };
 
+  /**
+   * Changes current selected sub in
+   * @param value - new value
+   */
+  const onSubInChange = (value: string) => {
+    setSubIn(playersById[value]);
+  };
+
+  /**
+   * Changes current selected sub out
+   * @param value - new value
+   */
+  const onSubOutChange = (value: string) => {
+    setSubOut(playersById[value]);
+  };
+
   return (
     <div className={styles.container}>
       <Modal opened={opened} onClose={close} title="Substitution" centered size="md">
@@ -61,6 +84,8 @@ const SubsToolComponent = (props: SubsToolProps) => {
               itemComponent={CustomSelectItem}
               placeholder="Player"
               label="Substitute In"
+              value={subIn?.id}
+              onChange={onSubInChange}
               data={inactivePlayers.map<SelectItem>((c) => ({
                 value: c.id,
                 label: c.name,
@@ -75,6 +100,8 @@ const SubsToolComponent = (props: SubsToolProps) => {
               itemComponent={CustomSelectItem}
               placeholder="Player"
               label="Substitute Out"
+              value={subOut?.id}
+              onChange={onSubOutChange}
               data={activePlayers.map<SelectItem>((c) => ({
                 value: c.id,
                 label: c.name,
@@ -82,7 +109,14 @@ const SubsToolComponent = (props: SubsToolProps) => {
               }))}
             />
           </section>
-          <section className={styles.actions}> Actions</section>
+          <section className={styles.actions}>
+            <Button variant="outline" color="gray" onClick={close}>
+              Cancel
+            </Button>
+            <Button variant="filled" color="">
+              Confirm
+            </Button>
+          </section>
         </div>
       </Modal>
       <Button

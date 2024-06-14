@@ -26,7 +26,9 @@
 
 .actions {
   display: grid;
-  place-items: center;
+  grid-template: 1fr / 1fr 1fr;
+  column-gap: 0.5rem;
+  place-content: center;
   grid-row: 2;
   grid-column: 1 /span 2;
 }
