@@ -4,9 +4,11 @@ import { Button, Modal, Select, SelectItem, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useAppSelector } from "reduxTools/hooks";
 
+import { subPlayers } from "components/Players/players.Slice";
 import { forwardRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Player } from "types/volleyballTool.New.Types";
-import { PositionsById } from "types/volleyballTool.Types";
+import { PositionsById } from "types/volleyballTool.New.Types";
 import styles from "./subs.tool.module.scss";
 
 /** Subs tool props */
@@ -28,6 +30,7 @@ type CustomSelectItemProps = {
 const SubsToolComponent = (props: SubsToolProps) => {
   // props deconstruct
   const { teamId } = props;
+  const dispatch = useDispatch();
 
   // current sub in/out
   const [subIn, setSubIn] = useState<Player>();
@@ -73,6 +76,20 @@ const SubsToolComponent = (props: SubsToolProps) => {
     setSubOut(playersById[value]);
   };
 
+  /**
+   * Handles "Confirm" sub button clicks
+   * @param event - Mouse click event
+   */
+  const onSubConfirmClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    event.preventDefault();
+    // TODO: Game state has to change for this to take effect
+    // TODO: Subbed in player position should be updated too
+    if (subIn && subOut) {
+      dispatch(subPlayers({ subInId: subIn.id, subOutId: subOut.id }));
+      close();
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Modal opened={opened} onClose={close} title="Substitution" centered size="md">
@@ -113,7 +130,7 @@ const SubsToolComponent = (props: SubsToolProps) => {
             <Button variant="outline" color="gray" onClick={close}>
               Cancel
             </Button>
-            <Button variant="filled" color="">
+            <Button variant="filled" color="" onClick={onSubConfirmClick}>
               Confirm
             </Button>
           </section>

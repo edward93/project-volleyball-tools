@@ -1,6 +1,6 @@
 import { homeTeam, awayTeam } from "components/Players/teams.Slice";
 import { Player } from "types/volleyballTool.New.Types";
-import { Libero, MiddleBlocker, OppositeHitter, OutsideHitter, Setter } from "../../types/volleyballTool.Types";
+import { Libero, MiddleBlocker, OppositeHitter, OutsideHitter, Setter } from "../../types/volleyballTool.New.Types";
 import { v4 as uuidv4 } from "uuid";
 
 const homeColor = "#03B5AA";

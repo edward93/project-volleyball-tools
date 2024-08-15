@@ -32,6 +32,13 @@ export const playersSlice = createSlice({
         jerseyNumber,
       };
     },
+    subPlayers: (state: Players, action: PayloadAction<{ subInId: string, subOutId: string }>) => {
+      const { subInId, subOutId } = action.payload;
+
+      // update active players
+      state.byId[subInId].isActive = true;
+      state.byId[subOutId].isActive = false;
+    },
     selectPlayerAction: (state: Players, action: PayloadAction<{ playerId: string; actionId: string }>) => {
       const { playerId, actionId } = action.payload;
       // updated selected action id
@@ -86,6 +93,7 @@ export const playersSlice = createSlice({
 export const {
   updatePlayerInfo,
   updatePlayerName,
+  subPlayers,
   addGameAction,
   selectPlayerAction,
   addActivePlayersToGameState,

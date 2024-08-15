@@ -4,7 +4,7 @@ import { useState } from "react";
 import { updatePlayerInfo } from "components/Players/players.Slice";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { SelectedPlayer } from "types/reduxStore.Types";
-import { PositionsById } from "types/volleyballTool.Types";
+import { PositionsById } from "types/volleyballTool.New.Types";
 
 import "styles/inspector.scss";
 
@@ -57,7 +57,7 @@ const InspectorComponent = () => {
           position: players.byId[selectedId].positionId,
           jerseyNumber: players.byId[selectedId].jerseyNumber,
         },
-        stats: [],
+        // stats: [],
       }
     : null;
 

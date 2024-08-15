@@ -1,5 +1,5 @@
 import { GameAction, GameState, Player, PlayerLocation, Point, Score, Set, Team } from "./volleyballTool.New.Types";
-import { ActionScore, GameInfo } from "./volleyballTool.Types";
+// import { ActionScore, GameInfo } from "./volleyballTool.Types";
 
 /**
  * This is the workspace type! Root level type that contains everything regarding the workspace
@@ -80,15 +80,15 @@ export type Players = {
   allIds: string[];
 };
 
-/** GameStats slice type */
-export type GameStats = {
-  /** Game info by id */
-  byId: Record<string, GameInfo>;
-  /** All ids */
-  allIds: string[];
-  /** Game info by game id */
-  byGameId: Record<string, GameInfo>;
-};
+// /** GameStats slice type */
+// export type GameStats = {
+//   /** Game info by id */
+//   byId: Record<string, GameInfo>;
+//   /** All ids */
+//   allIds: string[];
+//   /** Game info by game id */
+//   byGameId: Record<string, GameInfo>;
+// };
 
 /** Type that represents selected element, usually a player */
 export type SelectedPlayer = {
@@ -97,12 +97,12 @@ export type SelectedPlayer = {
   /** Those properties may be more important than internal ones but are not very critical */
   visual: { name: string; position: string; jerseyNumber?: number; avgScore: number };
   /** Array of stats. These props are the most critical ones */
-  stats: {
-    event: string;
-    description?: string;
-    score: ActionScore;
-    notes?: string;
-  }[];
+  // stats: {
+  //   event: string;
+  //   description?: string;
+  //   score: ActionScore;
+  //   notes?: string;
+  // }[];
 };
 
 /** List of Game actions */
