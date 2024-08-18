@@ -40,19 +40,19 @@ export type Sets = {
 };
 
 /** Points type for redux store */
-export type Points = {
-  /** Points by ids */
-  byId: Record<string, Point>;
-  // /** Points by set id */
-  // bySetId: Record<string, Point[]>;
-  // /** Sets by game id */
-  // byGameId: Record<string, Point[]>;
+// export type Points = {
+//   /** Points by ids */
+//   byId: Record<string, Point>;
+//   // /** Points by set id */
+//   // bySetId: Record<string, Point[]>;
+//   // /** Sets by game id */
+//   // byGameId: Record<string, Point[]>;
 
-  /** Point by the state id */
-  byGameStateId: Record<string, Point>;
-  /** All point ids */
-  allIds: string[];
-};
+//   /** Point by the state id */
+//   byGameStateId: Record<string, Point>;
+//   /** All point ids */
+//   allIds: string[];
+// };
 
 /** Volleyball team */
 // export type Team = {
@@ -74,8 +74,6 @@ export type Points = {
 export type Players = {
   /** Players by id */
   byId: Record<string, Player>;
-  /** Active player ids by game state id */
-  activePlayerIdsByGameStateId: Record<string, string[]>;
   /** List of all ids */
   allIds: string[];
 };
@@ -122,7 +120,7 @@ export type GameStates = {
   /** List of all ids */
   allIds: string[];
   /** Current, selected game state */
-  currentState?: string;
+  currentStateId?: string;
 };
 
 /** List of all players' locations */
@@ -133,8 +131,6 @@ export type PlayersLocations = {
   byPlayerId: Record<string, string>;
   /** All location ids */
   allIds: string[];
-  /** Location id by game state id - [gameStateId][playerId] */
-  byGameStateId: Record<string, Record<string, string>>;
 };
 
 /** List of all game scores */

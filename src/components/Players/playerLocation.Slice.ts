@@ -22,7 +22,6 @@ const initialState: PlayersLocations = {
   byId: initialLocations.reduce((a, v) => ({ ...a, [v.id]: v }), {}),
   byPlayerId: initialLocations.reduce((a, v) => ({ ...a, [v.playerId]: v.id }), {}),
   // currentLocationIdByPlayerId: initialLocations.reduce((a, v) => ({ ...a, [v.playerId]: v.id }), {}),
-  byGameStateId: {},
   allIds: initialLocations.map((c) => c.id),
 };
 
@@ -43,6 +42,24 @@ export const playersLocationsSlice = createSlice({
       // state.byPlayerId[location.playerId].y = location.y;
     },
     /**
+     * Adds new/updated locations (instead of updating x,y coords we create a new entry)
+     * 
+     * @param state - main state
+     * @param action payload containing all locations that need to be added
+     */
+    addLocations: (state: PlayersLocations, action: PayloadAction<PlayerLocation[]>) => {
+      const locations = action.payload;
+      locations.forEach((location: PlayerLocation) => {
+        // add each location object
+        state.byId[location.id] = location;
+        // add player location map
+        state.byPlayerId[location.playerId] = location.id;
+
+        // add to the list of all ids
+        state.allIds.push(location.id);
+      });
+    },
+    /**
      * Updates location for given players
      * @param state - main state
      * @param action - payload containing all locations that need to be updated
@@ -61,39 +78,9 @@ export const playersLocationsSlice = createSlice({
         // state.byPlayerId[location.playerId].y = location.y;
       });
     },
-    /**
-     * Associates **ALL PLAYER LOCATIONS** with given state id
-     * @param state - main State
-     * @param action - payload
-     */
-    addLocationToGameState: (state: PlayersLocations, action: PayloadAction<{ gameStateId: string }>) => {
-      const { gameStateId } = action.payload;
-
-      // init
-      state.byGameStateId[gameStateId] = {};
-
-      // TODO: save only the diff locations, if players location hasn't changed from the last state don't create a new one
-      Object.keys(state.byPlayerId).forEach((playerId: string) => {
-        // create new location object
-        const location: PlayerLocation = {
-          playerId,
-          id: uuidv4(),
-          x: state.byId[state.byPlayerId[playerId]].x,
-          y: state.byId[state.byPlayerId[playerId]].y,
-        };
-
-        // add location for the specific player
-        state.byGameStateId[gameStateId][playerId] = location.id;
-
-        // add the location to the state
-        state.byId[location.id] = location;
-        // state.byPlayerId[playerId] = location.id;
-        state.allIds.push(location.id);
-      });
-    },
   },
 });
 
-export const { updateLocation, addLocationToGameState, updateLocations } = playersLocationsSlice.actions;
+export const { updateLocation, updateLocations, addLocations } = playersLocationsSlice.actions;
 
 export default playersLocationsSlice.reducer;

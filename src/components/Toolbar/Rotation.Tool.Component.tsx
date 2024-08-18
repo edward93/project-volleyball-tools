@@ -1,7 +1,7 @@
 import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mantine/core";
-import { useAppSelector, useAppDispatch } from "reduxTools/hooks";
+import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { v4 as uuidv4 } from "uuid";
 
 import {
@@ -12,8 +12,8 @@ import {
   RotationPositions,
 } from "types/volleyballTool.New.Types";
 
-import { addLocationToGameState, updateLocations } from "components/Players/playerLocation.Slice";
-import { addActivePlayersToGameState, rotatePlayers } from "components/Players/players.Slice";
+import { addLocations } from "components/Players/playerLocation.Slice";
+import { rotatePlayers } from "components/Players/players.Slice";
 import { create as saveNewState } from "components/Timeline/gameState.Slice";
 
 import styles from "./rotation.tool.module.scss";
@@ -35,7 +35,17 @@ const RotationToolComponent = (props: RotationToolProps) => {
   const team = useAppSelector((selector) => selector.teams.byId[teamId]);
 
   // team players
-  const players = useAppSelector((selector) => Object.values(selector.players.byId).filter((c) => c.teamId === teamId));
+  const teamPlayers = useAppSelector((selector) =>
+    Object.values(selector.players.byId).filter((c) => c.teamId === teamId),
+  );
+
+  // other team's active players (during rotation a new state is saved that snapshots all active players)
+  const otherTeamActivePlayerIds = useAppSelector((selector) =>
+    Object.values(selector.players.byId)
+      .filter((c) => c.teamId !== teamId && c.isActive && c.currentRotationPosition !== undefined)
+      .map((c) => c.id),
+  );
+
   const dispatch = useAppDispatch();
 
   /**
@@ -56,7 +66,7 @@ const RotationToolComponent = (props: RotationToolProps) => {
     // change their rotations
 
     // active players
-    const activePlayers: Player[] = players.filter((c) => c.isActive && c.currentRotationPosition !== undefined);
+    const activePlayers: Player[] = teamPlayers.filter((c) => c.isActive && c.currentRotationPosition !== undefined);
 
     // rotate (change) current rotation position of current players
     const rotatedActivePlayers = activePlayers.map((player: Player) => {
@@ -70,7 +80,7 @@ const RotationToolComponent = (props: RotationToolProps) => {
     // new player locations after the rotation
     const playerLocations = rotatedActivePlayers.map((c) => ({
       playerId: c.id,
-      id: "",
+      id: uuidv4(),
       ...rotationCoordinates(c.currentRotationPosition, team.courtSide),
     }));
 
@@ -78,14 +88,18 @@ const RotationToolComponent = (props: RotationToolProps) => {
     const gameState: GameState = {
       gameId: gameId,
       id: uuidv4(),
+      dependencies: {
+        activePlayerIds: [...activePlayers.map((c) => c.id), ...otherTeamActivePlayerIds],
+        playerLocationIds: playerLocations.reduce((a, v) => ({ ...a, [v.playerId]: v.id }), {}), // TODO: add other team's players' locations too
+      },
     };
 
-    // to fix the rotation bug (state change loads location associated with the state and not the current one,
-    // while rotation changes the current one) we should save the game's state each time one of the teams rotates
-    dispatch(updateLocations(playerLocations));
+    // adds new player locations to the store
+    dispatch(addLocations(playerLocations));
     dispatch(rotatePlayers(rotatedActivePlayers));
 
-    saveGameState(gameState);
+    // save the state to the store
+    dispatch(saveNewState(gameState));
   };
 
   /**
@@ -105,20 +119,6 @@ const RotationToolComponent = (props: RotationToolProps) => {
     };
 
     return coordinates;
-  };
-
-  /**
-   * Saves the new game state to the store and associates all dependant entities
-   *
-   * @param gameState - game state
-   */
-  const saveGameState = (gameState: GameState) => {
-    // save the state to the store
-    dispatch(saveNewState(gameState));
-
-    // associate all the entities that are state dependant
-    dispatch(addLocationToGameState({ gameStateId: gameState.id }));
-    dispatch(addActivePlayersToGameState(gameState.id));
   };
 
   return (

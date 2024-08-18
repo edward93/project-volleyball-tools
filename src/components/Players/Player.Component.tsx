@@ -23,8 +23,10 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const players = useAppSelector((selector) => selector.players);
   // player locations
   const playersLocations = useAppSelector((selector) => selector.playersLocations);
-  // current game state
-  const { currentState } = useAppSelector((selector) => selector.gameState);
+  // current game state id
+  const { currentStateId } = useAppSelector((selector) => selector.gameState);
+  const currentState = useAppSelector((selector) => selector.gameState.byId[currentStateId ?? ""]);
+
   // selected player id
   const { selectedId } = useAppSelector((selector) => selector.inspector);
   // is current player selected or not
@@ -32,10 +34,10 @@ const PlayerComponent = (props: PlayerComponentProps) => {
 
   const isFontLoaded = useFontFaceObserver([{ family: "Roboto-Mono" }]);
 
-  // current location id
-  const locationId = playersLocations.byGameStateId[currentState ?? ""]?.[id] ?? playersLocations.byPlayerId[id];
+  // location
+  const locationId = currentState?.dependencies?.playerLocationIds[id] ?? playersLocations.byPlayerId[id];
   const location = playersLocations.byId[locationId];
-  
+
   // current player location
   const [playerLocation, setPlayerLocation] = useState<PlayerLocation>(location);
 
@@ -58,7 +60,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   // update local position when store changes
   useEffect(() => {
     setPlayerLocation(location);
-  }, [currentState, location]);
+  }, [currentStateId, location]);
 
   // extract player's name
   const playerName = players.byId[id].name;
@@ -151,7 +153,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
       style={!isPressed ? { transition: "transform 0.3s" } : {}}
     >
       <g>
-        <circle stroke="black" r={effectiveRadius} fill={color} strokeWidth={strokeWidth}/>
+        <circle stroke="black" r={effectiveRadius} fill={color} strokeWidth={strokeWidth} />
         <text x={0.2} y={2.5} className="player-circle-txt" fill="white" textAnchor="middle" alignmentBaseline="middle">
           {players.byId[id].jerseyNumber}
         </text>

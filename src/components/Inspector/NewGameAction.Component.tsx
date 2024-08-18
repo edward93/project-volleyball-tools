@@ -6,13 +6,12 @@ import { v4 as uuidv4 } from "uuid";
 
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 
-import { addLocationToGameState } from "components/Players/playerLocation.Slice";
-import { addActivePlayersToGameState, addGameAction } from "components/Players/players.Slice";
+import { addGameAction } from "components/Players/players.Slice";
 import { create as saveNewState } from "components/Timeline/gameState.Slice";
 import { create as createNewGameAction } from "./gameAction.Slice";
 
 import "styles/stats.scss";
-import { GameAction, GameActionTypesById, GameState } from "types/volleyballTool.New.Types";
+import { GameAction, GameActionTypesById, GameState, Player } from "types/volleyballTool.New.Types";
 
 const selectGameActions: SelectItem[] = Object.entries(GameActionTypesById).map(([key, action]) => ({
   value: key,
@@ -25,6 +24,9 @@ const selectGameActions: SelectItem[] = Object.entries(GameActionTypesById).map(
  */
 const StatsComponent = () => {
   const dispatch = useAppDispatch();
+
+  // all players
+  const players = useAppSelector((selector) => Object.values(selector.players.byId));
 
   // current game
   const game = useAppSelector((selector) => selector.game);
@@ -73,10 +75,15 @@ const StatsComponent = () => {
     // show the section
     toggleStatsSection();
 
+    // current active players
+    const activePlayers: Player[] = players.filter((c) => c.isActive && c.currentRotationPosition !== undefined);
+
+    // TODO: Fix this method and how we are saving a new state when a new action is created
     // create new game state
     gameState.current = {
       id: uuidv4(),
       gameId: game.id,
+      dependencies: { activePlayerIds: activePlayers.map(c => c.id), playerLocationIds: {} }
     };
 
     // init a new obj
@@ -84,7 +91,6 @@ const StatsComponent = () => {
       id: uuidv4(),
       playerId: selectedId,
       type: "",
-      gameStateId: gameState.current.id,
     };
 
     setCurrentAction(action);
@@ -107,8 +113,8 @@ const StatsComponent = () => {
     if (currentAction && gameState.current) {
       // associate locations with this state
       // TODO: not saving current locations
-      dispatch(addLocationToGameState({ gameStateId: gameState.current.id }));
-      dispatch(addActivePlayersToGameState(gameState.current.id));
+      // dispatch(addLocationToGameState({ gameStateId: gameState.current.id }));
+      // dispatch(addActivePlayersToGameState(gameState.current.id));
       dispatch(createNewGameAction({ gameAction: currentAction, gameStateId: gameState.current.id }));
     }
 

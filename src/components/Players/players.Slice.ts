@@ -8,9 +8,6 @@ export const initialPlayers: Player[] = [...teamJapanPlayers, ...teamUsaPlayers]
 
 const initialState: Players = {
   byId: initialPlayers.reduce((prev, curr) => ({ ...prev, [curr.id]: curr }), {}),
-  activePlayerIdsByGameStateId: {
-    "": initialPlayers.filter((c) => c.isActive).map((c) => c.id),
-  },
   allIds: initialPlayers.map((c) => c.id),
 };
 
@@ -69,13 +66,6 @@ export const playersSlice = createSlice({
       // update player's score
       state.byId[playerId].score += gameActionType.score;
     },
-    addActivePlayersToGameState: (state: Players, action: PayloadAction<string>) => {
-      const gameStateId = action.payload;
-
-      // add current active players to the game state
-      state.activePlayerIdsByGameStateId[gameStateId] = state.allIds.filter((c) => state.byId[c].isActive);
-    },
-
     /**
      * Rotates all active (on the court) player's court position after a side-out
      * @param state - Current state
@@ -96,7 +86,6 @@ export const {
   subPlayers,
   addGameAction,
   selectPlayerAction,
-  addActivePlayersToGameState,
   rotatePlayers,
 } = playersSlice.actions;
 

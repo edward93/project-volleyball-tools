@@ -272,6 +272,15 @@ export type GameState = {
   gameId: string;
   /** Time (optional) */
   time?: string;
+  /** all the necessary components that are associated with this state and can be recovered */
+  dependencies: {
+    /** all player ids snapshot by this state */
+    activePlayerIds: string[],
+    /** all locations of current players snapshot by this state [playerId][playerLocationId]*/
+    playerLocationIds: Record<string, string>,
+    /** game action associated with this state (only one action per state) */
+    gameActionId?: string,
+  }
 };
 
 /** Represents a game action, perfect set, perfect dig, etc. */
@@ -281,7 +290,7 @@ export type GameAction = {
   /** Player performing the action */
   playerId: string;
   /** Timeline event id */
-  gameStateId: string;
+  // gameStateId: string;
   /** GameActionType id */
   type: string;
   /** Manual notes */

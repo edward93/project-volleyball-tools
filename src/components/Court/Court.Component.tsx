@@ -14,12 +14,17 @@ const radius = 40;
  */
 const CourtComponent = () => {
   const players = useAppSelector((selector) => selector.players.byId);
-  
+
   // current game state
-  const { currentState } = useAppSelector((selector) => selector.gameState);
+  const { currentStateId } = useAppSelector((selector) => selector.gameState);
+  const currentState = useAppSelector((selector) => selector.gameState.byId[currentStateId ?? ""]);
 
   // player ids that are on the court
-  const activePlayerIds = useAppSelector((selector) => selector.players.activePlayerIdsByGameStateId[currentState ?? ""]);
+  const activePlayerIds =
+    currentState?.dependencies?.activePlayerIds ??
+    Object.values(players)
+      .filter((c) => c.isActive && c.currentRotationPosition !== undefined)
+      .map((c) => c.id);
 
   // svg ref
   const svgRef = useRef<SVGSVGElement>(null);

@@ -15,7 +15,7 @@ import "../../styles/scoreboard.scss";
 const ScoreboardComponent = () => {
   const dispatch = useAppDispatch();
   // game states
-  const { currentState } = useAppSelector((selector) => selector.gameState);
+  const { currentStateId: currentState } = useAppSelector((selector) => selector.gameState);
   // current game
   const game = useAppSelector((selector) => selector.game);
   // all teams

@@ -18,7 +18,7 @@ const GameActionsComponent = (props: { player: Player }) => {
   // all game actions
   const gameActions = useAppSelector((selector) => selector.gameAction);
   // game states
-  const { currentState } = useAppSelector((selector) => selector.gameState);
+  const { currentStateId: currentState } = useAppSelector((selector) => selector.gameState);
 
   // don't do anything if nothing is selected
   if (!player) return null;

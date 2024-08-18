@@ -27,7 +27,8 @@ const InspectorComponent = () => {
   // player locations
   const playersLocations = useAppSelector((selector) => selector.playersLocations);
   // current game state
-  const { currentState } = useAppSelector((selector) => selector.gameState);
+  const { currentStateId } = useAppSelector((selector) => selector.gameState);
+  const currentState = useAppSelector((selector) => selector.gameState.byId[currentStateId ?? ""]);
 
   const { selectedId } = useAppSelector((selector) => selector.inspector);
 
@@ -36,7 +37,7 @@ const InspectorComponent = () => {
   if (!selectedId) return null;
 
   const locationId =
-    playersLocations.byGameStateId[currentState ?? ""]?.[selectedId] ?? playersLocations.byPlayerId[selectedId];
+    currentState?.dependencies?.playerLocationIds?.[selectedId] ?? playersLocations.byPlayerId[selectedId]
   const location = playersLocations.byId[locationId];
 
   // collapse/open internal section
