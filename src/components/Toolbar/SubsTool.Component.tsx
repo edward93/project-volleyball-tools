@@ -84,6 +84,7 @@ const SubsToolComponent = (props: SubsToolProps) => {
     event.preventDefault();
     // TODO: Game state has to change for this to take effect
     // TODO: Subbed in player position should be updated too
+    // TODO: update player - player location mapping in playerLocations
     if (subIn && subOut) {
       dispatch(subPlayers({ subInId: subIn.id, subOutId: subOut.id }));
       close();

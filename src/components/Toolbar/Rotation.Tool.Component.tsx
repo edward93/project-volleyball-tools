@@ -4,18 +4,12 @@ import { Button } from "@mantine/core";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { v4 as uuidv4 } from "uuid";
 
-import {
-  GameState,
-  HalfCourt,
-  Player,
-  RotationPositionNumber,
-  RotationPositions,
-} from "types/volleyballTool.New.Types";
+import { HalfCourt, Player, RotationPositionNumber, RotationPositions } from "types/volleyballTool.New.Types";
 
 import { addLocations } from "components/Players/playerLocation.Slice";
 import { rotatePlayers } from "components/Players/players.Slice";
-import { create as saveNewState } from "components/Timeline/gameState.Slice";
 
+import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
 import styles from "./rotation.tool.module.scss";
 
 /** Prop type */
@@ -31,19 +25,14 @@ type RotationToolProps = {
 const RotationToolComponent = (props: RotationToolProps) => {
   const { teamId, gameId } = props;
 
+  const [newGameState] = useGameStateHelpers(gameId);
+
   // team
   const team = useAppSelector((selector) => selector.teams.byId[teamId]);
 
   // team players
   const teamPlayers = useAppSelector((selector) =>
     Object.values(selector.players.byId).filter((c) => c.teamId === teamId),
-  );
-
-  // other team's active players (during rotation a new state is saved that snapshots all active players)
-  const otherTeamActivePlayerIds = useAppSelector((selector) =>
-    Object.values(selector.players.byId)
-      .filter((c) => c.teamId !== teamId && c.isActive && c.currentRotationPosition !== undefined)
-      .map((c) => c.id),
   );
 
   const dispatch = useAppDispatch();
@@ -84,22 +73,13 @@ const RotationToolComponent = (props: RotationToolProps) => {
       ...rotationCoordinates(c.currentRotationPosition, team.courtSide),
     }));
 
-    // create a new game state
-    const gameState: GameState = {
-      gameId: gameId,
-      id: uuidv4(),
-      dependencies: {
-        activePlayerIds: [...activePlayers.map((c) => c.id), ...otherTeamActivePlayerIds],
-        playerLocationIds: playerLocations.reduce((a, v) => ({ ...a, [v.playerId]: v.id }), {}), // TODO: add other team's players' locations too
-      },
-    };
-
     // adds new player locations to the store
     dispatch(addLocations(playerLocations));
     dispatch(rotatePlayers(rotatedActivePlayers));
 
+    // should be called after all the actions were dispatched
     // save the state to the store
-    dispatch(saveNewState(gameState));
+    newGameState();
   };
 
   /**
