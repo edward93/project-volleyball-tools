@@ -1,5 +1,5 @@
 import { create as saveNewState } from "components/Timeline/gameState.Slice";
-import { useAppDispatch } from "reduxTools/hooks";
+import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { store } from "reduxTools/store";
 import { GameState } from "types/volleyballTool.New.Types";
 import { v4 as uuidv4 } from "uuid";
@@ -7,21 +7,22 @@ import { v4 as uuidv4 } from "uuid";
 /** Game state helpers hook return type */
 type GameStateHelpersReturnType = [
   /**
-   * Creates and save a new game state
+   * Creates a new game state and stores it
    */
   () => void,
 ];
 
-// TODO: game state hook to create a game state
-
 /**
+ * Game state helper hook
  *
- * @param gameId - current game id
  * @returns {GameStateHelpersReturnType} - [function to create new game state]
  */
-export const useGameStateHelpers = (gameId: string): GameStateHelpersReturnType => {
+export const useGameStateHelpers = (): GameStateHelpersReturnType => {
   // redux dispatch
   const dispatch = useAppDispatch();
+
+  // current game
+  const game = useAppSelector((selector) => selector.game);
 
   /**
    * Creates and save a new game state
@@ -39,14 +40,18 @@ export const useGameStateHelpers = (gameId: string): GameStateHelpersReturnType 
     // and when player is subbed new player id is added and the old one is removed from this list
     const playerLocationIds = state.playersLocations.byPlayerId;
 
+    // TODO: this is likely incorrect, latest game action id may not be associated with this game state
+    // latest game action id
+    const latestActionId = state.gameAction.byId[state.gameAction.allIds[state.gameAction.allIds.length - 1]]?.id;
+
     // game state object
     const gameState: GameState = {
       id: uuidv4(),
-      gameId: gameId,
+      gameId: game.id,
       dependencies: {
         activePlayerIds: playerIds,
         playerLocationIds,
-        gameActionId: undefined, // TODO: populate this
+        gameActionId: latestActionId,
       },
     };
 

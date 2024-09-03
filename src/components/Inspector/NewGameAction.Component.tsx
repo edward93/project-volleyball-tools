@@ -1,17 +1,17 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Select, SelectItem, Textarea } from "@mantine/core";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 
 import { addGameAction } from "components/Players/players.Slice";
-import { create as saveNewState } from "components/Timeline/gameState.Slice";
 import { create as createNewGameAction } from "./gameAction.Slice";
 
 import "styles/stats.scss";
-import { GameAction, GameActionTypesById, GameState, Player } from "types/volleyballTool.New.Types";
+import { GameAction, GameActionTypesById } from "types/volleyballTool.New.Types";
+import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
 
 const selectGameActions: SelectItem[] = Object.entries(GameActionTypesById).map(([key, action]) => ({
   value: key,
@@ -25,11 +25,8 @@ const selectGameActions: SelectItem[] = Object.entries(GameActionTypesById).map(
 const StatsComponent = () => {
   const dispatch = useAppDispatch();
 
-  // all players
-  const players = useAppSelector((selector) => Object.values(selector.players.byId));
-
-  // current game
-  const game = useAppSelector((selector) => selector.game);
+  // game state helper
+  const [newGameState] = useGameStateHelpers();
 
   // current selected item (player)
   const { selectedId } = useAppSelector((selector) => selector.inspector);
@@ -38,8 +35,6 @@ const StatsComponent = () => {
   const [showNewActionSection, setShowNewActionSection] = useState(false);
   // current action
   const [currentAction, setCurrentAction] = useState<GameAction>();
-
-  const gameState = useRef<GameState | null>(null);
 
   //#region user input handlers
   /**
@@ -75,17 +70,6 @@ const StatsComponent = () => {
     // show the section
     toggleStatsSection();
 
-    // current active players
-    const activePlayers: Player[] = players.filter((c) => c.isActive && c.currentRotationPosition !== undefined);
-
-    // TODO: Fix this method and how we are saving a new state when a new action is created
-    // create new game state
-    gameState.current = {
-      id: uuidv4(),
-      gameId: game.id,
-      dependencies: { activePlayerIds: activePlayers.map(c => c.id), playerLocationIds: {} }
-    };
-
     // init a new obj
     const action: GameAction = {
       id: uuidv4(),
@@ -106,25 +90,18 @@ const StatsComponent = () => {
     // TODO: refactor
     if (!selectedId) return;
 
-    // save the game state first
-    if (gameState.current) dispatch(saveNewState(gameState.current));
-
-    // create mew game action
-    if (currentAction && gameState.current) {
-      // associate locations with this state
-      // TODO: not saving current locations
-      // dispatch(addLocationToGameState({ gameStateId: gameState.current.id }));
-      // dispatch(addActivePlayersToGameState(gameState.current.id));
-      dispatch(createNewGameAction({ gameAction: currentAction, gameStateId: gameState.current.id }));
-    }
+    // save the new game action
+    if (currentAction) dispatch(createNewGameAction(currentAction));
 
     // add action id to the player's actionIds list
     if (currentAction) dispatch(addGameAction({ playerId: selectedId, gameAction: currentAction }));
 
     // cleanup
     setCurrentAction(undefined);
-    gameState.current = null;
+    // gameState.current = null;
 
+    // add a new game state object
+    newGameState();
     // hide the section
     toggleStatsSection();
   };
@@ -140,7 +117,7 @@ const StatsComponent = () => {
 
     // cleanup
     setCurrentAction(undefined);
-    gameState.current = null;
+    // gameState.current = null;
   };
   //#endregion
 

@@ -23,9 +23,9 @@ type RotationToolProps = {
  * @returns - Rotation Tool Component
  */
 const RotationToolComponent = (props: RotationToolProps) => {
-  const { teamId, gameId } = props;
+  const { teamId } = props;
 
-  const [newGameState] = useGameStateHelpers(gameId);
+  const [newGameState] = useGameStateHelpers();
 
   // team
   const team = useAppSelector((selector) => selector.teams.byId[teamId]);

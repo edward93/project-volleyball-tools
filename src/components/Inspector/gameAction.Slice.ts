@@ -3,22 +3,17 @@ import { GameActions } from "types/reduxStore.Types";
 import { GameAction } from "types/volleyballTool.New.Types";
 
 // initial stats
-const initialState: GameActions = { byId: {}, allIds: [], byGameStateId: {} };
+const initialState: GameActions = { byId: {}, allIds: [] };
 
 export const gameActionSlice = createSlice({
   initialState,
   name: "game actions",
   reducers: {
-    create: (state: GameActions, action: PayloadAction<{ gameAction: GameAction; gameStateId: string }>) => {
-      const {
-        gameAction,
-        gameAction: { id },
-        gameStateId,
-      } = action.payload;
+    create: (state: GameActions, action: PayloadAction<GameAction>) => {
+      const gameAction = action.payload;
 
-      state.byId[id] = gameAction;
-      state.byGameStateId[gameStateId] = gameAction;
-      state.allIds.push(id);
+      state.byId[gameAction.id] = gameAction;
+      state.allIds.push(gameAction.id);
     },
   },
 });

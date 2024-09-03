@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { Collapse, Tooltip } from "@mantine/core";
+import { useState } from "react";
 import { useAppSelector } from "reduxTools/hooks";
 
 import { GameActionTypesById, Player } from "types/volleyballTool.New.Types";
@@ -8,7 +8,7 @@ import "styles/gameAction.scss";
 
 /**
  * GameAction component - shows selected player's actions
- * 
+ *
  * @param props - GameActions props
  * @returns GameActions component
  */
@@ -17,17 +17,18 @@ const GameActionsComponent = (props: { player: Player }) => {
   const [isContentCollapsed, setIsContentCollapsed] = useState(true);
   // all game actions
   const gameActions = useAppSelector((selector) => selector.gameAction);
-  // game states
-  const { currentStateId: currentState } = useAppSelector((selector) => selector.gameState);
+  // current game state id
+  const { currentStateId } = useAppSelector((selector) => selector.gameState);
+  const currentState = useAppSelector((selector) => selector.gameState.byId[currentStateId ?? ""]);
 
   // don't do anything if nothing is selected
   if (!player) return null;
 
   // current player's latest recorded game action or current select action (depends on the game state)
   const gameAction =
-    gameActions.byGameStateId[currentState ?? ""] ??
+    gameActions.byId[currentState?.dependencies?.gameActionId ?? ""] ??
     gameActions.byId[gameActions.allIds[gameActions.allIds.length - 1]];
-  
+
   const gameActionType = GameActionTypesById?.[gameAction?.type];
 
   // max possible score number of actions multiplied by max score

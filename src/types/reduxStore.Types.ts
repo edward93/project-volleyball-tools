@@ -107,8 +107,6 @@ export type SelectedPlayer = {
 export type GameActions = {
   /** Actions by id */
   byId: Record<string, GameAction>;
-  /** Actions by game state id */
-  byGameStateId: Record<string, GameAction>;
   /** List of all ids */
   allIds: string[];
 };

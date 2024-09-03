@@ -29,12 +29,15 @@ export const playersSlice = createSlice({
         jerseyNumber,
       };
     },
-    subPlayers: (state: Players, action: PayloadAction<{ subInId: string, subOutId: string }>) => {
+    subPlayers: (state: Players, action: PayloadAction<{ subInId: string; subOutId: string }>) => {
       const { subInId, subOutId } = action.payload;
 
       // update active players
       state.byId[subInId].isActive = true;
+      state.byId[subInId].currentRotationPosition = state.byId[subOutId].currentRotationPosition;
+      
       state.byId[subOutId].isActive = false;
+      state.byId[subOutId].currentRotationPosition = undefined;
     },
     selectPlayerAction: (state: Players, action: PayloadAction<{ playerId: string; actionId: string }>) => {
       const { playerId, actionId } = action.payload;
@@ -80,13 +83,7 @@ export const playersSlice = createSlice({
   },
 });
 
-export const {
-  updatePlayerInfo,
-  updatePlayerName,
-  subPlayers,
-  addGameAction,
-  selectPlayerAction,
-  rotatePlayers,
-} = playersSlice.actions;
+export const { updatePlayerInfo, updatePlayerName, subPlayers, addGameAction, selectPlayerAction, rotatePlayers } =
+  playersSlice.actions;
 
 export default playersSlice.reducer;

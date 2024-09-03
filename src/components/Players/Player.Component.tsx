@@ -7,7 +7,7 @@ import { PlayerLocation } from "types/volleyballTool.New.Types";
 import useFontFaceObserver from "utils/hooks/useFontFaceObserver.hook";
 import { useMoveable } from "utils/hooks/useMoveable.hoot";
 import { select } from "../Inspector/inspector.Slice";
-import { updateLocation } from "./playerLocation.Slice";
+import { addLocation } from "./playerLocation.Slice";
 
 /**
  * Player component (renders as SVG circles with player's name under it)
@@ -106,10 +106,14 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const onStopPressing = () => {
     release();
 
+    // TODO: this works with the new game state system but it creates lots of new location objects
     // update position in the store
     dispatch(
-      updateLocation({
-        location: { id: uuidv4(), playerId: playerLocation.playerId, x: playerLocation.x, y: playerLocation.y },
+      addLocation({
+        id: uuidv4(),
+        playerId: playerLocation.playerId,
+        x: playerLocation.x,
+        y: playerLocation.y,
       }),
     );
   };

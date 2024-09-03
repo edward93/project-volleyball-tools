@@ -3,12 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Modal, Select, SelectItem, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useAppSelector } from "reduxTools/hooks";
+import { v4 as uuidv4 } from "uuid";
 
+import { addLocation, deleteLocation } from "components/Players/playerLocation.Slice";
 import { subPlayers } from "components/Players/players.Slice";
 import { forwardRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Player } from "types/volleyballTool.New.Types";
-import { PositionsById } from "types/volleyballTool.New.Types";
+import { Player, PlayerLocation, PositionsById } from "types/volleyballTool.New.Types";
+import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
 import styles from "./subs.tool.module.scss";
 
 /** Subs tool props */
@@ -31,6 +33,8 @@ const SubsToolComponent = (props: SubsToolProps) => {
   // props deconstruct
   const { teamId } = props;
   const dispatch = useDispatch();
+  // game sate helper
+  const [newGameState] = useGameStateHelpers();
 
   // current sub in/out
   const [subIn, setSubIn] = useState<Player>();
@@ -39,13 +43,13 @@ const SubsToolComponent = (props: SubsToolProps) => {
   // modal controls
   const [opened, { open, close }] = useDisclosure(false);
 
-  // team
-  const team = useAppSelector((selector) => selector.teams.byId[teamId]);
-
   // team players
   const players = useAppSelector((selector) => Object.values(selector.players.byId).filter((c) => c.teamId === teamId));
   // TODO: get only current team's players
   const playersById = useAppSelector((selector) => selector.players.byId);
+
+  // player locations
+  const playerLocations = useAppSelector((selector) => selector.playersLocations);
 
   // active and inactive players
   const inactivePlayers = players.filter((c) => !c.isActive);
@@ -82,11 +86,18 @@ const SubsToolComponent = (props: SubsToolProps) => {
    */
   const onSubConfirmClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault();
-    // TODO: Game state has to change for this to take effect
-    // TODO: Subbed in player position should be updated too
-    // TODO: update player - player location mapping in playerLocations
+
     if (subIn && subOut) {
       dispatch(subPlayers({ subInId: subIn.id, subOutId: subOut.id }));
+
+      // subbed out player location (should be deleted)
+      const subbedOutPlayerLocation = playerLocations.byId[playerLocations.byPlayerId[subOut.id]];
+      // should be added
+      const subbedInPlayerLocation: PlayerLocation = { ...subbedOutPlayerLocation, id: uuidv4(), playerId: subIn.id };
+      dispatch(addLocation(subbedInPlayerLocation));
+
+      // update the game state
+      newGameState();
       close();
     }
   };

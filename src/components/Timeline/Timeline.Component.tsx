@@ -167,7 +167,7 @@ const TimelineComponent = () => {
     // select current game state
     dispatch(selectCurrentGameState({ id: state.id }));
 
-    const selectedAction = gameActions.byGameStateId[state.id];
+    const selectedAction = gameActions.byId[state?.dependencies?.gameActionId ?? ""];
     // select current player
     if (selectedAction) dispatch(select(selectedAction.playerId));
 

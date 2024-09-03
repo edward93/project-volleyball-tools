@@ -43,7 +43,7 @@ export const playersLocationsSlice = createSlice({
     },
     /**
      * Adds new/updated locations (instead of updating x,y coords we create a new entry)
-     * 
+     *
      * @param state - main state
      * @param action payload containing all locations that need to be added
      */
@@ -58,6 +58,31 @@ export const playersLocationsSlice = createSlice({
         // add to the list of all ids
         state.allIds.push(location.id);
       });
+    },
+    /**
+     * Adds new/update location
+     *
+     * @param state - main state
+     * @param action payload containing the new location that needs to be added
+     */
+    addLocation: (state: PlayersLocations, action: PayloadAction<PlayerLocation>) => {
+      const location = action.payload;
+
+      // add each location object
+      state.byId[location.id] = location;
+      // add player location map
+      state.byPlayerId[location.playerId] = location.id;
+
+      // add to the list of all ids
+      state.allIds.push(location.id);
+    },
+    deleteLocation: (state: PlayersLocations, action: PayloadAction<PlayerLocation>) => {
+      const location = action.payload;
+
+      // delete the location
+      delete state.byPlayerId[location.playerId];
+      delete state.byId[location.id];
+      state.allIds.splice(state.allIds.indexOf(location.id), 1);
     },
     /**
      * Updates location for given players
@@ -81,6 +106,7 @@ export const playersLocationsSlice = createSlice({
   },
 });
 
-export const { updateLocation, updateLocations, addLocations } = playersLocationsSlice.actions;
+export const { updateLocation, updateLocations, addLocations, addLocation, deleteLocation } =
+  playersLocationsSlice.actions;
 
 export default playersLocationsSlice.reducer;
