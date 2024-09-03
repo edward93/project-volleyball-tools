@@ -7,7 +7,7 @@ import { PlayerLocation } from "types/volleyballTool.New.Types";
 import useFontFaceObserver from "utils/hooks/useFontFaceObserver.hook";
 import { useMoveable } from "utils/hooks/useMoveable.hoot";
 import { select } from "../Inspector/inspector.Slice";
-import { updateLocation } from "./playerLocation.Slice";
+import { addLocation } from "./playerLocation.Slice";
 
 /**
  * Player component (renders as SVG circles with player's name under it)
@@ -23,8 +23,10 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const players = useAppSelector((selector) => selector.players);
   // player locations
   const playersLocations = useAppSelector((selector) => selector.playersLocations);
-  // current game state
-  const { currentState } = useAppSelector((selector) => selector.gameState);
+  // current game state id
+  const { currentStateId } = useAppSelector((selector) => selector.gameState);
+  const currentState = useAppSelector((selector) => selector.gameState.byId[currentStateId ?? ""]);
+
   // selected player id
   const { selectedId } = useAppSelector((selector) => selector.inspector);
   // is current player selected or not
@@ -32,7 +34,10 @@ const PlayerComponent = (props: PlayerComponentProps) => {
 
   const isFontLoaded = useFontFaceObserver([{ family: "Roboto-Mono" }]);
 
-  const location = playersLocations.byGameStateId[currentState ?? ""]?.[id] ?? playersLocations.byPlayerId[id];
+  // location
+  const locationId = currentState?.dependencies?.playerLocationIds[id] ?? playersLocations.byPlayerId[id];
+  const location = playersLocations.byId[locationId];
+
   // current player location
   const [playerLocation, setPlayerLocation] = useState<PlayerLocation>(location);
 
@@ -55,7 +60,7 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   // update local position when store changes
   useEffect(() => {
     setPlayerLocation(location);
-  }, [currentState]);
+  }, [currentStateId, location]);
 
   // extract player's name
   const playerName = players.byId[id].name;
@@ -101,10 +106,14 @@ const PlayerComponent = (props: PlayerComponentProps) => {
   const onStopPressing = () => {
     release();
 
+    // TODO: this works with the new game state system but it creates lots of new location objects
     // update position in the store
     dispatch(
-      updateLocation({
-        location: { id: uuidv4(), playerId: playerLocation.playerId, x: playerLocation.x, y: playerLocation.y },
+      addLocation({
+        id: uuidv4(),
+        playerId: playerLocation.playerId,
+        x: playerLocation.x,
+        y: playerLocation.y,
       }),
     );
   };
@@ -133,6 +142,8 @@ const PlayerComponent = (props: PlayerComponentProps) => {
 
   // calculate the final radius of the player circle element
   const effectiveRadius = isPlayerSelected ? radius * 1.1 : radius;
+  // effective stroke width
+  const strokeWidth = isPlayerSelected ? 5 : 1;
 
   return (
     <g
@@ -146,8 +157,8 @@ const PlayerComponent = (props: PlayerComponentProps) => {
       style={!isPressed ? { transition: "transform 0.3s" } : {}}
     >
       <g>
-        <circle stroke="black" r={effectiveRadius} fill={color} strokeWidth={isPlayerSelected ? 5 : 1} />
-        <text className="player-circle-txt" textAnchor="middle" alignmentBaseline="middle" fill="white">
+        <circle stroke="black" r={effectiveRadius} fill={color} strokeWidth={strokeWidth} />
+        <text x={0.2} y={2.5} className="player-circle-txt" fill="white" textAnchor="middle" alignmentBaseline="middle">
           {players.byId[id].jerseyNumber}
         </text>
       </g>

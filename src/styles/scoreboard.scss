@@ -5,7 +5,8 @@
   @include prevent-select;
   grid-row: 1 / span 1;
   background-color: lighten($color: theme($bg-color, $primary-color), $amount: 3);
-  display: flex;
+  display: grid;
+  grid-template: 1fr / auto auto auto;
   justify-content: center;
   padding: 0.1rem 0;
   margin: 0 0.5rem;

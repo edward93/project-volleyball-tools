@@ -2,8 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GameStates } from "types/reduxStore.Types";
 import { GameState } from "types/volleyballTool.New.Types";
 
+// TODO: make sure the initial state is stored in the game state
 // initial stats
-const initialState: GameStates = { byId: {}, allIds: [], currentState: undefined };
+const initialState: GameStates = { byId: {}, allIds: [], currentStateId: undefined };
 
 export const gameStates = createSlice({
   initialState,
@@ -15,13 +16,13 @@ export const gameStates = createSlice({
       state.byId[id] = action.payload;
       state.allIds.push(id);
       // select this as the current state
-      state.currentState = id;
+      state.currentStateId = id;
     },
 
     selectCurrentGameState: (state: GameStates, action: PayloadAction<{ id: string }>) => {
       const { id } = action.payload;
 
-      state.currentState = id;
+      state.currentStateId = id;
     },
   },
 });

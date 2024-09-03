@@ -1,0 +1,38 @@
+@import "../../styles/colors.scss";
+@import "../../styles/common.scss";
+
+.container {
+  display: grid;
+  grid-template: 1fr / 4fr auto 4fr;
+  place-items: center;
+  background-color: lighten($color: theme($bg-color, $primary-color), $amount: 3);
+
+  & .score-board-container {
+    display: grid;
+  }
+
+  & .toolbar-section {
+    display: grid;
+    grid-template: 1fr / 1fr 1fr;
+    column-gap: 0.5rem;
+    // justify-self: stretch;
+
+    margin: 0.1rem 0;
+    font-size: 0.8rem;
+
+    & Button {
+      font-size: 0.8rem;
+      // border-color: lighten($color: theme($bg-color, $primary-color), $amount: 40);
+      // color: lighten($color: theme($bg-color, $primary-color), $amount: 40);
+    }
+
+    & .rotate-section {
+      display: grid;
+    }
+
+    & .sub-section {
+      display: grid;
+      place-items: stretch;
+    }
+  }
+}

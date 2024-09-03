@@ -8,6 +8,7 @@ import { createNewScore } from "./score.Slice";
 import { GameState, Score } from "types/volleyballTool.New.Types";
 import "../../styles/scoreboard.scss";
 
+// TODO: due to new game state changes this component is broken
 /**
  * Scoreboard component
  * @returns Scoreboard Component
@@ -15,7 +16,7 @@ import "../../styles/scoreboard.scss";
 const ScoreboardComponent = () => {
   const dispatch = useAppDispatch();
   // game states
-  const { currentState } = useAppSelector((selector) => selector.gameState);
+  const { currentStateId: currentState } = useAppSelector((selector) => selector.gameState);
   // current game
   const game = useAppSelector((selector) => selector.game);
   // all teams
@@ -75,6 +76,8 @@ const ScoreboardComponent = () => {
     const state: GameState = {
       id: uuidv4(),
       gameId: game.id,
+      // TODO: tmp fix
+      dependencies: { activePlayerIds: [], playerLocationIds: {} },
     };
 
     // save this onto the store
@@ -104,6 +107,8 @@ const ScoreboardComponent = () => {
             const newSet: GameState = {
               id: uuidv4(),
               gameId: game.id,
+              // TODO: tmp fix
+              dependencies: { activePlayerIds: [], playerLocationIds: {} },
             };
 
             // save this onto the store
@@ -152,6 +157,8 @@ const ScoreboardComponent = () => {
             const newSet: GameState = {
               id: uuidv4(),
               gameId: game.id,
+              // TODO: tmp fix
+              dependencies: { activePlayerIds: [], playerLocationIds: {} },
             };
 
             // save this onto the store

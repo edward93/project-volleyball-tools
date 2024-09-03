@@ -1,15 +1,15 @@
+import { Collapse, ColorInput, Select, SelectItem, TextInput } from "@mantine/core";
 import { useState } from "react";
-import { Select, SelectItem, TextInput, Collapse, ColorInput } from "@mantine/core";
 
+import { updatePlayerInfo } from "components/Players/players.Slice";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { SelectedPlayer } from "types/reduxStore.Types";
-import { updatePlayerInfo } from "components/Players/players.Slice";
-import { PositionsById } from "types/volleyballTool.Types";
+import { PositionsById } from "types/volleyballTool.New.Types";
 
 import "styles/inspector.scss";
 
-import NewGameActionComponent from "./NewGameAction.Component";
 import GameActionsComponent from "./GameActions.Component";
+import NewGameActionComponent from "./NewGameAction.Component";
 
 const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, position]) => ({
   value: key,
@@ -27,7 +27,8 @@ const InspectorComponent = () => {
   // player locations
   const playersLocations = useAppSelector((selector) => selector.playersLocations);
   // current game state
-  const { currentState } = useAppSelector((selector) => selector.gameState);
+  const { currentStateId } = useAppSelector((selector) => selector.gameState);
+  const currentState = useAppSelector((selector) => selector.gameState.byId[currentStateId ?? ""]);
 
   const { selectedId } = useAppSelector((selector) => selector.inspector);
 
@@ -35,7 +36,9 @@ const InspectorComponent = () => {
 
   if (!selectedId) return null;
 
-  const location = playersLocations.byGameStateId[currentState ?? ""]?.[selectedId] ?? playersLocations.byPlayerId[selectedId];
+  const locationId =
+    currentState?.dependencies?.playerLocationIds?.[selectedId] ?? playersLocations.byPlayerId[selectedId]
+  const location = playersLocations.byId[locationId];
 
   // collapse/open internal section
 
@@ -47,7 +50,7 @@ const InspectorComponent = () => {
           color: players.byId[selectedId].color,
           x: location.x,
           y: location.y,
-          r: players.byId[selectedId].r,
+          r: 40, // TODO: fix it later, should not be hardcoded
         },
         visual: {
           avgScore: players.byId[selectedId].score,
@@ -55,7 +58,7 @@ const InspectorComponent = () => {
           position: players.byId[selectedId].positionId,
           jerseyNumber: players.byId[selectedId].jerseyNumber,
         },
-        stats: [],
+        // stats: [],
       }
     : null;
 
