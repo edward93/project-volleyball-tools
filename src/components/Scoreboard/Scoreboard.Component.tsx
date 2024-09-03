@@ -8,6 +8,7 @@ import { createNewScore } from "./score.Slice";
 import { GameState, Score } from "types/volleyballTool.New.Types";
 import "../../styles/scoreboard.scss";
 
+// TODO: due to new game state changes this component is broken
 /**
  * Scoreboard component
  * @returns Scoreboard Component
@@ -66,7 +67,6 @@ const ScoreboardComponent = () => {
     pointIsScored(false);
   };
 
-  // TODO: due to new game state changes this component is broken
   /**
    * Calculates and creates new score (along with a state)
    *

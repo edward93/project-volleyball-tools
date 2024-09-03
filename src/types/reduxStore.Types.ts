@@ -1,4 +1,4 @@
-import { GameAction, GameState, Player, PlayerLocation, Score, Set, Team } from "./volleyballTool.New.Types";
+import { GameAction, GameState, Player, PlayerLocation, Score, Set, Point, Team } from "./volleyballTool.New.Types";
 // import { ActionScore, GameInfo } from "./volleyballTool.Types";
 
 /**
@@ -40,19 +40,19 @@ export type Sets = {
 };
 
 /** Points type for redux store */
-// export type Points = {
-//   /** Points by ids */
-//   byId: Record<string, Point>;
-//   // /** Points by set id */
-//   // bySetId: Record<string, Point[]>;
-//   // /** Sets by game id */
-//   // byGameId: Record<string, Point[]>;
+export type Points = {
+  /** Points by ids */
+  byId: Record<string, Point>;
+  // /** Points by set id */
+  // bySetId: Record<string, Point[]>;
+  // /** Sets by game id */
+  // byGameId: Record<string, Point[]>;
 
-//   /** Point by the state id */
-//   byGameStateId: Record<string, Point>;
-//   /** All point ids */
-//   allIds: string[];
-// };
+  /** Point by the state id */
+  byGameStateId: Record<string, Point>;
+  /** All point ids */
+  allIds: string[];
+};
 
 /** Volleyball team */
 // export type Team = {
