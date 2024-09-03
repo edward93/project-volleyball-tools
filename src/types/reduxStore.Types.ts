@@ -1,4 +1,4 @@
-import { GameAction, GameState, Player, PlayerLocation, Point, Score, Set, Team } from "./volleyballTool.New.Types";
+import { GameAction, GameState, Player, PlayerLocation, Score, Set, Team } from "./volleyballTool.New.Types";
 // import { ActionScore, GameInfo } from "./volleyballTool.Types";
 
 /**

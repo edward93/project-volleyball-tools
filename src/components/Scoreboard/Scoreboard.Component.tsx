@@ -66,6 +66,7 @@ const ScoreboardComponent = () => {
     pointIsScored(false);
   };
 
+  // TODO: due to new game state changes this component is broken
   /**
    * Calculates and creates new score (along with a state)
    *
@@ -75,6 +76,8 @@ const ScoreboardComponent = () => {
     const state: GameState = {
       id: uuidv4(),
       gameId: game.id,
+      // TODO: tmp fix
+      dependencies: { activePlayerIds: [], playerLocationIds: {} },
     };
 
     // save this onto the store
@@ -104,6 +107,8 @@ const ScoreboardComponent = () => {
             const newSet: GameState = {
               id: uuidv4(),
               gameId: game.id,
+              // TODO: tmp fix
+              dependencies: { activePlayerIds: [], playerLocationIds: {} },
             };
 
             // save this onto the store
@@ -152,6 +157,8 @@ const ScoreboardComponent = () => {
             const newSet: GameState = {
               id: uuidv4(),
               gameId: game.id,
+              // TODO: tmp fix
+              dependencies: { activePlayerIds: [], playerLocationIds: {} },
             };
 
             // save this onto the store

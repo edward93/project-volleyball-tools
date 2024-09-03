@@ -5,7 +5,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useAppSelector } from "reduxTools/hooks";
 import { v4 as uuidv4 } from "uuid";
 
-import { addLocation, deleteLocation } from "components/Players/playerLocation.Slice";
+import { addLocation } from "components/Players/playerLocation.Slice";
 import { subPlayers } from "components/Players/players.Slice";
 import { forwardRef, useState } from "react";
 import { useDispatch } from "react-redux";
