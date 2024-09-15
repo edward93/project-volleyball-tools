@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { GameSet, Set } from "types/volleyballTool.New.Types";
-import { gameId } from "./game.Slice";
 import { Sets } from "types/reduxStore.Types";
 
 //#region test sets
@@ -28,8 +27,10 @@ import { Sets } from "types/reduxStore.Types";
 // };
 //#endregion
 
+// TODO: game initializer should create this
 const set: Set = {
-  gameId,
+  // gameId,
+  gameId: "",
   id: uuidv4(),
   set: 1,
   homeScore: 0,
@@ -38,7 +39,7 @@ const set: Set = {
 
 const initialState: Sets = {
   byId: { [set.id]: set },
-  byGameId: { [gameId]: [set] },
+  byGameId: { [""]: [set] },
   allIds: [set.id],
 };
 

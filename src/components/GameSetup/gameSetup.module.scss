@@ -1,0 +1,82 @@
+@import "../../styles/colors.scss";
+@import "../../styles/common.scss";
+
+.container {
+  display: grid;
+  background-color: lighten($color: theme($bg-color, $primary-color), $amount: 3);
+  // place-items: center;
+
+  grid-template: auto 1fr auto / auto;
+  width: 100%;
+  padding-bottom: 1rem;
+
+  & .header {
+    display: grid;
+    justify-items: center;
+    // justify-content: center;
+  }
+
+  & .content {
+    display: grid;
+    // width: 100%;
+
+    & .team-setup-container {
+      display: grid;
+      grid-template: auto 1fr / auto;
+
+      & .team-setup-header {
+        display: grid;
+        justify-content: center;
+      }
+
+      & .team-setup-content {
+        display: grid;
+        padding: 0.5rem 1rem;
+
+        grid-template: 1fr / 1fr 1fr;
+
+        & .add-new-player {
+          display: grid;
+          justify-items: center;
+          align-items: start;
+
+          & .add-new-player-form {
+            display: block;
+
+            & > button {
+              margin: 0.7rem 0;
+            }
+          }
+        }
+
+        & .team-players {
+          display: grid;
+          // justify-content: center;
+          justify-items: center;
+          align-items: start;
+
+          & .player-container {
+            display: grid;
+            grid-template: 1fr/ 1fr auto;
+            place-items: center;
+            background-color: lighten($color: theme($bg-color, $primary-color), $amount: 4);
+
+            padding: 0.5rem;
+
+            & .player-actions {
+              padding: 0 0.5rem;
+              display: grid;
+              grid-template: 1fr / 1fr 1fr;
+              grid-gap: 0.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  & .actions {
+    display: grid;
+    place-self: center;
+  }
+}

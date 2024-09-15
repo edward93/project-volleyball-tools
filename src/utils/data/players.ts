@@ -20,7 +20,7 @@ export const teamJapanPlayers: Player[] = [
     name: "Kento Miyaura",
     positionId: OppositeHitter.id,
     jerseyNumber: 4,
-    actionIds: [],
+    // actionIds: [],
     isActive: true,
     currentRotationPosition: 5,
 
@@ -33,7 +33,7 @@ export const teamJapanPlayers: Player[] = [
     name: "Masahiro Sekita",
     positionId: Setter.id,
     jerseyNumber: 8,
-    actionIds: [],
+    // actionIds: [],
     isActive: true,
     currentRotationPosition: 2,
 
@@ -46,7 +46,7 @@ export const teamJapanPlayers: Player[] = [
     name: "Akihiro Yamauchi",
     positionId: MiddleBlocker.id,
     jerseyNumber: 6,
-    actionIds: [],
+    // actionIds: [],
     isActive: true,
     currentRotationPosition: 4,
 
@@ -59,7 +59,7 @@ export const teamJapanPlayers: Player[] = [
     name: "Kentaro Takahashi",
     positionId: MiddleBlocker.id,
     jerseyNumber: 10,
-    actionIds: [],
+    // actionIds: [],
     isActive: true,
     currentRotationPosition: 1,
 
@@ -72,7 +72,7 @@ export const teamJapanPlayers: Player[] = [
     name: "Ran Takahashi",
     positionId: OutsideHitter.id,
     jerseyNumber: 12,
-    actionIds: [],
+    // actionIds: [],
     isActive: true,
     currentRotationPosition: 3,
 
@@ -85,7 +85,7 @@ export const teamJapanPlayers: Player[] = [
     name: "Yuki Ishikawa",
     positionId: OutsideHitter.id,
     jerseyNumber: 14,
-    actionIds: [],
+    // actionIds: [],
     isActive: true,
     currentRotationPosition: 6,
 
@@ -99,7 +99,7 @@ export const teamJapanPlayers: Player[] = [
     name: "Tomohiro Yamamoto",
     positionId: Libero.id,
     jerseyNumber: 20,
-    actionIds: [],
+    // actionIds: [],
     isActive: false,
 
     color: homeColor,
@@ -111,7 +111,7 @@ export const teamJapanPlayers: Player[] = [
     name: "Yuji Nishida",
     positionId: OppositeHitter.id,
     jerseyNumber: 1,
-    actionIds: [],
+    // actionIds: [],
     isActive: false,
 
     color: homeColor,
@@ -127,7 +127,7 @@ export const teamUsaPlayers: Player[] = [
     name: "Jake Hanse",
     positionId: OppositeHitter.id,
     jerseyNumber: 9,
-    actionIds: [],
+    // actionIds: [],
     isActive: true,
     currentRotationPosition: 5,
 
@@ -140,7 +140,7 @@ export const teamUsaPlayers: Player[] = [
     name: "Micah Christenson",
     positionId: Setter.id,
     jerseyNumber: 11,
-    actionIds: [],
+    // actionIds: [],
     isActive: true,
     currentRotationPosition: 2,
 
@@ -153,7 +153,7 @@ export const teamUsaPlayers: Player[] = [
     name: "David Smith",
     positionId: MiddleBlocker.id,
     jerseyNumber: 20,
-    actionIds: [],
+    // actionIds: [],
     isActive: true,
     currentRotationPosition: 4,
 
@@ -166,7 +166,7 @@ export const teamUsaPlayers: Player[] = [
     name: "Taylor Averill",
     positionId: MiddleBlocker.id,
     jerseyNumber: 19,
-    actionIds: [],
+    // actionIds: [],
     isActive: true,
     currentRotationPosition: 1,
 
@@ -179,7 +179,7 @@ export const teamUsaPlayers: Player[] = [
     name: "Aaron Russel",
     positionId: OutsideHitter.id,
     jerseyNumber: 2,
-    actionIds: [],
+    // actionIds: [],
     isActive: true,
     currentRotationPosition: 3,
 
@@ -192,7 +192,7 @@ export const teamUsaPlayers: Player[] = [
     name: "T.J. DeFalco",
     positionId: OutsideHitter.id,
     jerseyNumber: 9,
-    actionIds: [],
+    // actionIds: [],
     isActive: true,
     currentRotationPosition: 6,
 
@@ -206,7 +206,7 @@ export const teamUsaPlayers: Player[] = [
     name: "Erik Shoji",
     positionId: Libero.id,
     jerseyNumber: 22,
-    actionIds: [],
+    // actionIds: [],
     isActive: false,
 
     color: awayColor,
@@ -218,7 +218,7 @@ export const teamUsaPlayers: Player[] = [
     name: "Maxwell Holt",
     positionId: MiddleBlocker.id,
     jerseyNumber: 12,
-    actionIds: [],
+    // actionIds: [],
     isActive: false,
 
     color: awayColor,

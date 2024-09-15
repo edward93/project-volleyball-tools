@@ -1,14 +1,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { v4 as uuidv4 } from "uuid";
 import { Game } from "types/volleyballTool.New.Types";
-import { homeTeam, awayTeam } from "../Players/teams.Slice";
+import { v4 as uuidv4 } from "uuid";
+import { awayTeam, homeTeam } from "../Players/teams.Slice";
 
 // TODO: remove this after refactoring this
-export const gameId = uuidv4();
 const workspaceId = uuidv4();
 
 const initialState: Game = {
-  id: gameId,
+  id: uuidv4(),
   workspaceId,
   hasEnded: false,
 
@@ -20,6 +19,20 @@ export const gameSlice = createSlice({
   initialState,
   name: "game",
   reducers: {
+    /**
+     * Creates a new game
+     * @param state - state
+     */
+    newGame: (state: Game, action: PayloadAction<string>) => {
+      const gameId = action.payload;
+      
+      state.id = gameId;
+      state.workspaceId = workspaceId;
+      state.hasEnded = false;
+
+      state.awayTeamId = awayTeam.id;
+      state.homeTeamId = homeTeam.id;
+    },
     endTheGame: (state: Game, action: PayloadAction<string>) => {
       const gameId = action.payload;
 
@@ -29,5 +42,7 @@ export const gameSlice = createSlice({
     },
   },
 });
+
+export const { newGame } = gameSlice.actions;
 
 export default gameSlice.reducer;

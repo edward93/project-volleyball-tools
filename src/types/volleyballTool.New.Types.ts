@@ -228,13 +228,13 @@ export type Player = {
   /** Player's position id */
   positionId: string;
   /** List of actions (action ids) */
-  actionIds: string[];
+  // actionIds: string[];
   /** Player's total score */
   score: number;
   /** Is this player playing or is benched */
   isActive: boolean;
   /** Current (by default latest) player's action id */
-  selectedActionId?: string;
+  // selectedActionId?: string;
   /** Current rotational position number */
   currentRotationPosition?: RotationPositionNumber;
   /** Color of the circle */
@@ -526,7 +526,7 @@ export const RotationPositions: RotationPositionType = {
 //#endregion
 
 //#region Positions
-type PositionType = {
+export type PositionType = {
   id: string;
   name: string;
   shortName?: string;

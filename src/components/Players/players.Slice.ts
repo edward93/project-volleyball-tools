@@ -39,11 +39,11 @@ export const playersSlice = createSlice({
       state.byId[subOutId].isActive = false;
       state.byId[subOutId].currentRotationPosition = undefined;
     },
-    selectPlayerAction: (state: Players, action: PayloadAction<{ playerId: string; actionId: string }>) => {
-      const { playerId, actionId } = action.payload;
-      // updated selected action id
-      state.byId[playerId].selectedActionId = actionId;
-    },
+    // selectPlayerAction: (state: Players, action: PayloadAction<{ playerId: string; actionId: string }>) => {
+    //   const { playerId, actionId } = action.payload;
+    //   // updated selected action id
+    //   state.byId[playerId].selectedActionId = actionId;
+    // },
     updatePlayerName: (state: Players, action: PayloadAction<{ id: string; newName: string }>) => {
       state.byId[action.payload.id].name = action.payload.newName;
     },
@@ -51,24 +51,24 @@ export const playersSlice = createSlice({
       delete state.byId[action.payload];
       state.allIds.splice(state.allIds.indexOf(action.payload));
     },
-    addGameAction: (state: Players, action: PayloadAction<{ playerId: string; gameAction: GameAction }>) => {
-      const { playerId, gameAction } = action.payload;
+    // addGameAction: (state: Players, action: PayloadAction<{ playerId: string; gameAction: GameAction }>) => {
+    //   const { playerId, gameAction } = action.payload;
 
-      // add to the start of the array so actionIds[0] always points to the latest
-      state.byId[playerId].actionIds.unshift(gameAction.id);
+    //   // add to the start of the array so actionIds[0] always points to the latest
+    //   state.byId[playerId].actionIds.unshift(gameAction.id);
 
-      // set newly created action as selected
-      playersSlice.caseReducers.selectPlayerAction(state, {
-        payload: { playerId, actionId: gameAction.id },
-        type: action.type,
-      });
-      // state.byId[playerId].selectedActionId = gameAction.id;
+    //   // set newly created action as selected
+    //   playersSlice.caseReducers.selectPlayerAction(state, {
+    //     payload: { playerId, actionId: gameAction.id },
+    //     type: action.type,
+    //   });
+    //   // state.byId[playerId].selectedActionId = gameAction.id;
 
-      const gameActionType = GameActionTypesById?.[gameAction?.type];
+    //   const gameActionType = GameActionTypesById?.[gameAction?.type];
 
-      // update player's score
-      state.byId[playerId].score += gameActionType.score;
-    },
+    //   // update player's score
+    //   state.byId[playerId].score += gameActionType.score;
+    // },
     /**
      * Rotates all active (on the court) player's court position after a side-out
      * @param state - Current state
@@ -83,7 +83,7 @@ export const playersSlice = createSlice({
   },
 });
 
-export const { updatePlayerInfo, updatePlayerName, subPlayers, addGameAction, selectPlayerAction, rotatePlayers } =
+export const { updatePlayerInfo, updatePlayerName, subPlayers, rotatePlayers } =
   playersSlice.actions;
 
 export default playersSlice.reducer;

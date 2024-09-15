@@ -1,8 +1,8 @@
 import "../styles/app.scss";
 import Header from "./layout/Header.Component";
 import Footer from "./layout/Footer.Component";
-import VolleyballTools from "./VolleyballTool/VolleyballTool.Component";
 import { MantineProvider } from "@mantine/core";
+import { Outlet } from "react-router-dom";
 
 /**
  * Main App component
@@ -15,7 +15,7 @@ const App = () => {
         <section className="screen-space">
           <Header />
           <div className="app-content">
-            <VolleyballTools />
+            <Outlet />
           </div>
         </section>
         <Footer />

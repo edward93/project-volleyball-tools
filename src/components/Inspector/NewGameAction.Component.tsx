@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 
-import { addGameAction } from "components/Players/players.Slice";
+// import { addGameAction } from "components/Players/players.Slice";
 import { create as createNewGameAction } from "./gameAction.Slice";
 
 import "styles/stats.scss";
@@ -92,9 +92,6 @@ const StatsComponent = () => {
 
     // save the new game action
     if (currentAction) dispatch(createNewGameAction(currentAction));
-
-    // add action id to the player's actionIds list
-    if (currentAction) dispatch(addGameAction({ playerId: selectedId, gameAction: currentAction }));
 
     // cleanup
     setCurrentAction(undefined);
