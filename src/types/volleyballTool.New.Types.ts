@@ -236,7 +236,7 @@ export type Player = {
   /** Current (by default latest) player's action id */
   // selectedActionId?: string;
   /** Current rotational position number */
-  currentRotationPosition?: RotationPositionNumber;
+  currentRotationPosition?: CourtPosition;
   /** Color of the circle */
   color: string;
 };
@@ -275,12 +275,12 @@ export type GameState = {
   /** all the necessary components that are associated with this state and can be recovered */
   dependencies: {
     /** all player ids snapshot by this state */
-    activePlayerIds: string[],
+    activePlayerIds: string[];
     /** all locations of current players snapshot by this state [playerId][playerLocationId]*/
-    playerLocationIds: Record<string, string>,
+    playerLocationIds: Record<string, string>;
     /** game action associated with this state (only one action per state) */
-    gameActionId?: string,
-  }
+    gameActionId?: string;
+  };
 };
 
 /** Represents a game action, perfect set, perfect dig, etc. */
@@ -400,12 +400,16 @@ export enum HalfCourt {
 }
 
 /** Rotation position numbers type */
-export type RotationPositionNumber = 1 | 2 | 3 | 4 | 5 | 6;
+export type CourtPosition = 1 | 2 | 3 | 4 | 5 | 6;
+
+// TODO: static data should be moved to static/data folder
+/** All court positions */
+export const CourtPositions: CourtPosition[] = [1, 2, 3, 4, 5, 6];
 
 /** Court position type */
 export type CourtPositionCoordinates = {
   /** Rotation number */
-  id: RotationPositionNumber;
+  id: CourtPosition;
   /** Side */
   halfCourt: HalfCourt;
   /** X coordinate */
@@ -494,7 +498,7 @@ export const RightCourtPos6: CourtPositionCoordinates = {
 };
 
 /** Map of all rotational positions */
-type RotationPositionType = Record<RotationPositionNumber, Record<HalfCourt, CourtPositionCoordinates>>;
+type RotationPositionType = Record<CourtPosition, Record<HalfCourt, CourtPositionCoordinates>>;
 
 /** Rotation positional coordinates */
 export const RotationPositions: RotationPositionType = {

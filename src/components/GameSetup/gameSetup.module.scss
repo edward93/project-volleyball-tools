@@ -41,7 +41,10 @@
           align-items: start;
 
           & .add-new-player-form {
-            display: block;
+            display: grid;
+            grid-template: repeat(6, 1fr) / 1fr;
+
+            grid-row-gap: 0.5rem;
 
             & > button {
               margin: 0.7rem 0;
@@ -50,15 +53,22 @@
         }
 
         & .team-players {
-          display: grid;
+          display: block;
+          // font-size: 0.8rem;
+          // flex-direction: column;
+          // display: grid;
           // justify-content: center;
-          justify-items: center;
-          align-items: start;
+          // align-content: start;
+          // justify-items: center;
+          // align-items: start;
 
           & .player-container {
+            margin: 0.5rem 0;
+            // grid-row: 1;
+            // width: 100%;
             display: grid;
             grid-template: 1fr/ 1fr auto;
-            place-items: center;
+            // justify-items: center;
             background-color: lighten($color: theme($bg-color, $primary-color), $amount: 4);
 
             padding: 0.5rem;

@@ -1,11 +1,18 @@
 import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ActionIcon, Button, NumberInput, Select, SelectItem, TextInput } from "@mantine/core";
+import { ActionIcon, Button, NumberInput, Select, SelectItem, Switch, TextInput } from "@mantine/core";
 import { newGame } from "components/Scoreboard/game.Slice";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "reduxTools/hooks";
-import { None, Player, PositionType, PositionsById } from "types/volleyballTool.New.Types";
+import {
+  CourtPosition,
+  CourtPositions,
+  None,
+  Player,
+  PositionType,
+  PositionsById,
+} from "types/volleyballTool.New.Types";
 import { ROUTES } from "utils/router/routes";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./gameSetup.module.scss";
@@ -14,6 +21,9 @@ const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, p
   value: key,
   label: position.name,
 }));
+
+/** Court position select options */
+const selectCourtPositions: SelectItem[] = CourtPositions.map((c) => ({ value: c.toString(), label: c.toString() }));
 
 /**
  * Game Setup component for creating a new game to track
@@ -30,8 +40,12 @@ export const GameSetupComponent = () => {
   const [currentPlayerName, setCurrentPlayerName] = useState<string>("");
   // current player position
   const [currentPlayerPosition, setCurrentPlayerPosition] = useState<PositionType>(None);
+  // starting court position
+  const [currentCourtPosition, setCurrentCourtPosition] = useState<CourtPosition | undefined>(undefined);
   // current player number
   const [currentPlayerNumber, setCurrentPlayerNumber] = useState<number>(1);
+  // is active (part of starting 6)
+  const [isActive, setIsActive] = useState(false);
 
   /**
    * Handles start tracking click events
@@ -46,7 +60,7 @@ export const GameSetupComponent = () => {
   /**
    * Handles confirm btn clicks (for adding a new player)
    */
-  const onConfirmClick = () => {
+  const onAddPlayerClick = () => {
     // create current player
     const player: Player = {
       id: uuidv4(),
@@ -64,6 +78,9 @@ export const GameSetupComponent = () => {
     // reset the form
     setCurrentPlayerName("");
     setCurrentPlayerPosition(None);
+    setCurrentPlayerNumber(1);
+    setCurrentCourtPosition(undefined);
+    setIsActive(false);
   };
 
   /**
@@ -121,6 +138,28 @@ export const GameSetupComponent = () => {
     setPlayers(newPlayers);
   };
 
+  // /**
+  //  * Handles is active switch changes
+  //  *
+  //  * @param event - input event
+  //  */
+  // const onIsActiveChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   event.preventDefault();
+
+  //   setIsActive(event.currentTarget.checked);
+  // };
+
+  /**
+   * Selects current court position
+   *
+   * @param value - selected court position
+   */
+  const onCurrentCourtPositionChange = (value: string) => {
+    const courtPosition = +value as CourtPosition;
+
+    setCurrentCourtPosition(courtPosition);
+  };
+
   /**
    * Edits player info
    *
@@ -166,8 +205,27 @@ export const GameSetupComponent = () => {
                   onChange={onPositionChange}
                   placeholder="e.g. Setter"
                 />
-                <Button variant="filled" color="blue" onClick={onConfirmClick}>
-                  Confirm
+                <Select
+                  label="Starting Position"
+                  data={selectCourtPositions}
+                  searchable
+                  withinPortal
+                  variant="filled"
+                  // withAsterisk={isActive}
+                  disabled={!isActive}
+                  value={currentCourtPosition?.toString()}
+                  onChange={onCurrentCourtPositionChange}
+                  placeholder="1 or 6"
+                />
+                <Switch
+                  label="Is Active"
+                  checked={isActive}
+                  labelPosition="left"
+                  onChange={(event) => setIsActive(event.currentTarget.checked)}
+                  description="Is this player part of the starting 6"
+                />
+                <Button variant="filled" color="blue" onClick={onAddPlayerClick}>
+                  Add Player
                 </Button>
               </div>
             </div>
@@ -234,11 +292,11 @@ const PlayerCompactComponent = (props: {
         {jerseyNumber} - {name} / {PositionsById[positionId].shortName}
       </section>
       <section className={styles.playerActions}>
-        <ActionIcon variant="outline" onClick={onEditClick} title="Edit player">
-          <FontAwesomeIcon icon={faPenToSquare} />
+        <ActionIcon variant="outline" onClick={onEditClick} title="Edit player" size="sm">
+          <FontAwesomeIcon icon={faPenToSquare} size="xs" />
         </ActionIcon>
-        <ActionIcon variant="outline" onClick={onDeleteClick} title="Delete player">
-          <FontAwesomeIcon icon={faTrashCan} />
+        <ActionIcon variant="outline" onClick={onDeleteClick} title="Delete player" size="sm" color="red">
+          <FontAwesomeIcon icon={faTrashCan} size="xs"/>
         </ActionIcon>
       </section>
     </div>

@@ -4,7 +4,7 @@ import { Button } from "@mantine/core";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { v4 as uuidv4 } from "uuid";
 
-import { HalfCourt, Player, RotationPositionNumber, RotationPositions } from "types/volleyballTool.New.Types";
+import { HalfCourt, Player, CourtPosition, RotationPositions } from "types/volleyballTool.New.Types";
 
 import { addLocations } from "components/Players/playerLocation.Slice";
 import { rotatePlayers } from "components/Players/players.Slice";
@@ -62,7 +62,7 @@ const RotationToolComponent = (props: RotationToolProps) => {
       // this formula `(x + 4) % 6 + 1` ensures the proper rotation
       return {
         ...player,
-        currentRotationPosition: ((((player.currentRotationPosition as number) + 4) % 6) + 1) as RotationPositionNumber,
+        currentRotationPosition: ((((player.currentRotationPosition as number) + 4) % 6) + 1) as CourtPosition,
       };
     });
 
@@ -90,7 +90,7 @@ const RotationToolComponent = (props: RotationToolProps) => {
    * @returns {x, y} Coordinates
    */
   const rotationCoordinates = (
-    posNumber: RotationPositionNumber | undefined,
+    posNumber: CourtPosition | undefined,
     courtSide: HalfCourt,
   ): { x: number; y: number } => {
     const coordinates = {
