@@ -1,6 +1,4 @@
-import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ActionIcon, Button, NumberInput, Select, SelectItem, Switch, TextInput } from "@mantine/core";
+import { Button, NumberInput, Select, SelectItem, Stepper, Switch, TextInput, createStyles } from "@mantine/core";
 import { newGame } from "components/Scoreboard/game.Slice";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,13 +6,17 @@ import { useAppDispatch } from "reduxTools/hooks";
 import {
   CourtPosition,
   CourtPositions,
+  HalfCourt,
   None,
   Player,
   PositionType,
   PositionsById,
+  Team,
 } from "types/volleyballTool.New.Types";
 import { ROUTES } from "utils/router/routes";
 import { v4 as uuidv4 } from "uuid";
+import CreateTeamComponent from "./CreateTeam.Component";
+import PlayerCompactComponent from "./PlayerInfoCard.Component";
 import styles from "./gameSetup.module.scss";
 
 const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, position]) => ({
@@ -25,6 +27,18 @@ const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, p
 /** Court position select options */
 const selectCourtPositions: SelectItem[] = CourtPositions.map((c) => ({ value: c.toString(), label: c.toString() }));
 
+// custom styles for the stepper component
+const useStyles = createStyles(() => ({
+  root: {
+    display: "grid",
+    gridTemplate: "auto 1fr/ 1fr",
+  },
+
+  content: {
+    display: "grid",
+  },
+}));
+
 /**
  * Game Setup component for creating a new game to track
  * @returns Setup Component
@@ -33,6 +47,9 @@ export const GameSetupComponent = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const teamId = uuidv4();
+
+  // stepper classes
+  const { classes } = useStyles();
 
   // list of players on the current team
   const [players, setPlayers] = useState<Player[]>([]);
@@ -46,12 +63,18 @@ export const GameSetupComponent = () => {
   const [currentPlayerNumber, setCurrentPlayerNumber] = useState<number>(1);
   // is active (part of starting 6)
   const [isActive, setIsActive] = useState(false);
+  // team name
+  const [teamName, setTeamName] = useState<string>("");
+  // stepper active step
+  const [active, setActive] = useState<number>(0);
 
   /**
    * Handles start tracking click events
    */
   const onStartTrackingClick = () => {
     const id = createNewGameAndTrack();
+
+    // TODO: create team and players
 
     // move to the tracking page
     navigate(ROUTES.GAME(id));
@@ -61,10 +84,18 @@ export const GameSetupComponent = () => {
    * Handles confirm btn clicks (for adding a new player)
    */
   const onAddPlayerClick = () => {
+    // TODO: this should be created only once (remove from here)
+    const team: Team = {
+      id: teamId,
+      courtSide: HalfCourt.Left,
+      isHome: true,
+      name: teamName,
+    };
+
     // create current player
     const player: Player = {
       id: uuidv4(),
-      teamId,
+      teamId: team.id,
       score: 0,
       color: "#03B5AA",
       isActive: true,
@@ -173,131 +204,79 @@ export const GameSetupComponent = () => {
         <h3>New Game</h3>
       </section>
       <section className={styles.content}>
-        <section className={styles.teamSetupContainer}>
-          <h4 className={styles.teamSetupHeader}>Setup Team</h4>
-          <div className={styles.teamSetupContent}>
-            <div className={styles.addNewPlayer}>
-              <div className={styles.addNewPlayerForm}>
-                <TextInput
-                  label="Player Name"
-                  name="player-name"
-                  withAsterisk
-                  placeholder="e.g. John Smith"
-                  value={currentPlayerName}
-                  onChange={onCurrentPlayerNameChange}
-                />
-                <NumberInput
-                  label="Player Number"
-                  name="player-number"
-                  withAsterisk
-                  placeholder="14"
-                  value={currentPlayerNumber}
-                  onChange={onCurrentPlayerNumberChange}
-                />
-                <Select
-                  label="Position"
-                  data={selectPositions}
-                  searchable
-                  withinPortal
-                  variant="filled"
-                  withAsterisk
-                  value={currentPlayerPosition?.id}
-                  onChange={onPositionChange}
-                  placeholder="e.g. Setter"
-                />
-                <Select
-                  label="Starting Position"
-                  data={selectCourtPositions}
-                  searchable
-                  withinPortal
-                  variant="filled"
-                  // withAsterisk={isActive}
-                  disabled={!isActive}
-                  value={currentCourtPosition?.toString()}
-                  onChange={onCurrentCourtPositionChange}
-                  placeholder="1 or 6"
-                />
-                <Switch
-                  label="Is Active"
-                  checked={isActive}
-                  labelPosition="left"
-                  onChange={(event) => setIsActive(event.currentTarget.checked)}
-                  description="Is this player part of the starting 6"
-                />
-                <Button variant="filled" color="blue" onClick={onAddPlayerClick}>
-                  Add Player
-                </Button>
+        <Stepper active={active} onStepClick={setActive} size="sm" classNames={classes}>
+          <Stepper.Step label="Step 1" description="Create a team">
+            <CreateTeamComponent teamName={teamName} updateTeamName={setTeamName} />
+          </Stepper.Step>
+          <Stepper.Step label="Step 2" description="Add players">
+            {/* TODO: move this into a separate component*/}
+            <div className={styles.teamSetupContent}>
+              <div className={styles.addNewPlayer}>
+                <div className={styles.addNewPlayerForm}>
+                  <TextInput
+                    label="Player Name"
+                    name="player-name"
+                    withAsterisk
+                    placeholder="e.g. John Smith"
+                    value={currentPlayerName}
+                    onChange={onCurrentPlayerNameChange}
+                  />
+                  <NumberInput
+                    label="Player Number"
+                    name="player-number"
+                    withAsterisk
+                    placeholder="14"
+                    value={currentPlayerNumber}
+                    onChange={onCurrentPlayerNumberChange}
+                  />
+                  <Select
+                    label="Position"
+                    data={selectPositions}
+                    searchable
+                    withinPortal
+                    variant="filled"
+                    withAsterisk
+                    value={currentPlayerPosition?.id}
+                    onChange={onPositionChange}
+                    placeholder="e.g. Setter"
+                  />
+                  <Select
+                    label="Starting Position"
+                    data={selectCourtPositions}
+                    searchable
+                    withinPortal
+                    variant="filled"
+                    // withAsterisk={isActive}
+                    disabled={!isActive}
+                    value={currentCourtPosition?.toString()}
+                    onChange={onCurrentCourtPositionChange}
+                    placeholder="1 or 6"
+                  />
+                  <Switch
+                    label="Is Active"
+                    checked={isActive}
+                    labelPosition="left"
+                    onChange={(event) => setIsActive(event.currentTarget.checked)}
+                    description="Is this player part of the starting 6"
+                  />
+                  <Button variant="filled" color="blue" onClick={onAddPlayerClick}>
+                    Add Player
+                  </Button>
+                </div>
+              </div>
+              <div className={styles.teamPlayers}>
+                {players.map((c) => (
+                  <PlayerCompactComponent player={c} remove={deletePlayer} key={c.id} edit={editPlayer} />
+                ))}
               </div>
             </div>
-            <div className={styles.teamPlayers}>
-              {players.map((c) => (
-                <PlayerCompactComponent player={c} remove={deletePlayer} key={c.id} edit={editPlayer} />
-              ))}
-            </div>
-          </div>
-        </section>
+          </Stepper.Step>
+        </Stepper>
       </section>
       <section className={styles.actions}>
         <Button variant="filled" color="teal" onClick={onStartTrackingClick}>
           Start Tracking
         </Button>
-      </section>
-    </div>
-  );
-};
-
-/**
- * Compact component to display newly created
- *
- * @param props - player
- * @returns Player Compact Component
- */
-const PlayerCompactComponent = (props: {
-  player: Player;
-  remove: (id: string) => void;
-  edit: (id: string) => void;
-}) => {
-  const {
-    player: { id, jerseyNumber, name, positionId },
-    remove,
-    edit,
-  } = props;
-
-  /**
-   * Handles delete button click events
-   *
-   * @param event - Btn click event
-   */
-  const onDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    // call remove method from the props
-    remove(id);
-  };
-
-  /**
-   * Handles edit button click events
-   *
-   * @param event - Btn click event
-   */
-  const onEditClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    // call edit method from the props
-    edit(id);
-  };
-  return (
-    <div className={styles.playerContainer}>
-      <section>
-        {jerseyNumber} - {name} / {PositionsById[positionId].shortName}
-      </section>
-      <section className={styles.playerActions}>
-        <ActionIcon variant="outline" onClick={onEditClick} title="Edit player" size="sm">
-          <FontAwesomeIcon icon={faPenToSquare} size="xs" />
-        </ActionIcon>
-        <ActionIcon variant="outline" onClick={onDeleteClick} title="Delete player" size="sm" color="red">
-          <FontAwesomeIcon icon={faTrashCan} size="xs"/>
-        </ActionIcon>
       </section>
     </div>
   );
