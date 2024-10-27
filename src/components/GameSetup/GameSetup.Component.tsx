@@ -1,31 +1,15 @@
-import { Button, NumberInput, Select, SelectItem, Stepper, Switch, TextInput, createStyles } from "@mantine/core";
+import { Button, Stepper, createStyles } from "@mantine/core";
 import { newGame } from "components/Scoreboard/game.Slice";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "reduxTools/hooks";
-import {
-  CourtPosition,
-  CourtPositions,
-  HalfCourt,
-  None,
-  Player,
-  PositionType,
-  PositionsById,
-  Team,
-} from "types/volleyballTool.New.Types";
+import { CourtPosition, HalfCourt, None, Player, PositionType, Team } from "types/volleyballTool.New.Types";
 import { ROUTES } from "utils/router/routes";
 import { v4 as uuidv4 } from "uuid";
+import { AddPlayersComponent } from "./AddPlayers.Component";
 import CreateTeamComponent from "./CreateTeam.Component";
 import PlayerCompactComponent from "./PlayerInfoCard.Component";
 import styles from "./gameSetup.module.scss";
-
-const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, position]) => ({
-  value: key,
-  label: position.name,
-}));
-
-/** Court position select options */
-const selectCourtPositions: SelectItem[] = CourtPositions.map((c) => ({ value: c.toString(), label: c.toString() }));
 
 // custom styles for the stepper component
 const useStyles = createStyles(() => ({
@@ -115,33 +99,6 @@ export const GameSetupComponent = () => {
   };
 
   /**
-   * Handles current player name change events
-   * @param event - input change event
-   */
-  const onCurrentPlayerNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-
-    setCurrentPlayerName(event.target.value);
-  };
-
-  /**
-   * handles current player number change events
-   */
-  const onCurrentPlayerNumberChange = (value: number) => {
-    setCurrentPlayerNumber(value);
-  };
-
-  /**
-   * Handles position select component change events
-   * @param value - current selected value (position id)
-   */
-  const onPositionChange = (value: string) => {
-    const position = PositionsById[value];
-
-    setCurrentPlayerPosition(position);
-  };
-
-  /**
    * Creates a new game to track
    * @returns - Newly created game id
    */
@@ -181,17 +138,6 @@ export const GameSetupComponent = () => {
   // };
 
   /**
-   * Selects current court position
-   *
-   * @param value - selected court position
-   */
-  const onCurrentCourtPositionChange = (value: string) => {
-    const courtPosition = +value as CourtPosition;
-
-    setCurrentCourtPosition(courtPosition);
-  };
-
-  /**
    * Edits player info
    *
    * @param id - id of the player that is being edited
@@ -206,64 +152,23 @@ export const GameSetupComponent = () => {
       <section className={styles.content}>
         <Stepper active={active} onStepClick={setActive} size="sm" classNames={classes}>
           <Stepper.Step label="Step 1" description="Create a team">
-            <CreateTeamComponent teamName={teamName} updateTeamName={setTeamName} />
+            <CreateTeamComponent teamName={teamName} updateTeamName={setTeamName} createTeam={() => setActive(1)} />
           </Stepper.Step>
           <Stepper.Step label="Step 2" description="Add players">
-            {/* TODO: move this into a separate component*/}
             <div className={styles.teamSetupContent}>
-              <div className={styles.addNewPlayer}>
-                <div className={styles.addNewPlayerForm}>
-                  <TextInput
-                    label="Player Name"
-                    name="player-name"
-                    withAsterisk
-                    placeholder="e.g. John Smith"
-                    value={currentPlayerName}
-                    onChange={onCurrentPlayerNameChange}
-                  />
-                  <NumberInput
-                    label="Player Number"
-                    name="player-number"
-                    withAsterisk
-                    placeholder="14"
-                    value={currentPlayerNumber}
-                    onChange={onCurrentPlayerNumberChange}
-                  />
-                  <Select
-                    label="Position"
-                    data={selectPositions}
-                    searchable
-                    withinPortal
-                    variant="filled"
-                    withAsterisk
-                    value={currentPlayerPosition?.id}
-                    onChange={onPositionChange}
-                    placeholder="e.g. Setter"
-                  />
-                  <Select
-                    label="Starting Position"
-                    data={selectCourtPositions}
-                    searchable
-                    withinPortal
-                    variant="filled"
-                    // withAsterisk={isActive}
-                    disabled={!isActive}
-                    value={currentCourtPosition?.toString()}
-                    onChange={onCurrentCourtPositionChange}
-                    placeholder="1 or 6"
-                  />
-                  <Switch
-                    label="Is Active"
-                    checked={isActive}
-                    labelPosition="left"
-                    onChange={(event) => setIsActive(event.currentTarget.checked)}
-                    description="Is this player part of the starting 6"
-                  />
-                  <Button variant="filled" color="blue" onClick={onAddPlayerClick}>
-                    Add Player
-                  </Button>
-                </div>
-              </div>
+              <AddPlayersComponent
+                addPlayer={onAddPlayerClick}
+                courtPosition={currentCourtPosition}
+                isActive={isActive}
+                playerName={currentPlayerName}
+                playerNumber={currentPlayerNumber}
+                playerPosition={currentPlayerPosition}
+                updateCourtPosition={setCurrentCourtPosition}
+                updateIsActive={setIsActive}
+                updatePlayerName={setCurrentPlayerName}
+                updatePlayerNumber={setCurrentPlayerNumber}
+                updatePlayerPosition={setCurrentPlayerPosition}
+              />
               <div className={styles.teamPlayers}>
                 {players.map((c) => (
                   <PlayerCompactComponent player={c} remove={deletePlayer} key={c.id} edit={editPlayer} />

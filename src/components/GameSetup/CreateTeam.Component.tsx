@@ -1,13 +1,17 @@
 import { Button, TextInput } from "@mantine/core";
-import { ChangeEvent } from "react";
+import { ChangeEvent, MouseEvent } from "react";
 import styles from "./gameSetup.module.scss";
 
 /**
  * Component that handles team creation
  * @returns - Team creation component
  */
-export const CreateTeamComponent = (props: { teamName: string; updateTeamName: (value: string) => void }) => {
-  const { updateTeamName, teamName } = props;
+export const CreateTeamComponent = (props: {
+  teamName: string;
+  updateTeamName: (value: string) => void;
+  createTeam: () => void;
+}) => {
+  const { updateTeamName, teamName, createTeam } = props;
   /**
    * Handles team name change events
    * @param event - input change event
@@ -16,6 +20,16 @@ export const CreateTeamComponent = (props: { teamName: string; updateTeamName: (
     event.preventDefault();
 
     updateTeamName(event.target.value);
+  };
+
+  /**
+   * Handles team create btn click event
+   * @param event - Btn click event
+   */
+  const onCreateNewTeamClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    createTeam();
   };
 
   return (
@@ -31,7 +45,9 @@ export const CreateTeamComponent = (props: { teamName: string; updateTeamName: (
         />
       </section>
       <section className={styles.actions}>
-        <Button variant="filled">Create</Button>
+        <Button variant="filled" onClick={onCreateNewTeamClick}>
+          Create
+        </Button>
       </section>
     </div>
   );
