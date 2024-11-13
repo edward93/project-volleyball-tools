@@ -1,28 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { v4 as uuidv4 } from "uuid";
 
 import { PlayersLocations } from "types/reduxStore.Types";
-import { PlayerLocation, RotationPositions } from "types/volleyballTool.New.Types";
-
-import { initialPlayers } from "./players.Slice";
-import { defaultTeams } from "./teams.Slice";
-
-// default initial locations
-const initialLocations: PlayerLocation[] = initialPlayers
-  .filter((c) => c.isActive)
-  .map((c) => ({
-    id: uuidv4(),
-    playerId: c.id,
-    x: RotationPositions[c.currentRotationPosition ?? 6][defaultTeams[c.teamId].courtSide].x,
-    y: RotationPositions[c.currentRotationPosition ?? 6][defaultTeams[c.teamId].courtSide].y,
-  }));
+import { PlayerLocation } from "types/volleyballTool.New.Types";
 
 // initial stats
 const initialState: PlayersLocations = {
-  byId: initialLocations.reduce((a, v) => ({ ...a, [v.id]: v }), {}),
-  byPlayerId: initialLocations.reduce((a, v) => ({ ...a, [v.playerId]: v.id }), {}),
-  // currentLocationIdByPlayerId: initialLocations.reduce((a, v) => ({ ...a, [v.playerId]: v.id }), {}),
-  allIds: initialLocations.map((c) => c.id),
+  byId: {},
+  byPlayerId: {},
+  allIds: [],
 };
 
 export const playersLocationsSlice = createSlice({

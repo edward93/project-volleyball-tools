@@ -356,9 +356,9 @@ export type Game = {
   /** Workspace Id */
   workspaceId: string;
   /** Home team id */
-  homeTeamId: string;
+  homeTeamId?: string;
   /** Away team id */
-  awayTeamId: string;
+  awayTeamId?: string;
   /** Has this game ended or not */
   hasEnded: boolean;
 };
@@ -419,82 +419,145 @@ export type CourtPositionCoordinates = {
 };
 
 //#region Court rotation position const values
+// half court constants
+const HALF_COURT_LEFT_X = 900;
+const HALF_COURT_MIDDLE_X = 1200;
+const HALF_COURT_RIGHT_X = 1500;
+const HALF_COURT_FRONT_ROW_Y = 250;
+const HALF_COURT_BACK_ROW_Y = 700;
+
+// TODO: positions for half court (vertical)
+export const FrontLeft: CourtPositionCoordinates = {
+  id: 4,
+  halfCourt: HalfCourt.Left,
+  x: HALF_COURT_LEFT_X,
+  y: HALF_COURT_FRONT_ROW_Y,
+};
+
+export const FrontMiddle: CourtPositionCoordinates = {
+  id: 3,
+  halfCourt: HalfCourt.Left,
+  x: HALF_COURT_MIDDLE_X,
+  y: HALF_COURT_FRONT_ROW_Y,
+};
+
+export const FrontRight: CourtPositionCoordinates = {
+  id: 2,
+  halfCourt: HalfCourt.Left,
+  x: HALF_COURT_RIGHT_X,
+  y: HALF_COURT_FRONT_ROW_Y,
+};
+
+export const BackLeft: CourtPositionCoordinates = {
+  id: 5,
+  halfCourt: HalfCourt.Left,
+  x: HALF_COURT_LEFT_X,
+  y: HALF_COURT_BACK_ROW_Y,
+};
+
+export const BackMiddle: CourtPositionCoordinates = {
+  id: 6,
+  halfCourt: HalfCourt.Left,
+  x: HALF_COURT_MIDDLE_X,
+  y: HALF_COURT_BACK_ROW_Y,
+};
+
+export const BackRight: CourtPositionCoordinates = {
+  id: 1,
+  halfCourt: HalfCourt.Left,
+  x: HALF_COURT_RIGHT_X,
+  y: HALF_COURT_BACK_ROW_Y,
+};
+
+/** Default location of positions for half court vertical view */
+export const DefaultRotationPositionsVertical = {
+  1: BackRight,
+  2: FrontRight,
+  3: FrontMiddle,
+  4: FrontLeft,
+  5: BackLeft,
+  6: BackMiddle,
+};
+
+//some constants
+const BACK_ROW_X_HZ = 600;
+const FRONT_ROW_X_HZ = 950;
 export const LeftCourtPos1: CourtPositionCoordinates = {
   id: 1,
   halfCourt: HalfCourt.Left,
-  x: 600,
-  y: 1040,
+  x: BACK_ROW_X_HZ,
+  y: 940,
 };
 export const RightCourtPos1: CourtPositionCoordinates = {
   id: 1,
   halfCourt: HalfCourt.Right,
   x: 1800,
-  y: 350,
+  y: 250,
 };
 
 export const LeftCourtPos2: CourtPositionCoordinates = {
   id: 2,
   halfCourt: HalfCourt.Left,
-  x: 1055,
-  y: 1040,
+  x: FRONT_ROW_X_HZ,
+  y: 940,
 };
 export const RightCourtPos2: CourtPositionCoordinates = {
   id: 2,
   halfCourt: HalfCourt.Right,
   x: 1345,
-  y: 350,
+  y: 250,
 };
 
 export const LeftCourtPos3: CourtPositionCoordinates = {
   id: 3,
   halfCourt: HalfCourt.Left,
-  x: 1055,
-  y: 700,
+  x: FRONT_ROW_X_HZ,
+  y: 600,
 };
 export const RightCourtPos3: CourtPositionCoordinates = {
   id: 3,
   halfCourt: HalfCourt.Right,
   x: 1345,
-  y: 700,
+  y: 600,
 };
 
 export const LeftCourtPos4: CourtPositionCoordinates = {
   id: 4,
   halfCourt: HalfCourt.Left,
-  x: 1055,
-  y: 350,
+  x: FRONT_ROW_X_HZ,
+  y: 250,
 };
 export const RightCourtPos4: CourtPositionCoordinates = {
   id: 4,
   halfCourt: HalfCourt.Right,
   x: 1345,
-  y: 1040,
+  y: 940,
 };
 
 export const LeftCourtPos5: CourtPositionCoordinates = {
   id: 5,
   halfCourt: HalfCourt.Left,
-  x: 600,
-  y: 350,
+  x: BACK_ROW_X_HZ,
+  y: 250,
 };
 export const RightCourtPos5: CourtPositionCoordinates = {
   id: 5,
   halfCourt: HalfCourt.Right,
   x: 1800,
-  y: 1040,
+  y: 940,
 };
 
 export const LeftCourtPos6: CourtPositionCoordinates = {
   id: 6,
   halfCourt: HalfCourt.Left,
-  x: 600,
-  y: 700,
+  x: BACK_ROW_X_HZ,
+  y: 600,
 };
 export const RightCourtPos6: CourtPositionCoordinates = {
   id: 6,
   halfCourt: HalfCourt.Right,
   x: 1800,
-  y: 700,
+  y: 600,
 };
 
 /** Map of all rotational positions */

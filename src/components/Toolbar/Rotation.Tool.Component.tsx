@@ -4,7 +4,7 @@ import { Button } from "@mantine/core";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { v4 as uuidv4 } from "uuid";
 
-import { HalfCourt, Player, CourtPosition, RotationPositions } from "types/volleyballTool.New.Types";
+import { CourtPosition, DefaultRotationPositionsVertical, HalfCourt, Player, RotationPositions } from "types/volleyballTool.New.Types";
 
 import { addLocations } from "components/Players/playerLocation.Slice";
 import { rotatePlayers } from "components/Players/players.Slice";
@@ -87,16 +87,23 @@ const RotationToolComponent = (props: RotationToolProps) => {
    *
    * @param posNumber - position number 1 - 6
    * @param teamId - id of the team
+   * @param halfCourtLayout - whether or not half court layout is being used (true by default)
    * @returns {x, y} Coordinates
    */
   const rotationCoordinates = (
     posNumber: CourtPosition | undefined,
     courtSide: HalfCourt,
+    halfCourtLayout: boolean = true,
   ): { x: number; y: number } => {
-    const coordinates = {
-      x: RotationPositions[posNumber ?? 6][courtSide].x,
-      y: RotationPositions[posNumber ?? 6][courtSide].y,
-    };
+    const coordinates = halfCourtLayout
+      ? {
+          x: DefaultRotationPositionsVertical[posNumber ?? 6].x,
+          y: DefaultRotationPositionsVertical[posNumber ?? 6].y,
+        }
+      : {
+          x: RotationPositions[posNumber ?? 6][courtSide].x,
+          y: RotationPositions[posNumber ?? 6][courtSide].y,
+        };
 
     return coordinates;
   };

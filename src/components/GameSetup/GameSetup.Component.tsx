@@ -1,9 +1,23 @@
 import { Button, Stepper, createStyles } from "@mantine/core";
+import { addLocations } from "components/Players/playerLocation.Slice";
+import { addPlayers } from "components/Players/players.Slice";
+import { addTeam } from "components/Players/teams.Slice";
 import { newGame } from "components/Scoreboard/game.Slice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "reduxTools/hooks";
-import { CourtPosition, HalfCourt, None, Player, PositionType, Team } from "types/volleyballTool.New.Types";
+import {
+  CourtPosition,
+  DefaultRotationPositionsVertical,
+  Game,
+  HalfCourt,
+  None,
+  Player,
+  PlayerLocation,
+  PositionType,
+  Team,
+} from "types/volleyballTool.New.Types";
+import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
 import { ROUTES } from "utils/router/routes";
 import { v4 as uuidv4 } from "uuid";
 import { AddPlayersComponent } from "./AddPlayers.Component";
@@ -35,8 +49,12 @@ export const GameSetupComponent = () => {
   // stepper classes
   const { classes } = useStyles();
 
+  // game sate helper
+  const [newGameState] = useGameStateHelpers();
   // list of players on the current team
   const [players, setPlayers] = useState<Player[]>([]);
+  // team
+  const [team, setTeam] = useState<Team>();
   // current player name
   const [currentPlayerName, setCurrentPlayerName] = useState<string>("");
   // current player position
@@ -56,25 +74,46 @@ export const GameSetupComponent = () => {
    * Handles start tracking click events
    */
   const onStartTrackingClick = () => {
-    const id = createNewGameAndTrack();
+    if (!team) throw new Error(`Team cannot be null or undefined`);
 
-    // TODO: create team and players
+    // dispatch team creation
+    dispatch(addTeam(team));
+
+    // add players
+    dispatch(addPlayers(players));
+
+    // TODO: handle 2 team scenario
+    // add player locations
+    const locations = players.map<PlayerLocation>((c) => ({
+      id: uuidv4(),
+      playerId: c.id,
+      x: DefaultRotationPositionsVertical[c.currentRotationPosition ?? 6].x,
+      y: DefaultRotationPositionsVertical[c.currentRotationPosition ?? 6].y,
+    }));
+
+    dispatch(addLocations(locations));
+
+    // add the first game state
+    newGameState();
+
+    // add game
+    const game: Game = {
+      id: uuidv4(),
+      hasEnded: false,
+      workspaceId: uuidv4(),
+      homeTeamId: team.id,
+    };
+    dispatch(newGame(game));
 
     // move to the tracking page
-    navigate(ROUTES.GAME(id));
+    navigate(ROUTES.GAME(game.id));
   };
 
   /**
    * Handles confirm btn clicks (for adding a new player)
    */
   const onAddPlayerClick = () => {
-    // TODO: this should be created only once (remove from here)
-    const team: Team = {
-      id: teamId,
-      courtSide: HalfCourt.Left,
-      isHome: true,
-      name: teamName,
-    };
+    if (!team) throw new Error(`Team cannot be null or undefined`);
 
     // create current player
     const player: Player = {
@@ -82,10 +121,11 @@ export const GameSetupComponent = () => {
       teamId: team.id,
       score: 0,
       color: "#03B5AA",
-      isActive: true,
+      isActive: isActive,
       name: currentPlayerName,
       jerseyNumber: currentPlayerNumber,
       positionId: currentPlayerPosition?.id,
+      currentRotationPosition: currentCourtPosition,
     };
 
     setPlayers([...players, player]);
@@ -96,18 +136,6 @@ export const GameSetupComponent = () => {
     setCurrentPlayerNumber(1);
     setCurrentCourtPosition(undefined);
     setIsActive(false);
-  };
-
-  /**
-   * Creates a new game to track
-   * @returns - Newly created game id
-   */
-  const createNewGameAndTrack = (): string => {
-    const gameId = uuidv4();
-    // create a new game and add it to the store
-    dispatch(newGame(gameId));
-
-    return gameId;
   };
 
   /**
@@ -126,16 +154,22 @@ export const GameSetupComponent = () => {
     setPlayers(newPlayers);
   };
 
-  // /**
-  //  * Handles is active switch changes
-  //  *
-  //  * @param event - input event
-  //  */
-  // const onIsActiveChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   event.preventDefault();
+  /**
+   * Creates the new team
+   */
+  const createTeam = () => {
+    const team: Team = {
+      id: teamId,
+      courtSide: HalfCourt.Left,
+      isHome: true,
+      name: teamName,
+    };
 
-  //   setIsActive(event.currentTarget.checked);
-  // };
+    setTeam(team);
+
+    // move the stepper
+    setActive(1);
+  };
 
   /**
    * Edits player info
@@ -152,7 +186,7 @@ export const GameSetupComponent = () => {
       <section className={styles.content}>
         <Stepper active={active} onStepClick={setActive} size="sm" classNames={classes}>
           <Stepper.Step label="Step 1" description="Create a team">
-            <CreateTeamComponent teamName={teamName} updateTeamName={setTeamName} createTeam={() => setActive(1)} />
+            <CreateTeamComponent teamName={teamName} updateTeamName={setTeamName} createTeam={createTeam} />
           </Stepper.Step>
           <Stepper.Step label="Step 2" description="Add players">
             <div className={styles.teamSetupContent}>
