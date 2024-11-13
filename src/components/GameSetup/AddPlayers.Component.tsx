@@ -1,7 +1,9 @@
 import { Button, NumberInput, Select, SelectItem, Switch, TextInput } from "@mantine/core";
 import { ChangeEvent } from "react";
-import { CourtPosition, CourtPositions, PositionType, PositionsById } from "types/volleyballTool.New.Types";
+import { CourtPosition, PositionType } from "types/volleyballTool.New.Types";
 import styles from "./gameSetup.module.scss";
+import { PositionsById } from "constants/playerPositions";
+import { CourtPositions } from "constants/courtPositions";
 
 const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, position]) => ({
   value: key,

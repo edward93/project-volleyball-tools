@@ -8,10 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "reduxTools/hooks";
 import {
   CourtPosition,
-  DefaultRotationPositionsVertical,
   Game,
   HalfCourt,
-  None,
   Player,
   PlayerLocation,
   PositionType,
@@ -24,6 +22,8 @@ import { AddPlayersComponent } from "./AddPlayers.Component";
 import CreateTeamComponent from "./CreateTeam.Component";
 import PlayerCompactComponent from "./PlayerInfoCard.Component";
 import styles from "./gameSetup.module.scss";
+import { DefaultRotationPositionsVertical } from "constants/courtPositions";
+import { None } from "constants/playerPositions";
 
 // custom styles for the stepper component
 const useStyles = createStyles(() => ({
@@ -37,6 +37,7 @@ const useStyles = createStyles(() => ({
   },
 }));
 
+// TODO: Add the ability to select halfCourt (court layout before starting a new tracking)
 /**
  * Game Setup component for creating a new game to track
  * @returns Setup Component

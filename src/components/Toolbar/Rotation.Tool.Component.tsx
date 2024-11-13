@@ -4,13 +4,14 @@ import { Button } from "@mantine/core";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { v4 as uuidv4 } from "uuid";
 
-import { CourtPosition, DefaultRotationPositionsVertical, HalfCourt, Player, RotationPositions } from "types/volleyballTool.New.Types";
+import { CourtPosition, HalfCourt, Player } from "types/volleyballTool.New.Types";
 
 import { addLocations } from "components/Players/playerLocation.Slice";
 import { rotatePlayers } from "components/Players/players.Slice";
 
 import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
 import styles from "./rotation.tool.module.scss";
+import { DefaultRotationPositionsVertical, RotationPositions } from "constants/courtPositions";
 
 /** Prop type */
 type RotationToolProps = {

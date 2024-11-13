@@ -27,7 +27,8 @@
       "reduxTools/*": ["src/redux/*"],
       "types/*": ["src/types/*"],
       "styles/*": ["src/styles/*"],
-      "utils/*": ["src/utils/*"]
+      "utils/*": ["src/utils/*"],
+      "constants/*": ["src/constants/*"]
     }
   },
   "include": ["src"],

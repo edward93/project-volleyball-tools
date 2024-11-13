@@ -10,8 +10,9 @@ import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { create as createNewGameAction } from "./gameAction.Slice";
 
 import "styles/stats.scss";
-import { GameAction, GameActionTypesById } from "types/volleyballTool.New.Types";
+import { GameAction } from "types/volleyballTool.New.Types";
 import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
+import { GameActionTypesById } from "constants/gameActions";
 
 const selectGameActions: SelectItem[] = Object.entries(GameActionTypesById).map(([key, action]) => ({
   value: key,

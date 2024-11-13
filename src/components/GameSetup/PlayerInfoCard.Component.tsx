@@ -1,9 +1,10 @@
 import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ActionIcon } from "@mantine/core";
-import { Player, PositionsById } from "types/volleyballTool.New.Types";
+import { Player} from "types/volleyballTool.New.Types";
 
 import styles from "./gameSetup.module.scss";
+import { PositionsById } from "constants/playerPositions";
 
 /**
  * Compact component to display newly created

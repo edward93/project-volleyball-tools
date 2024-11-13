@@ -2,9 +2,10 @@ import { Collapse, Tooltip } from "@mantine/core";
 import { useState } from "react";
 import { useAppSelector } from "reduxTools/hooks";
 
-import { GameActionTypesById, Player } from "types/volleyballTool.New.Types";
+import { Player } from "types/volleyballTool.New.Types";
 
 import "styles/gameAction.scss";
+import { GameActionTypesById } from "constants/gameActions";
 
 /**
  * GameAction component - shows selected player's actions

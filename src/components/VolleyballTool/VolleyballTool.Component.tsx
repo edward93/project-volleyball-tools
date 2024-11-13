@@ -5,6 +5,7 @@ import TimelineComponent from "components/Timeline/Timeline.Component";
 import ToolbarComponent from "components/Toolbar/Toolbar.Component";
 import "styles/tools.scss";
 
+// TODO: move this `halfCourt` to the store which will be set from GameSetupComponent
 const Tools = () => {
   return (
     <div className="vt-tools-container">
