@@ -3,6 +3,8 @@ import { addLocations } from "components/Players/playerLocation.Slice";
 import { addPlayers } from "components/Players/players.Slice";
 import { addTeam } from "components/Players/teams.Slice";
 import { newGame } from "components/Scoreboard/game.Slice";
+import { DefaultRotationPositionsVertical } from "constants/courtPositions";
+import { None } from "constants/playerPositions";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "reduxTools/hooks";
@@ -22,8 +24,6 @@ import { AddPlayersComponent } from "./AddPlayers.Component";
 import CreateTeamComponent from "./CreateTeam.Component";
 import PlayerCompactComponent from "./PlayerInfoCard.Component";
 import styles from "./gameSetup.module.scss";
-import { DefaultRotationPositionsVertical } from "constants/courtPositions";
-import { None } from "constants/playerPositions";
 
 // custom styles for the stepper component
 const useStyles = createStyles(() => ({
@@ -70,6 +70,8 @@ export const GameSetupComponent = () => {
   const [teamName, setTeamName] = useState<string>("");
   // stepper active step
   const [active, setActive] = useState<number>(0);
+  // half court layout flag
+  const [halfCourtFlag, setHalfCourtFlag] = useState<boolean>(true);
 
   /**
    * Handles start tracking click events
@@ -187,7 +189,13 @@ export const GameSetupComponent = () => {
       <section className={styles.content}>
         <Stepper active={active} onStepClick={setActive} size="sm" classNames={classes}>
           <Stepper.Step label="Step 1" description="Create a team">
-            <CreateTeamComponent teamName={teamName} updateTeamName={setTeamName} createTeam={createTeam} />
+            <CreateTeamComponent
+              teamName={teamName}
+              updateTeamName={setTeamName}
+              createTeam={createTeam}
+              halfCourt={halfCourtFlag}
+              updateHalfCourtFlag={setHalfCourtFlag}
+            />
           </Stepper.Step>
           <Stepper.Step label="Step 2" description="Add players">
             <div className={styles.teamSetupContent}>

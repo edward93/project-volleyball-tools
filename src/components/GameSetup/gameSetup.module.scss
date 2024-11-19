@@ -98,5 +98,8 @@
   & .team-name {
     display: grid;
     justify-content: center;
+
+    grid-template: 1fr 1fr/1fr;
+    row-gap: 0.5rem;
   }
 }

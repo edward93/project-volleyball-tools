@@ -1,4 +1,4 @@
-import { Button, TextInput } from "@mantine/core";
+import { Button, Switch, TextInput } from "@mantine/core";
 import { ChangeEvent, MouseEvent } from "react";
 import styles from "./gameSetup.module.scss";
 
@@ -8,10 +8,12 @@ import styles from "./gameSetup.module.scss";
  */
 export const CreateTeamComponent = (props: {
   teamName: string;
+  halfCourt: boolean;
   updateTeamName: (value: string) => void;
+  updateHalfCourtFlag: (value: boolean) => void;
   createTeam: () => void;
 }) => {
-  const { updateTeamName, teamName, createTeam } = props;
+  const { halfCourt, updateHalfCourtFlag, updateTeamName, teamName, createTeam } = props;
   /**
    * Handles team name change events
    * @param event - input change event
@@ -35,6 +37,13 @@ export const CreateTeamComponent = (props: {
   return (
     <div className={styles.teamSetupContainer}>
       <section className={styles.teamName}>
+        <Switch
+          label="Half Court Setup"
+          checked={halfCourt}
+          labelPosition="left"
+          onChange={(event) => updateHalfCourtFlag(event.currentTarget.checked)}
+          description="Use half court or full court layout"
+        />
         <TextInput
           label="Team Name"
           name="team-name"
