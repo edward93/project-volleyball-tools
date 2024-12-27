@@ -34,6 +34,18 @@ export const CreateTeamComponent = (props: {
     createTeam();
   };
 
+  /**
+   * Validate team name
+   *
+   * @param teamName - Team name
+   */
+  const isTeamNameValid = (teamName: string) => {
+    if (!teamName) return false;
+    if (teamName.length < 2) return false;
+
+    return true;
+  };
+
   return (
     <div className={styles.teamSetupContainer}>
       <section className={styles.teamName}>
@@ -54,7 +66,7 @@ export const CreateTeamComponent = (props: {
         />
       </section>
       <section className={styles.actions}>
-        <Button variant="filled" onClick={onCreateNewTeamClick}>
+        <Button variant="filled" onClick={onCreateNewTeamClick} disabled={!isTeamNameValid(teamName)}>
           Create
         </Button>
       </section>

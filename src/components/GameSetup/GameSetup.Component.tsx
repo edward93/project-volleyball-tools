@@ -37,7 +37,6 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-// TODO: Add the ability to select halfCourt (court layout before starting a new tracking)
 /**
  * Game Setup component for creating a new game to track
  * @returns Setup Component
