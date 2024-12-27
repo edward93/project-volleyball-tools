@@ -4,12 +4,12 @@ import { useState } from "react";
 import { updatePlayerInfo } from "components/Players/players.Slice";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { SelectedPlayer } from "types/reduxStore.Types";
-import { PositionsById } from "types/volleyballTool.New.Types";
 
 import "styles/inspector.scss";
 
 import GameActionsComponent from "./GameActions.Component";
 import NewGameActionComponent from "./NewGameAction.Component";
+import { PositionsById } from "constants/playerPositions";
 
 const selectPositions: SelectItem[] = Object.entries(PositionsById).map(([key, position]) => ({
   value: key,

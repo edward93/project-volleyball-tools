@@ -4,23 +4,26 @@
 .app-container {
   background-color: theme($bg-color, $primary-color);
   color: theme($text-color, $primary-color);
-  display: flex;
-  flex: 1;
+  // display: flex;
+  // flex: 1;
 
-  flex-direction: column;
+  // flex-direction: column;
+  display: grid;
+  grid-template: 1fr auto/1fr;
+  width: 100%;
   min-height: 100vh;
 
   & .screen-space {
-    display: flex;
-    flex-direction: column;
-    max-height: 100vh;
-    height: 100vh;
+    display: grid;
+    grid-template: $header-height auto / 1fr;
+
+    &:has(.vt-tools-container) {
+      max-height: 100vh;
+      height: 100vh;
+    }
 
     & > .app-content {
-      position: relative;
-      display: flex;
-      flex: 1 1 0;
-      flex-wrap: wrap;
+      display: grid;
 
       max-height: calc(100vh - $header-height);
 

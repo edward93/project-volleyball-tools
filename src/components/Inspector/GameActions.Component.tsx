@@ -2,9 +2,10 @@ import { Collapse, Tooltip } from "@mantine/core";
 import { useState } from "react";
 import { useAppSelector } from "reduxTools/hooks";
 
-import { GameActionTypesById, Player } from "types/volleyballTool.New.Types";
+import { Player } from "types/volleyballTool.New.Types";
 
 import "styles/gameAction.scss";
+import { GameActionTypesById } from "constants/gameActions";
 
 /**
  * GameAction component - shows selected player's actions
@@ -31,8 +32,13 @@ const GameActionsComponent = (props: { player: Player }) => {
 
   const gameActionType = GameActionTypesById?.[gameAction?.type];
 
+  // player actions
+  const playerActionIds = Object.entries(gameActions.byId)
+    .filter(([_, action]) => action.playerId === player.id)
+    .map(([key, _]) => key);
   // max possible score number of actions multiplied by max score
-  const maxPossibleScore = player.actionIds.length * 3; // (score can go up to 3)
+  const maxPossibleScore = playerActionIds.length * 3;
+  // const maxPossibleScore = player.actionIds.length * 3; // (score can go up to 3)
 
   // percentage
   const scorePercentage = ((player.score * 100) / maxPossibleScore).toFixed(1);
@@ -55,7 +61,7 @@ const GameActionsComponent = (props: { player: Player }) => {
             <section className="vt-game-actions-info-left panel-info-bar-txt">
               <label className="vt-tools-property-label panel-info-bar-label">Action:</label>
               <div className="vt-tools-property-value panel-info-bar-value">
-                {player.actionIds.length - player.actionIds.indexOf(gameAction.id)}/{player.actionIds.length}
+                {playerActionIds.length - playerActionIds.indexOf(gameAction.id)}/{playerActionIds.length}
               </div>
             </section>
             <section className="vt-game-actions-info-right panel-info-bar-txt">

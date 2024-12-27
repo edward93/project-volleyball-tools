@@ -9,9 +9,10 @@ import { addLocation } from "components/Players/playerLocation.Slice";
 import { subPlayers } from "components/Players/players.Slice";
 import { forwardRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Player, PlayerLocation, PositionsById } from "types/volleyballTool.New.Types";
+import { Player, PlayerLocation } from "types/volleyballTool.New.Types";
 import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
 import styles from "./subs.tool.module.scss";
+import { PositionsById } from "constants/playerPositions";
 
 /** Subs tool props */
 type SubsToolProps = {

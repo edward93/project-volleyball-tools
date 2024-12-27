@@ -2,28 +2,76 @@
 @import "./common.scss";
 
 .app-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template: minmax(0, 1fr) / 1fr 4fr 1fr;
+  // justify-content: space-between;
   background-color: theme($bg-color, $primary-color);
   color: theme($text-color, $primary-color);
 
   padding: 0 1rem;
+  height: $header-height;
 
   // border-bottom: .1rem solid theme($text-color, $primary-color);
   // @include shadow(change-color($color: theme($text-color, $primary-color), $alpha: .1));
 
   text-transform: uppercase;
+  min-height: 0;
+
+  & .header-left {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+    // align-items: center;
+    // justify-content: center;
+
+    // min-height: 0;
+    padding: 0.5rem;
+
+    & img {
+      // min-height: 0;
+      max-height: 100%;
+    }
+  }
+
+  & .header-middle {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+
+    justify-content: center;
+    align-items: center;
+  }
 
   & .header-name {
-    display: flex;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+    justify-content: center;
     // justify-content: center;
-    align-items: center;
-
-    max-height: $header-height;
+    // align-items: center;
 
     & a {
-      height: 100%;
+      text-decoration: none;
+      color: unset;
+      padding: 1rem;
+
+      &:hover {
+        // color: change-color($color: #000000, $red: 1, $green: 2, $blue: 3, $hue: 0, $saturation: 0%, $lightness: 0%, $alpha: 1.0)
+        color: change-color($color: theme($text-color, $highlighted-color), $lightness: 70%);
+      }
+
+      &.active {
+        // border-bottom: 0.1rem solid theme($text-color, $primary-color);
+        // background-color: theme($text-color, $primary-color);
+
+        &:hover {
+          opacity: 1;
+        }
+        // color: theme($text-color, $highlighted-color);
+        // text-decoration: line-through;
+      }
     }
+
+    // & a {
+    //   height: 100%;
+    // }
 
     & img {
       max-height: 100%;

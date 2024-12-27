@@ -23,8 +23,8 @@ const ScoreboardComponent = () => {
   const teams = useAppSelector((selector) => selector.teams);
 
   // home and away teams
-  const homeTeam = teams.byId[game.homeTeamId];
-  const awayTeam = teams.byId[game.awayTeamId];
+  const homeTeam = teams.byId[game.homeTeamId || ""];
+  const awayTeam = teams.byId[game.awayTeamId || ""];
   // const sets = [...useAppSelector((selector) => selector.setsSlice.byGameId[game.id])];
 
   // initial score
@@ -195,7 +195,7 @@ const ScoreboardComponent = () => {
   return (
     <section className="vt-tools-scoreboard-section">
       <section className="vt-tools-scoreboard-left-section scoreboard-half">
-        <div className="vt-tool-scoreboard-left-section-team scoreboard-team">{homeTeam.name}</div>
+        <div className="vt-tool-scoreboard-left-section-team scoreboard-team">{homeTeam?.name}</div>
         <div onClick={onHomeScoreClick} className="vt-tool-scoreboard-left-section-score scoreboard-score">
           {currentScore.homePoints}
         </div>
@@ -207,7 +207,7 @@ const ScoreboardComponent = () => {
         <div onClick={onAwayScoreClick} className="vt-tool-scoreboard-right-section-score scoreboard-score">
           {currentScore.awayPoints}
         </div>
-        <div className="vt-tool-scoreboard-right-section-team scoreboard-team">{awayTeam.name}</div>
+        <div className="vt-tool-scoreboard-right-section-team scoreboard-team">{awayTeam?.name}</div>
       </section>
     </section>
   );

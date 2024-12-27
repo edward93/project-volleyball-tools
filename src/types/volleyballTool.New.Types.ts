@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+import { Libero, MiddleBlocker, None, OppositeHitter, OutsideHitter, Setter } from "constants/playerPositions";
 
 /** Categories of unique game actions */
 export enum GameActionCategory {
@@ -24,197 +24,6 @@ export type GameActionType = {
   desc?: string;
 };
 
-//#region Actions
-export const Kill: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Attack,
-  name: "Kill",
-  score: 3,
-  desc: "Attack that resulted in a kill: opponent wasn't able to pick it up, attack or made an error",
-};
-
-export const AttackError: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Attack,
-  name: "Attack Error",
-  score: 0,
-  desc: "Attack that went out of bounds or into the net, blocks do not count",
-};
-
-export const AttackAttempt: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Attack,
-  name: "Attack Attempt",
-  score: 1,
-  desc: "Attacks that weren't kills or errors",
-};
-
-export const PerfectBlock: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Block,
-  name: "Perfect Block",
-  score: 3,
-  desc: "A block that was resulted in the end of the rally",
-};
-
-export const Block: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Block,
-  name: "Block",
-  score: 2,
-  desc: "Ball didn't cross over but was picked or recycled by the opponent",
-};
-
-export const BlockTouch: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Block,
-  name: "Touch",
-  score: 1,
-  desc: "Ball crossed over but was picked up by teammates",
-};
-
-export const BlockError: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Block,
-  name: "Block Error",
-  score: 0,
-  desc: "Touch that wasn't picked up by teammates",
-};
-
-export const PerfectPass: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Pass,
-  name: "Perfect Pass",
-  score: 3,
-  desc: "Setter has at least 3 options",
-};
-
-export const RegularPass: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Pass,
-  name: "Regular Pass",
-  score: 2,
-  desc: "Setter has 2 good and possible 1 hard/impossible (middle) options",
-};
-
-export const BadPass: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Pass,
-  name: "Bad Pass",
-  score: 1,
-  desc: "Very bad pass where setter had only one option or no option at all",
-};
-
-export const PassError: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Pass,
-  name: "Passing Error",
-  score: 0,
-  desc: "Resulted in opponents point",
-};
-
-export const ServiceAce: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Serve,
-  name: "Service Ace",
-  score: 3,
-  desc: "Service Ace",
-};
-
-export const ServiceError: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Serve,
-  name: "Service Error",
-  score: 0,
-  desc: "Serve went out of bounds, into the net or other fault was committed during the serve",
-};
-
-export const ServeAttempt: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Serve,
-  name: "Serve Attempt",
-  score: 1,
-  desc: "A serve that is neither an error nor an ace",
-};
-
-export const PerfectSet: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Set,
-  name: "Perfect Set",
-  score: 3,
-  desc: "Set that is perfect distance off the net and in the perfect position for the hitter",
-};
-
-export const SetError: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Set,
-  name: "Setting Error",
-  score: 0,
-  desc: "A faulty set (double) that resulted in opponent winning the point",
-};
-
-export const Set: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Set,
-  name: "Set",
-  score: 1,
-  desc: "A set that is either perfect one or an error",
-};
-
-export const PerfectDig: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Dig,
-  name: "Perfect Dig",
-  score: 3,
-  desc: "Ball went up in the general setting area. Doesn't need to be very precise",
-};
-
-export const DigTouch: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Dig,
-  name: "Touch",
-  score: 1,
-  desc: "Ball was contacted but either wasn't enough or was a bad dig",
-};
-
-export const DigMiss: GameActionType = {
-  id: uuidv4(),
-  category: GameActionCategory.Dig,
-  name: "Missed",
-  score: 0,
-  desc: "Ball hit the ground without a contact",
-};
-
-/** Helper obj */
-export const GameActionTypesById = {
-  [Kill.id]: Kill,
-  [AttackError.id]: AttackError,
-  [AttackAttempt.id]: AttackAttempt,
-
-  [PerfectBlock.id]: PerfectBlock,
-  [Block.id]: Block,
-  [BlockTouch.id]: BlockTouch,
-  [BlockError.id]: BlockError,
-
-  [PerfectPass.id]: PerfectPass,
-  [RegularPass.id]: RegularPass,
-  [BadPass.id]: BadPass,
-  [PassError.id]: PassError,
-
-  [ServiceAce.id]: ServiceAce,
-  [ServiceError.id]: ServiceError,
-  [ServeAttempt.id]: ServeAttempt,
-
-  [PerfectSet.id]: PerfectSet,
-  [Set.id]: Set,
-  [SetError.id]: SetError,
-
-  [PerfectDig.id]: PerfectDig,
-  [DigTouch.id]: DigTouch,
-  [DigMiss.id]: DigMiss,
-};
-//#endregion
-
 /** Player type */
 export type Player = {
   /** Unique auto generated id */
@@ -228,15 +37,15 @@ export type Player = {
   /** Player's position id */
   positionId: string;
   /** List of actions (action ids) */
-  actionIds: string[];
+  // actionIds: string[];
   /** Player's total score */
   score: number;
   /** Is this player playing or is benched */
   isActive: boolean;
   /** Current (by default latest) player's action id */
-  selectedActionId?: string;
+  // selectedActionId?: string;
   /** Current rotational position number */
-  currentRotationPosition?: RotationPositionNumber;
+  currentRotationPosition?: CourtPosition;
   /** Color of the circle */
   color: string;
 };
@@ -275,12 +84,12 @@ export type GameState = {
   /** all the necessary components that are associated with this state and can be recovered */
   dependencies: {
     /** all player ids snapshot by this state */
-    activePlayerIds: string[],
+    activePlayerIds: string[];
     /** all locations of current players snapshot by this state [playerId][playerLocationId]*/
-    playerLocationIds: Record<string, string>,
+    playerLocationIds: Record<string, string>;
     /** game action associated with this state (only one action per state) */
-    gameActionId?: string,
-  }
+    gameActionId?: string;
+  };
 };
 
 /** Represents a game action, perfect set, perfect dig, etc. */
@@ -356,9 +165,9 @@ export type Game = {
   /** Workspace Id */
   workspaceId: string;
   /** Home team id */
-  homeTeamId: string;
+  homeTeamId?: string;
   /** Away team id */
-  awayTeamId: string;
+  awayTeamId?: string;
   /** Has this game ended or not */
   hasEnded: boolean;
 };
@@ -400,12 +209,12 @@ export enum HalfCourt {
 }
 
 /** Rotation position numbers type */
-export type RotationPositionNumber = 1 | 2 | 3 | 4 | 5 | 6;
+export type CourtPosition = 1 | 2 | 3 | 4 | 5 | 6;
 
 /** Court position type */
 export type CourtPositionCoordinates = {
   /** Rotation number */
-  id: RotationPositionNumber;
+  id: CourtPosition;
   /** Side */
   halfCourt: HalfCourt;
   /** X coordinate */
@@ -414,168 +223,14 @@ export type CourtPositionCoordinates = {
   y: number;
 };
 
-//#region Court rotation position const values
-export const LeftCourtPos1: CourtPositionCoordinates = {
-  id: 1,
-  halfCourt: HalfCourt.Left,
-  x: 600,
-  y: 1040,
-};
-export const RightCourtPos1: CourtPositionCoordinates = {
-  id: 1,
-  halfCourt: HalfCourt.Right,
-  x: 1800,
-  y: 350,
-};
-
-export const LeftCourtPos2: CourtPositionCoordinates = {
-  id: 2,
-  halfCourt: HalfCourt.Left,
-  x: 1055,
-  y: 1040,
-};
-export const RightCourtPos2: CourtPositionCoordinates = {
-  id: 2,
-  halfCourt: HalfCourt.Right,
-  x: 1345,
-  y: 350,
-};
-
-export const LeftCourtPos3: CourtPositionCoordinates = {
-  id: 3,
-  halfCourt: HalfCourt.Left,
-  x: 1055,
-  y: 700,
-};
-export const RightCourtPos3: CourtPositionCoordinates = {
-  id: 3,
-  halfCourt: HalfCourt.Right,
-  x: 1345,
-  y: 700,
-};
-
-export const LeftCourtPos4: CourtPositionCoordinates = {
-  id: 4,
-  halfCourt: HalfCourt.Left,
-  x: 1055,
-  y: 350,
-};
-export const RightCourtPos4: CourtPositionCoordinates = {
-  id: 4,
-  halfCourt: HalfCourt.Right,
-  x: 1345,
-  y: 1040,
-};
-
-export const LeftCourtPos5: CourtPositionCoordinates = {
-  id: 5,
-  halfCourt: HalfCourt.Left,
-  x: 600,
-  y: 350,
-};
-export const RightCourtPos5: CourtPositionCoordinates = {
-  id: 5,
-  halfCourt: HalfCourt.Right,
-  x: 1800,
-  y: 1040,
-};
-
-export const LeftCourtPos6: CourtPositionCoordinates = {
-  id: 6,
-  halfCourt: HalfCourt.Left,
-  x: 600,
-  y: 700,
-};
-export const RightCourtPos6: CourtPositionCoordinates = {
-  id: 6,
-  halfCourt: HalfCourt.Right,
-  x: 1800,
-  y: 700,
-};
-
 /** Map of all rotational positions */
-type RotationPositionType = Record<RotationPositionNumber, Record<HalfCourt, CourtPositionCoordinates>>;
-
-/** Rotation positional coordinates */
-export const RotationPositions: RotationPositionType = {
-  1: {
-    [HalfCourt.Left]: LeftCourtPos1,
-    [HalfCourt.Right]: RightCourtPos1,
-  },
-  2: {
-    [HalfCourt.Left]: LeftCourtPos2,
-    [HalfCourt.Right]: RightCourtPos2,
-  },
-  3: {
-    [HalfCourt.Left]: LeftCourtPos3,
-    [HalfCourt.Right]: RightCourtPos3,
-  },
-  4: {
-    [HalfCourt.Left]: LeftCourtPos4,
-    [HalfCourt.Right]: RightCourtPos4,
-  },
-  5: {
-    [HalfCourt.Left]: LeftCourtPos5,
-    [HalfCourt.Right]: RightCourtPos5,
-  },
-  6: {
-    [HalfCourt.Left]: LeftCourtPos6,
-    [HalfCourt.Right]: RightCourtPos6,
-  },
-};
-//#endregion
+export type RotationPositionType = Record<CourtPosition, Record<HalfCourt, CourtPositionCoordinates>>;
 
 //#region Positions
-type PositionType = {
+export type PositionType = {
   id: string;
   name: string;
   shortName?: string;
-};
-
-//TODO: move to a new folder called static data (along with enums)
-export const OutsideHitter: PositionType = {
-  id: "1",
-  name: "Outside Hitter",
-  shortName: "OH",
-};
-
-export const OppositeHitter: PositionType = {
-  id: "2",
-  name: "Opposite Hitter",
-  shortName: "Oppo",
-};
-
-export const MiddleBlocker: PositionType = {
-  id: "3",
-  name: "Middle Blocker",
-  shortName: "MB",
-};
-
-export const Setter: PositionType = {
-  id: "4",
-  name: "Setter",
-  shortName: "Set",
-};
-
-export const Libero: PositionType = {
-  id: "5",
-  name: "Libero",
-  shortName: "Lib",
-};
-
-export const None: PositionType = {
-  id: "6",
-  name: "None",
-  shortName: "None",
-};
-
-export const PositionsById = {
-  [OutsideHitter.id]: OutsideHitter,
-  [MiddleBlocker.id]: MiddleBlocker,
-  [Setter.id]: Setter,
-  [OppositeHitter.id]: OppositeHitter,
-  [Libero.id]: Libero,
-  [None.id]: None,
 };
 
 /**
