@@ -24,7 +24,6 @@ export type GameActionType = {
   desc?: string;
 };
 
-
 /** Player type */
 export type Player = {
   /** Unique auto generated id */

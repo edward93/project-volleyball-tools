@@ -178,7 +178,9 @@ export const GameSetupComponent = () => {
    *
    * @param id - id of the player that is being edited
    */
-  const editPlayer = (id: string) => {};
+  const editPlayer = (id: string) => {
+    console.error(`Function not implemented: editPlayer(${id})`);
+  };
 
   return (
     <div className={styles.container}>
