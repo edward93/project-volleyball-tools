@@ -170,6 +170,8 @@ export type Game = {
   awayTeamId?: string;
   /** Has this game ended or not */
   hasEnded: boolean;
+  /** Whether or not to use half court view */
+  useHalfCourt: boolean;
 };
 
 /** Team type */
