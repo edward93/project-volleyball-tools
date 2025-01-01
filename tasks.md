@@ -28,8 +28,6 @@
    ├── index.tsx
    └── ... (other root-level files)
    ```
-2. Store current store (or part of it) into the local storage
-3. Read the store (or part of it) from the local storage and update `preloadedState` in store.ts
 
 
 # Notes
