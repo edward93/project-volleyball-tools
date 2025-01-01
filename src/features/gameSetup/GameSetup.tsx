@@ -20,9 +20,9 @@ import {
 import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
 import { ROUTES } from "utils/router/routes";
 import { v4 as uuidv4 } from "uuid";
-import { AddPlayersComponent } from "./AddPlayers.Component";
-import CreateTeamComponent from "./CreateTeam.Component";
-import PlayerCompactComponent from "./PlayerInfoCard.Component";
+import { AddPlayersComponent } from "./AddPlayers";
+import CreateTeamComponent from "./CreateTeam";
+import PlayerCompactComponent from "./PlayerInfoCard";
 import styles from "./gameSetup.module.scss";
 
 // custom styles for the stepper component
