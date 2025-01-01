@@ -2,12 +2,12 @@ import { Button, Stepper, createStyles } from "@mantine/core";
 import { addLocations } from "components/Players/playerLocation.Slice";
 import { addPlayers } from "components/Players/players.Slice";
 import { addTeam } from "components/Players/teams.Slice";
-import { newGame, updateHalfCourt } from "components/Scoreboard/game.Slice";
+import { newGame } from "components/Scoreboard/game.Slice";
 import { DefaultRotationPositionsVertical } from "constants/courtPositions";
 import { None } from "constants/playerPositions";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
+import { useAppDispatch } from "reduxTools/hooks";
 import {
   CourtPosition,
   Game,
@@ -175,11 +175,6 @@ export const GameSetupComponent = () => {
 
     // move the stepper
     setActive(1);
-  };
-
-  // TMP: get half court from the store
-  const updateHalfCourtFlag = (flag: boolean) => {
-    dispatch(updateHalfCourt(flag));
   };
 
   /**
