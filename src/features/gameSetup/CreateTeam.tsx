@@ -14,6 +14,7 @@ export const CreateTeamComponent = (props: {
   createTeam: () => void;
 }) => {
   const { halfCourt, updateHalfCourtFlag, updateTeamName, teamName, createTeam } = props;
+
   /**
    * Handles team name change events
    * @param event - input change event

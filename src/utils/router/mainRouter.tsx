@@ -1,5 +1,5 @@
 import App from "components/App";
-import GameSetupComponent from "components/GameSetup/GameSetup.Component";
+import GameSetupComponent from "features/gameSetup/GameSetup";
 import VolleyballTools from "components/VolleyballTool/VolleyballTool.Component";
 import { createBrowserRouter } from "react-router-dom";
 import { ROUTES } from "./routes";

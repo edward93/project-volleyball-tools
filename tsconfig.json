@@ -24,6 +24,7 @@
     "baseUrl": ".",
     "paths": {
       "components/*": ["src/components/*"],
+      "features/*": ["src/features/*"],
       "reduxTools/*": ["src/redux/*"],
       "types/*": ["src/types/*"],
       "styles/*": ["src/styles/*"],

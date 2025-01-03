@@ -20,9 +20,9 @@ import {
 import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
 import { ROUTES } from "utils/router/routes";
 import { v4 as uuidv4 } from "uuid";
-import { AddPlayersComponent } from "./AddPlayers.Component";
-import CreateTeamComponent from "./CreateTeam.Component";
-import PlayerCompactComponent from "./PlayerInfoCard.Component";
+import { AddPlayersComponent } from "./AddPlayers";
+import CreateTeamComponent from "./CreateTeam";
+import PlayerCompactComponent from "./PlayerInfoCard";
 import styles from "./gameSetup.module.scss";
 
 // custom styles for the stepper component
@@ -69,8 +69,11 @@ export const GameSetupComponent = () => {
   const [teamName, setTeamName] = useState<string>("");
   // stepper active step
   const [active, setActive] = useState<number>(0);
+
   // half court layout flag
   const [halfCourtFlag, setHalfCourtFlag] = useState<boolean>(true);
+  // TMP: get half court from the store
+  // const halfCourtFlag = useAppSelector((selector) => selector.game.useHalfCourt);
 
   /**
    * Handles start tracking click events
@@ -104,6 +107,7 @@ export const GameSetupComponent = () => {
       hasEnded: false,
       workspaceId: uuidv4(),
       homeTeamId: team.id,
+      useHalfCourt: halfCourtFlag,
     };
     dispatch(newGame(game));
 

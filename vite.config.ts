@@ -13,6 +13,7 @@ export default defineConfig({
   resolve: {
     alias: {
       components: `${path.resolve(__dirname, "./src/components/")}`,
+      features: `${path.resolve(__dirname, "./src/features/")}`,
       types: `${path.resolve(__dirname, "./src/types/")}`,
       reduxTools: `${path.resolve(__dirname, "./src/redux/")}`,
       styles: `${path.resolve(__dirname, "./src/styles/")}`,

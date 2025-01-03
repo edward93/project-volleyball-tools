@@ -10,6 +10,7 @@ const initialState: Game = {
   id: uuidv4(),
   workspaceId,
   hasEnded: false,
+  useHalfCourt: true,
 
   // homeTeamId: homeTeam.id,
   // awayTeamId: awayTeam.id,
@@ -29,6 +30,7 @@ export const gameSlice = createSlice({
       state.id = game.id;
       state.workspaceId = workspaceId;
       state.hasEnded = false;
+      state.useHalfCourt = game.useHalfCourt;
 
       state.awayTeamId = game.awayTeamId;
       state.homeTeamId = game.homeTeamId;
@@ -40,9 +42,17 @@ export const gameSlice = createSlice({
         state.hasEnded = true;
       }
     },
+    /**
+     * TMP: Updates half court flag
+     * @param state - state
+     * @param action Action
+     */
+    updateHalfCourt: (state: Game, action: PayloadAction<boolean>) => {
+      state.useHalfCourt = action.payload;
+    },
   },
 });
 
-export const { newGame } = gameSlice.actions;
+export const { newGame, updateHalfCourt } = gameSlice.actions;
 
 export default gameSlice.reducer;

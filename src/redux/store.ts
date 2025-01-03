@@ -9,7 +9,25 @@ import players from "../components/Players/players.Slice";
 import game from "../components/Scoreboard/game.Slice";
 import points from "../components/Scoreboard/points.slice";
 import sets from "../components/Scoreboard/sets.Slice";
+import listenerMiddleware from "./middlewares/actionListenerMiddleware";
 
+/**
+ * Loads the entire state from local storage
+ *
+ * @returns - deserialized state
+ */
+const loadState = () => {
+  try {
+    const serializedState = localStorage.getItem("store");
+    return serializedState ? JSON.parse(serializedState) : undefined;
+  } catch (err) {
+    console.error("Could not load state:", err);
+    return undefined;
+  }
+};
+
+const preloadedState = loadState();
+// TODO: question: should I save the entire store or part of it?
 /**
  * Main store configuration
  */
@@ -26,6 +44,8 @@ export const store = configureStore({
     gameState,
     gameAction,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(listenerMiddleware.middleware),
+  preloadedState: preloadedState,
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
