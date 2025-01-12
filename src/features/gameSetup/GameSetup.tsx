@@ -55,6 +55,7 @@ export const GameSetupComponent = () => {
   const [players, setPlayers] = useState<Player[]>([]);
   // team
   const [team, setTeam] = useState<Team>();
+  const [opponentTeam, setOpponentTeam] = useState<Team>();
   // current player name
   const [currentPlayerName, setCurrentPlayerName] = useState<string>("");
   // current player position
@@ -67,6 +68,7 @@ export const GameSetupComponent = () => {
   const [isActive, setIsActive] = useState(false);
   // team name
   const [teamName, setTeamName] = useState<string>("");
+  const [opponentTeamName, setOpponentTeamName] = useState<string>("");
   // stepper active step
   const [active, setActive] = useState<number>(0);
 
@@ -81,8 +83,9 @@ export const GameSetupComponent = () => {
   const onStartTrackingClick = () => {
     if (!team) throw new Error(`Team cannot be null or undefined`);
 
-    // dispatch team creation
+    // dispatch teams creation
     dispatch(addTeam(team));
+    if (opponentTeam) dispatch(addTeam(opponentTeam));
 
     // add players
     dispatch(addPlayers(players));
@@ -107,6 +110,7 @@ export const GameSetupComponent = () => {
       hasEnded: false,
       workspaceId: uuidv4(),
       homeTeamId: team.id,
+      awayTeamId: opponentTeam?.id,
       useHalfCourt: halfCourtFlag,
     };
     dispatch(newGame(game));
@@ -164,14 +168,23 @@ export const GameSetupComponent = () => {
    * Creates the new team
    */
   const createTeam = () => {
-    const team: Team = {
+    const homeTeam: Team = {
       id: teamId,
       courtSide: HalfCourt.Left,
       isHome: true,
       name: teamName,
     };
 
-    setTeam(team);
+    setTeam(homeTeam);
+
+    // create opponent team
+    const opponentTeam: Team = {
+      id: uuidv4(),
+      courtSide: HalfCourt.Right,
+      isHome: false,
+      name: opponentTeamName,
+    };
+    setOpponentTeam(opponentTeam);
 
     // move the stepper
     setActive(1);
@@ -196,6 +209,8 @@ export const GameSetupComponent = () => {
           <Stepper.Step label="Step 1" description="Create a team">
             <CreateTeamComponent
               teamName={teamName}
+              opponentTeamName={opponentTeamName}
+              updateOpponentTeamName={setOpponentTeamName}
               updateTeamName={setTeamName}
               createTeam={createTeam}
               halfCourt={halfCourtFlag}

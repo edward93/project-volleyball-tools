@@ -8,12 +8,22 @@ import styles from "./gameSetup.module.scss";
  */
 export const CreateTeamComponent = (props: {
   teamName: string;
+  opponentTeamName: string;
   halfCourt: boolean;
   updateTeamName: (value: string) => void;
+  updateOpponentTeamName: (value: string) => void;
   updateHalfCourtFlag: (value: boolean) => void;
   createTeam: () => void;
 }) => {
-  const { halfCourt, updateHalfCourtFlag, updateTeamName, teamName, createTeam } = props;
+  const {
+    halfCourt,
+    updateHalfCourtFlag,
+    updateTeamName,
+    updateOpponentTeamName,
+    teamName,
+    opponentTeamName,
+    createTeam,
+  } = props;
 
   /**
    * Handles team name change events
@@ -23,6 +33,16 @@ export const CreateTeamComponent = (props: {
     event.preventDefault();
 
     updateTeamName(event.target.value);
+  };
+
+  /**
+   * Handles team name change events
+   * @param event - input change event
+   */
+  const onOpponentTeamNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+
+    updateOpponentTeamName(event.target.value);
   };
 
   /**
@@ -55,7 +75,7 @@ export const CreateTeamComponent = (props: {
           checked={halfCourt}
           labelPosition="left"
           onChange={(event) => updateHalfCourtFlag(event.currentTarget.checked)}
-          description="Use half court or full court layout"
+          description="Use half court or full court layout (full court layout is currently not supported)"
         />
         <TextInput
           label="Team Name"
@@ -64,6 +84,14 @@ export const CreateTeamComponent = (props: {
           placeholder="e.g. Blue"
           value={teamName}
           onChange={onTeamNameChange}
+        />
+        <TextInput
+          label="Opponent Team Name"
+          name="opponent-team-name"
+          withAsterisk
+          placeholder="e.g. Red"
+          value={opponentTeamName}
+          onChange={onOpponentTeamNameChange}
         />
       </section>
       <section className={styles.actions}>
