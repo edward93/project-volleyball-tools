@@ -50,6 +50,6 @@
     "prettier-plugin-organize-imports": "^3.2.3",
     "react-git-info": "^2.0.1",
     "sass": "^1.64.2",
-    "vite": "^4.4.5"
+    "vite": "^6.0.7"
   }
 }
