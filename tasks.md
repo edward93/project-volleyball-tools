@@ -30,6 +30,11 @@
    └── ... (other root-level files)
    ```
 3. Fix `ScoreBoard` component
+4. Add the volleyball
+
+## Out of scope
+1. Add validation to the game creation form
+2. Use forms everywhere
 
 # Notes
 ~~On the current machine http://localhost:5173/game/1880a3f6-b05b-4d6c-8d03-a82fa110375a - link can be used for quick half court setups~~
