@@ -30,11 +30,16 @@
    └── ... (other root-level files)
    ```
 3. Fix `ScoreBoard` component
-4. Add the volleyball
+4. ~~Add the volleyball~~
+5. ~~Create a new team and save it (Japan's team)~~
+6. Separate framework code from the rest for VolleyballComponent
+7. Add volleyball position to the gameState dependencies
 
 ## Out of scope
+
 1. Add validation to the game creation form
 2. Use forms everywhere
 
 # Notes
-~~On the current machine http://localhost:5173/game/1880a3f6-b05b-4d6c-8d03-a82fa110375a - link can be used for quick half court setups~~
+
+On the current machine ~~http://localhost:5173/game/1880a3f6-b05b-4d6c-8d03-a82fa110375a~~ [link](http://localhost:5173/game/8bdcd54e-e542-44be-8463-f8afeefeef60) can be used for quick half court setups

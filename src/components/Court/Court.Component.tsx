@@ -3,6 +3,7 @@ import { useAppSelector } from "reduxTools/hooks";
 import Player from "../Players/Player.Component";
 
 import "styles/court.scss";
+import VolleyballComponent from "features/volleyball/VolleyballComponent";
 
 /** Circle radius */
 const radius = 40;
@@ -190,6 +191,7 @@ const CourtComponent = (props: { halfCourt?: boolean }) => {
             // onReleased={onReleased}
           />
         ))}
+        <VolleyballComponent svgRef={svgRef} />
       </svg>
     </div>
   );

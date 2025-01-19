@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 import { PlayerComponentProps } from "types/playerComponent.Types";
 import { PlayerLocation } from "types/volleyballTool.New.Types";
 import useFontFaceObserver from "utils/hooks/useFontFaceObserver.hook";
-import { useMoveable } from "utils/hooks/useMoveable.hoot";
+import { useMoveable } from "utils/hooks/useMoveable.hook";
 import { select } from "../Inspector/inspector.Slice";
 import { addLocation } from "./playerLocation.Slice";
 

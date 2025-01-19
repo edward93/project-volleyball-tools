@@ -9,6 +9,8 @@ import players from "../components/Players/players.Slice";
 import game from "../components/Scoreboard/game.Slice";
 import points from "../components/Scoreboard/points.slice";
 import sets from "../components/Scoreboard/sets.Slice";
+import volleyballPosition from "../features/volleyball/volleyballPosition.Slice";
+
 import listenerMiddleware from "./middlewares/actionListenerMiddleware";
 
 /**
@@ -43,6 +45,7 @@ export const store = configureStore({
     score,
     gameState,
     gameAction,
+    volleyballPosition,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(listenerMiddleware.middleware),
   preloadedState: preloadedState,
