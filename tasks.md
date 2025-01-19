@@ -30,7 +30,7 @@
    └── ... (other root-level files)
    ```
 3. Fix `ScoreBoard` component
-4. Add the volleyball
+4. ~~Add the volleyball~~
 
 ## Out of scope
 1. Add validation to the game creation form

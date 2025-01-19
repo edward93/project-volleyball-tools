@@ -73,6 +73,16 @@ export type PlayerLocation = {
   y: number;
 };
 
+/** Represents the position of a volleyball on the SVG court */
+export type VolleyballPosition = {
+  /** Unique auto generated id */
+  id: string;
+  /** X coordinate */
+  x: number;
+  /** Y coordinate */
+  y: number;
+};
+
 /** Represents an event on a timeline */
 export type GameState = {
   /** Unique auto generated id */
