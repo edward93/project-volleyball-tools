@@ -33,6 +33,7 @@
 4. ~~Add the volleyball~~
 5. ~~Create a new team and save it (Japan's team)~~
 6. Separate framework code from the rest for VolleyballComponent
+7. Add volleyball position to the gameState dependencies
 
 ## Out of scope
 

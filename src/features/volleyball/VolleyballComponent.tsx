@@ -18,10 +18,6 @@ const VolleyballComponent = (props: { svgRef: React.RefObject<SVGSVGElement> }) 
   // volleyball circle radius
   const volleyballCircleRadius = 30;
 
-  // current game state id
-  const { currentStateId } = useAppSelector((selector) => selector.gameState);
-  const currentState = useAppSelector((selector) => selector.gameState.byId[currentStateId ?? ""]);
-
   const volleyballPosition = useAppSelector((selector) => selector.volleyballPosition);
   const [position, setPosition] = useState<VolleyballPosition>(volleyballPosition);
   // useMoveable hook
@@ -95,7 +91,7 @@ const VolleyballComponent = (props: { svgRef: React.RefObject<SVGSVGElement> }) 
       onTouchStart={onTouchStart}
       onTouchEnd={onStopPressing}
     >
-      <circle cx={0} cy={0} r={volleyballCircleRadius} fill="#fff" stroke="black" strokeWidth={2} />
+      <circle cx={0} cy={0} r={volleyballCircleRadius} fill="#fff" stroke="#fff" strokeWidth={isPressed ? 8 : 2} />
       <g
         transform={`translate(${-volleyballCircleRadius}, ${-volleyballCircleRadius}) scale(${
           volleyballCircleRadius / 150
