@@ -39,6 +39,8 @@
 
 1. Add validation to the game creation form
 2. Use forms everywhere
+3. Refactor CSS themes (using copilot add CSS themes with CSS variables)
+4. Modernize `HomePage.tsx`
 
 # Notes
 
