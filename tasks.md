@@ -1,7 +1,6 @@
 # High Level Tasks
 
 1. Add new home page, which will show existing/saved games as well as the possibility to create a new one
-    1. Add theme selector (Copilot)
 2. Change the folder structure to this (https://redux.js.org/tutorials/essentials/part-2-app-structure) ongoing
    ```
    src/
@@ -40,6 +39,8 @@
 
 1. Add validation to the game creation form
 2. Use forms everywhere
+3. Refactor CSS themes (using copilot add CSS themes with CSS variables)
+4. Modernize `HomePage.tsx`
 
 # Notes
 
