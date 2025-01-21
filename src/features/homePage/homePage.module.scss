@@ -1,0 +1,46 @@
+@import "../../styles/colors.scss";
+
+.container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: lighten($color: theme($bg-color, $primary-color), $amount: 3);
+}
+
+.header {
+  text-align: center;
+  color: theme($text-color, $primary-color);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+.storedGames {
+  margin-top: 1rem;
+
+  h4 {
+    text-align: center;
+    color: theme($text-color, $secondary-color);
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+
+    li {
+      padding: 0.5rem;
+      border: 1px solid theme($text-color, $highlighted-color);
+      margin-bottom: 0.5rem;
+      cursor: pointer; /* Change cursor to pointer */
+      transition: background-color 0.3s; /* Smooth transition for hover effect */
+
+      &:hover {
+        background-color: lighten($color: theme($bg-color, $primary-color), $amount: 10); /* Highlight on hover */
+        color: theme($text-color, $primary-color);
+      }
+    }
+  }
+}

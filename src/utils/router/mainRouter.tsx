@@ -1,8 +1,9 @@
 import App from "components/App";
-import GameSetupComponent from "features/gameSetup/GameSetup";
+import HomePage from "features/homePage/HomePage";
 import VolleyballTools from "components/VolleyballTool/VolleyballTool.Component";
 import { createBrowserRouter } from "react-router-dom";
 import { ROUTES } from "./routes";
+import GameSetupComponent from "features/gameSetup/GameSetup";
 
 export const router = createBrowserRouter([
   {
@@ -11,6 +12,10 @@ export const router = createBrowserRouter([
     children: [
       {
         path: ROUTES.HOME,
+        element: <HomePage />,
+      },
+      {
+        path: ROUTES.GAME_SETUP,
         element: <GameSetupComponent />,
       },
       {
