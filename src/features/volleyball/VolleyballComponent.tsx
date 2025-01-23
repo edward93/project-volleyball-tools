@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
-import { VolleyballPosition } from "types/volleyballTool.New.Types";
-import { useMoveable } from "utils/hooks/useMoveable.hook";
 import { v4 as uuidv4 } from "uuid";
+import { useVolleyballHook } from "./useVolleyball.hook";
 import { updateVolleyballPosition } from "./volleyballPosition.Slice";
 
-// TODO: continue working on this
 /**
  * VolleyballComponent renders a draggable circle representing a volleyball.
  *
@@ -14,74 +11,18 @@ import { updateVolleyballPosition } from "./volleyballPosition.Slice";
  */
 const VolleyballComponent = (props: { svgRef: React.RefObject<SVGSVGElement> }) => {
   const { svgRef } = props;
-  const dispatch = useAppDispatch();
+
   // volleyball circle radius
   const volleyballCircleRadius = 30;
 
+  const dispatch = useAppDispatch();
   const volleyballPosition = useAppSelector((selector) => selector.volleyballPosition);
-  const [position, setPosition] = useState<VolleyballPosition>(volleyballPosition);
-  // useMoveable hook
-  const [isPressed, press, release, move] = useMoveable<VolleyballPosition>(position, setPosition);
 
-  useEffect(() => {
-    if (svgRef.current) {
-      svgRef.current.addEventListener("mousemove", onMouseMove);
-      svgRef.current.addEventListener("touchmove", onTouchMove);
-    }
-
-    return () => {
-      svgRef.current?.removeEventListener("mousemove", onMouseMove);
-      svgRef.current?.removeEventListener("touchmove", onTouchMove);
-    };
-  }, [svgRef]);
-
-  /**
-   * Handles the mouse down event on an SVG circle element.
-   *
-   * @param event - The mouse event triggered by pressing down on the SVG circle element.
-   */
-  const onMouseDown = (event: React.MouseEvent<SVGCircleElement>) => {
-    event.preventDefault();
-    press();
-  };
-
-  /**
-   * Handles the touch start event on an SVG circle element.
-   *
-   * @param event - The touch event triggered on the SVG circle element.
-   */
-  const onTouchStart = (event: React.TouchEvent<SVGCircleElement>) => {
-    event.preventDefault();
-    press();
-  };
-
-  /**
-   * Handles the stop pressing event.
-   * Releases the current action and dispatches an action to add a new volleyball position.
-   * The new position includes a unique identifier and the current x and y coordinates.
-   */
-  const onStopPressing = () => {
-    release();
-    dispatch(updateVolleyballPosition({ id: uuidv4(), x: position.x, y: position.y }));
-  };
-
-  /**
-   * Handles the mouse move event.
-   *
-   * @param event - The mouse event containing the coordinates of the mouse pointer.
-   */
-  const onMouseMove = (event: MouseEvent) => {
-    move(event.clientX, event.clientY, svgRef.current);
-  };
-
-  /**
-   * Handles the touch move event.
-   *
-   * @param {TouchEvent} event - The touch event object.
-   */
-  const onTouchMove = (event: TouchEvent) => {
-    move(event.touches[0].clientX, event.touches[0].clientY, svgRef.current);
-  };
+  // custom hook to handle the volleyball movement
+  const { position, isPressed, onMouseDown, onTouchStart, onStopPressing } =
+    useVolleyballHook(volleyballPosition, svgRef, () => {
+      dispatch(updateVolleyballPosition({ id: uuidv4(), x: position.x, y: position.y }));
+    });
 
   return (
     <g
