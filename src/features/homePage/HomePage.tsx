@@ -16,7 +16,7 @@ const HomePage = () => {
   useEffect(() => {
     const storedState = localStorage.getItem("store");
     // currently there's only one game per stored sate
-    const game = JSON.parse(storedState || "")?.game;
+    const game = JSON.parse(storedState || "{}")?.game;
 
     if (game) {
       if (!(game.id in storedGames)) {
