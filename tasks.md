@@ -34,7 +34,7 @@
 5. ~~Create a new team and save it (Japan's team)~~
 6. ~~Separate framework code from the rest for VolleyballComponent (separation of concerns)~~
 7. ~~Write down MVP requirements (limit the scope and remove bike-shedding)~~
-8. Convert MVP requirements to tasks
+8. ~~Convert MVP requirements to tasks~~
 9. Add volleyball position to the gameState dependencies
 10. Perform "separation of concerns" refactoring for the MVP components
 

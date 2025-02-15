@@ -2,8 +2,8 @@ import { Fragment, useRef } from "react";
 import { useAppSelector } from "reduxTools/hooks";
 import Player from "../Players/Player.Component";
 
-import "styles/court.scss";
 import VolleyballComponent from "features/volleyball/VolleyballComponent";
+import "styles/court.scss";
 
 /** Circle radius */
 const radius = 40;
@@ -11,6 +11,7 @@ const radius = 40;
 const svgWidth = 2400;
 const svgHeight = 1400;
 
+// TODO: move to a separate file/object
 const COURT_DIMENSIONS = {
   FULL: {
     NET: { X1: 1200, Y1: 100, X2: 1200, Y2: 1300 },
@@ -24,7 +25,7 @@ const COURT_DIMENSIONS = {
     },
   },
   HALF: {
-    NET: {X1: 600, Y1: 100, X2: 1800, Y2: 100 },
+    NET: { X1: 600, Y1: 100, X2: 1800, Y2: 100 },
     COURT: {
       WIDTH: 900,
       X: 750,
@@ -32,8 +33,8 @@ const COURT_DIMENSIONS = {
       FRONT_ROW: { WIDTH: 900, HEIGHT: 300, X: 750, Y: 100 },
       TEN_FT_LINE: { X1: 750, Y1: 400, X2: 1650, Y2: 400 },
       TEN_FT_LINE_DASHED: { X1: 650, Y1: 400, X2: 1750, Y2: 400 },
-    }
-  }
+    },
+  },
 };
 
 /**
@@ -99,6 +100,14 @@ const CourtComponent = (props: { halfCourt?: boolean }) => {
                   x={COURT_DIMENSIONS.HALF.COURT.FRONT_ROW.X}
                   y={COURT_DIMENSIONS.HALF.COURT.FRONT_ROW.Y}
                 />
+                
+                {/* Custom court overlay images 
+                <image
+                  href={logo}
+                  y={COURT_DIMENSIONS.HALF.COURT.Y}
+                  x={COURT_DIMENSIONS.HALF.COURT.X}
+                  width={COURT_DIMENSIONS.HALF.COURT.FRONT_ROW.WIDTH}
+                /> */}
                 <line
                   className="vt-svg-10-ft-line"
                   strokeWidth={5}
