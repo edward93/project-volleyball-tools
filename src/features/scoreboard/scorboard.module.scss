@@ -1,5 +1,5 @@
-@import "./colors.scss";
-@import "./common.scss";
+@import "../../styles/colors.scss";
+@import "../../styles/common.scss";
 
 .vt-tools-scoreboard-section {
   @include prevent-select;

@@ -6,7 +6,7 @@ import { create as createNewState } from "components/Timeline/gameState.Slice";
 import { createNewScore } from "./score.Slice";
 
 import { GameState, Score } from "types/volleyballTool.New.Types";
-import "../../styles/scoreboard.scss";
+import styles from "./scorboard.module.scss";
 
 // TODO: due to new game state changes this component is broken
 /**
@@ -193,21 +193,21 @@ const ScoreboardComponent = () => {
   };
 
   return (
-    <section className="vt-tools-scoreboard-section">
-      <section className="vt-tools-scoreboard-left-section scoreboard-half">
-        <div className="vt-tool-scoreboard-left-section-team scoreboard-team">{homeTeam?.name}</div>
-        <div onClick={onHomeScoreClick} className="vt-tool-scoreboard-left-section-score scoreboard-score">
+    <section className={styles.vtToolsScoreboardSection}>
+      <section className={styles.scoreboardHalf}>
+        <div className={styles.scoreboardTeam}>{homeTeam?.name}</div>
+        <div onClick={onHomeScoreClick} className={styles.scoreboardScore}>
           {currentScore.homePoints}
         </div>
-        <div className="vt-tool-scoreboard-left-section-sets-won scoreboard-sets-won">{currentScore.homeSetsWon}</div>
+        <div className={styles.scoreboardSetsWon}>{currentScore.homeSetsWon}</div>
       </section>
-      <section className="vt-tools-scoreboard-middle-section">-</section>
-      <section className="vt-tools-scoreboard-right-section scoreboard-half">
-        <div className="vt-tool-scoreboard-right-section-sets-won scoreboard-sets-won">{currentScore.awaySetsWon}</div>
-        <div onClick={onAwayScoreClick} className="vt-tool-scoreboard-right-section-score scoreboard-score">
+      <section className={styles.vtToolsScoreboardMiddleSection}>-</section>
+      <section className={styles.scoreboardHalf}>
+        <div className={styles.scoreboardSetsWon}>{currentScore.awaySetsWon}</div>
+        <div onClick={onAwayScoreClick} className={styles.scoreboardSetsWon}>
           {currentScore.awayPoints}
         </div>
-        <div className="vt-tool-scoreboard-right-section-team scoreboard-team">{awayTeam?.name}</div>
+        <div className={styles.scoreboardTeam}>{awayTeam?.name}</div>
       </section>
     </section>
   );
