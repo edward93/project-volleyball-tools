@@ -1,12 +1,16 @@
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
-import { v4 as uuidv4 } from "uuid";
 
-import { create as createNewState } from "components/Timeline/gameState.Slice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { v4 as uuidv4 } from "uuid";
 import { createNewScore } from "./score.Slice";
 
-import { GameState, Score } from "types/volleyballTool.New.Types";
-import styles from "./scorboard.module.scss";
+import { ActionIcon } from "@mantine/core";
+import { Score } from "types/volleyballTool.New.Types";
+import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
+import styles from "./scoreboard.module.scss";
 
 // TODO: due to new game state changes this component is broken
 /**
@@ -15,198 +19,134 @@ import styles from "./scorboard.module.scss";
  */
 const ScoreboardComponent = () => {
   const dispatch = useAppDispatch();
-  // game states
-  const { currentStateId: currentState } = useAppSelector((selector) => selector.gameState);
   // current game
   const game = useAppSelector((selector) => selector.game);
   // all teams
   const teams = useAppSelector((selector) => selector.teams);
+
+  // current game state id
+  const { currentStateId } = useAppSelector((selector) => selector.gameState);
+  const currentState = useAppSelector((selector) => selector.gameState.byId[currentStateId ?? ""]);
 
   // home and away teams
   const homeTeam = teams.byId[game.homeTeamId || ""];
   const awayTeam = teams.byId[game.awayTeamId || ""];
   // const sets = [...useAppSelector((selector) => selector.setsSlice.byGameId[game.id])];
 
-  // initial score
-  const initialScore: Score = {
-    id: uuidv4(),
-    awayPoints: 0,
-    awaySetsWon: 0,
-    gameId: game.id,
-    homePoints: 0,
-    homeSetsWon: 0,
-    set: 1,
-  };
-
   // all scores
   const scores = useAppSelector((selector) => selector.score);
 
+  // current score id or the latest one
+  const currentScoreId = currentState?.dependencies?.currentScoreId ?? scores.allIds[scores.allIds.length - 1];
   // current score
-  const currentScore =
-    scores.byGameStateId[game.id]?.[currentState ?? ""] ??
-    scores.byId[scores.allIdsByGameId[game.id]?.[scores.allIdsByGameId[game.id].length - 1]] ??
-    initialScore;
+  const currentScore = scores.byId[currentScoreId];
+
+  // game state helper (saves the current state)
+  const [newGameState] = useGameStateHelpers();
 
   /**
-   * Handles home score click events
+   * Handles home score up click event
    * @param event - Click event
    */
-  const onHomeScoreClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  const onHomeScoreUpClick = (event: React.MouseEvent<SVGSVGElement>) => {
     event.preventDefault();
 
-    pointIsScored();
+    const newScore = currentScore.homePoints + 1;
+    if (!validateScore(newScore)) return;
+
+    updateScore({ ...currentScore, homePoints: newScore });
   };
 
   /**
-   * Handles away score click events
+   * Handles home score down click event
    * @param event - Click event
    */
-  const onAwayScoreClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  const onHomeScoreDownClick = (event: React.MouseEvent<SVGSVGElement>) => {
     event.preventDefault();
 
-    pointIsScored(false);
+    const newScore = currentScore.homePoints - 1;
+    if (!validateScore(newScore)) return;
+
+    updateScore({ ...currentScore, homePoints: newScore });
   };
 
   /**
-   * Calculates and creates new score (along with a state)
+   * Handles away score up click event
+   * @param event - Click event
+   */
+  const onAwayScoreUpClick = (event: React.MouseEvent<SVGSVGElement>) => {
+    event.preventDefault();
+
+    const newScore = currentScore.awayPoints + 1;
+    if (!validateScore(newScore)) return;
+
+    updateScore({ ...currentScore, awayPoints: newScore });
+  };
+
+  /**
+   * Handles away score down click event
+   * @param event - Click event
+   */
+  const onAwayScoreDownClick = (event: React.MouseEvent<SVGSVGElement>) => {
+    event.preventDefault();
+
+    const newScore = currentScore.awayPoints - 1;
+    if (!validateScore(newScore)) return;
+
+    updateScore({ ...currentScore, awayPoints: newScore });
+  };
+
+  /**
+   * Updates the store with the new score
    *
-   * @param byHome - True if the point was scored by home
+   * @param score - Score to update
    */
-  const pointIsScored = (byHome: boolean = true) => {
-    const state: GameState = {
-      id: uuidv4(),
-      gameId: game.id,
-      // TODO: tmp fix
-      dependencies: { activePlayerIds: [], playerLocationIds: {} },
-    };
+  const updateScore = (score: Score) => {
+    score.id = uuidv4();
+    dispatch(createNewScore(score));
 
-    // save this onto the store
-    dispatch(createNewState(state));
+    // update the game state
+    newGameState();
+  };
 
-    // new score
-    const newScore: Score = {
-      ...currentScore,
-    };
-
-    // TODO: refactor & simplify
-    if (byHome) {
-      newScore.homePoints += 1;
-
-      if (newScore.homePoints >= (newScore.set === 5 ? 15 : 25)) {
-        if (newScore.homePoints - newScore.awayPoints > 1) {
-          // this set is won by the home team
-          newScore.homeSetsWon += 1;
-
-          // save onto the store
-          dispatch(createNewScore({ score: newScore, gameStateId: state.id }));
-          console.log("SET IS WON BY HOME TEAM");
-
-          // check if the game is over
-          if (newScore.homeSetsWon < 3) {
-            // game isn't over just yet
-            const newSet: GameState = {
-              id: uuidv4(),
-              gameId: game.id,
-              // TODO: tmp fix
-              dependencies: { activePlayerIds: [], playerLocationIds: {} },
-            };
-
-            // save this onto the store
-            dispatch(createNewState(newSet));
-
-            const newSetInitialScore: Score = {
-              id: uuidv4(),
-              awayPoints: 0,
-              awaySetsWon: newScore.awaySetsWon,
-              gameId: game.id,
-              homePoints: 0,
-              homeSetsWon: newScore.homeSetsWon,
-              set: newScore.set + 1,
-            };
-
-            // save onto the store
-            dispatch(createNewScore({ score: newSetInitialScore, gameStateId: newSet.id }));
-          } else {
-            // this was a wining point, the game is over
-            // TODO: set game is over to true
-            console.log("GAME IS OVER: HOME TEAM WON");
-          }
-        } else {
-          // save onto the store
-          dispatch(createNewScore({ score: newScore, gameStateId: state.id }));
-        }
-      } else {
-        // save onto the store
-        dispatch(createNewScore({ score: newScore, gameStateId: state.id }));
-      }
-    } else {
-      newScore.awayPoints += 1;
-
-      if (newScore.awayPoints >= (newScore.set === 5 ? 15 : 25)) {
-        if (newScore.awayPoints - newScore.homePoints > 1) {
-          // this set is won by the home team
-          newScore.homeSetsWon += 1;
-
-          // save onto the store
-          dispatch(createNewScore({ score: newScore, gameStateId: state.id }));
-          console.log("SET IS WON BY AWAY TEAM");
-
-          // check if the game is over
-          if (newScore.homeSetsWon < 3) {
-            // game isn't over just yet
-            const newSet: GameState = {
-              id: uuidv4(),
-              gameId: game.id,
-              // TODO: tmp fix
-              dependencies: { activePlayerIds: [], playerLocationIds: {} },
-            };
-
-            // save this onto the store
-            dispatch(createNewState(newSet));
-
-            const newSetInitialScore: Score = {
-              id: uuidv4(),
-              awayPoints: 0,
-              awaySetsWon: newScore.awaySetsWon,
-              gameId: game.id,
-              homePoints: 0,
-              homeSetsWon: newScore.homeSetsWon,
-              set: newScore.set + 1,
-            };
-
-            // save onto the store
-            dispatch(createNewScore({ score: newSetInitialScore, gameStateId: newSet.id }));
-          } else {
-            // this was a wining point, the game is over
-            // TODO: set game is over to true
-            console.log("GAME IS OVER: AWAY TEAM WON");
-          }
-        } else {
-          // save onto the store
-          dispatch(createNewScore({ score: newScore, gameStateId: state.id }));
-        }
-      } else {
-        // save onto the store
-        dispatch(createNewScore({ score: newScore, gameStateId: state.id }));
-      }
-    }
+  /**
+   * Validates the score
+   *
+   * @param score Score to validate
+   * @returns True if the score is valid false otherwise
+   */
+  const validateScore = (score: number): boolean => {
+    if (score < 0) return false;
+    return true;
   };
 
   return (
     <section className={styles.vtToolsScoreboardSection}>
       <section className={styles.scoreboardHalf}>
         <div className={styles.scoreboardTeam}>{homeTeam?.name}</div>
-        <div onClick={onHomeScoreClick} className={styles.scoreboardScore}>
-          {currentScore.homePoints}
+        <div className={styles.scoreboardScore}>{currentScore.homePoints}</div>
+        <div className={styles.scoreboardControls}>
+          <ActionIcon variant="subtle" size="xs">
+            <FontAwesomeIcon icon={faCaretUp} onClick={onHomeScoreUpClick} />
+          </ActionIcon>
+          <ActionIcon variant="subtle" size="xs">
+            <FontAwesomeIcon icon={faCaretDown} onClick={onHomeScoreDownClick} />
+          </ActionIcon>
         </div>
         <div className={styles.scoreboardSetsWon}>{currentScore.homeSetsWon}</div>
       </section>
       <section className={styles.vtToolsScoreboardMiddleSection}>-</section>
       <section className={styles.scoreboardHalf}>
         <div className={styles.scoreboardSetsWon}>{currentScore.awaySetsWon}</div>
-        <div onClick={onAwayScoreClick} className={styles.scoreboardSetsWon}>
-          {currentScore.awayPoints}
+        <div className={styles.scoreboardControls}>
+          <ActionIcon variant="subtle" size="xs">
+            <FontAwesomeIcon icon={faCaretUp} onClick={onAwayScoreUpClick} />
+          </ActionIcon>
+          <ActionIcon variant="subtle" size="xs">
+            <FontAwesomeIcon icon={faCaretDown} onClick={onAwayScoreDownClick} />
+          </ActionIcon>
         </div>
+        <div className={styles.scoreboardScore}>{currentScore.awayPoints}</div>
         <div className={styles.scoreboardTeam}>{awayTeam?.name}</div>
       </section>
     </section>

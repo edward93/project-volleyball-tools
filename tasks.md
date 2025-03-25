@@ -29,7 +29,10 @@
    ├── index.tsx
    └── ... (other root-level files)
    ```
-3. Fix `ScoreBoard` component
+3. Fix `ScoreBoard` component. Update `score` store and slices ~~(design a better store for this)~~.
+  - ~~Update saved store with a new one that has initialized scores in it (start it over)~~
+  - Method to properly add points up (if it one team wins increment the sets won counter)
+  - Extract `onStartTrackingClick` into a new function called `startGame` or `initializeGame`
 4. ~~Add the volleyball~~
 5. ~~Create a new team and save it (Japan's team)~~
 6. ~~Separate framework code from the rest for VolleyballComponent (separation of concerns)~~

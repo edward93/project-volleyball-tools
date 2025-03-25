@@ -99,6 +99,8 @@ export type GameState = {
     playerLocationIds: Record<string, string>;
     /** game action associated with this state (only one action per state) */
     gameActionId?: string;
+    /** current score id */
+    currentScoreId?: string;
   };
 };
 
@@ -154,8 +156,6 @@ export type Score = {
   id: string;
   /** Game id */
   gameId: string;
-  /** Current set id */
-  // setId: string;
   /** Current set */
   set: GameSet | number;
   /** Current home ( >= 0) */

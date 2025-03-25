@@ -5,6 +5,7 @@ import { addTeam } from "components/Players/teams.Slice";
 import { newGame } from "components/Scoreboard/game.Slice";
 import { DefaultRotationPositionsVertical } from "constants/courtPositions";
 import { None } from "constants/playerPositions";
+import { createNewScore } from "features/scoreboard/score.Slice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "reduxTools/hooks";
@@ -15,6 +16,7 @@ import {
   Player,
   PlayerLocation,
   PositionType,
+  Score,
   Team,
 } from "types/volleyballTool.New.Types";
 import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
@@ -83,12 +85,36 @@ export const GameSetupComponent = () => {
   const onStartTrackingClick = () => {
     if (!team) throw new Error(`Team cannot be null or undefined`);
 
+    // TODO: extract this into a new function called `startGame` or `initializeGame`
     // dispatch teams creation
     dispatch(addTeam(team));
     if (opponentTeam) dispatch(addTeam(opponentTeam));
 
     // add players
     dispatch(addPlayers(players));
+    // add game
+    const game: Game = {
+      id: uuidv4(),
+      hasEnded: false,
+      workspaceId: uuidv4(),
+      homeTeamId: team.id,
+      awayTeamId: opponentTeam?.id,
+      useHalfCourt: halfCourtFlag,
+    };
+    dispatch(newGame(game));
+
+    // add scores
+    const gameScore: Score = {
+      id: uuidv4(),
+      gameId: game.id,
+      homePoints: 0,
+      awayPoints: 0,
+      homeSetsWon: 0,
+      awaySetsWon: 0,
+      set: 1,
+    };
+
+    dispatch(createNewScore(gameScore));
 
     // TODO: handle 2 team scenario
     // add player locations
@@ -103,17 +129,6 @@ export const GameSetupComponent = () => {
 
     // add the first game state
     newGameState();
-
-    // add game
-    const game: Game = {
-      id: uuidv4(),
-      hasEnded: false,
-      workspaceId: uuidv4(),
-      homeTeamId: team.id,
-      awayTeamId: opponentTeam?.id,
-      useHalfCourt: halfCourtFlag,
-    };
-    dispatch(newGame(game));
 
     // move to the tracking page
     navigate(ROUTES.GAME(game.id));

@@ -32,6 +32,12 @@
       cursor: pointer;
     }
 
+    & .scoreboard-controls {
+      display: grid;
+      grid-template: 1f 1fr/1fr;
+      padding: 0 0.5rem;
+    }
+
     & .scoreboard-sets-won {
       display: flex;
       padding: 0.25rem;

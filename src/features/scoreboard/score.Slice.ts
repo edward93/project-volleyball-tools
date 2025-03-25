@@ -4,8 +4,6 @@ import { Score } from "types/volleyballTool.New.Types";
 
 const initialState: Scores = {
   byId: {},
-  byGameStateId: {},
-  allIdsByGameId: {},
   allIds: [],
 };
 
@@ -13,21 +11,11 @@ export const scoresSlice = createSlice({
   initialState,
   name: "Scores",
   reducers: {
-    createNewScore: (state: Scores, action: PayloadAction<{ score: Score; gameStateId: string }>) => {
-      const {
-        score,
-        gameStateId,
-        score: { gameId, id },
-      } = action.payload;
+    createNewScore: (state: Scores, action: PayloadAction<Score>) => {
+      const score = action.payload;
 
-      state.allIds.push(id);
-      state.byId[id] = score;
-      
-      if (state.byGameStateId[gameId]) state.byGameStateId[gameId][gameStateId] = score;
-      else state.byGameStateId[gameId] = { [gameStateId]: score };
-
-      if (state.allIdsByGameId[gameId]) state.allIdsByGameId[gameId].push(id);
-      else state.allIdsByGameId[gameId] = [id];
+      state.allIds.push(score.id);
+      state.byId[score.id] = score;
     },
   },
 });
