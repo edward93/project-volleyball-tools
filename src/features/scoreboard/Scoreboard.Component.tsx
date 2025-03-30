@@ -12,7 +12,6 @@ import { Score } from "types/volleyballTool.New.Types";
 import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
 import styles from "./scoreboard.module.scss";
 
-// TODO: due to new game state changes this component is broken
 /**
  * Scoreboard component
  * @returns Scoreboard Component
@@ -31,7 +30,6 @@ const ScoreboardComponent = () => {
   // home and away teams
   const homeTeam = teams.byId[game.homeTeamId || ""];
   const awayTeam = teams.byId[game.awayTeamId || ""];
-  // const sets = [...useAppSelector((selector) => selector.setsSlice.byGameId[game.id])];
 
   // all scores
   const scores = useAppSelector((selector) => selector.score);
@@ -103,6 +101,7 @@ const ScoreboardComponent = () => {
    */
   const updateScore = (score: Score) => {
     score.id = uuidv4();
+    score = checkSetWin(score);
     dispatch(createNewScore(score));
 
     // update the game state
@@ -118,6 +117,38 @@ const ScoreboardComponent = () => {
   const validateScore = (score: number): boolean => {
     if (score < 0) return false;
     return true;
+  };
+
+  /**
+   * Checks if the score is a winning score and updates the sets won
+   *
+   * @param score - Score to check
+   * @param maxSets - Maximum number of sets
+   * @returns - Updated score with sets won
+   */
+  const checkSetWin = (score: Score, maxSets: number = 5): Score => {
+    const setsToWin = Math.ceil(maxSets / 2);
+    const isFinalSet = score.set === maxSets;
+    const setPoint = isFinalSet ? 15 : 25;
+    const leadByTwo = Math.abs(score.homePoints - score.awayPoints) >= 2;
+
+    if (score.homePoints >= setPoint && leadByTwo) {
+      score.homeSetsWon += 1;
+      if (score.homeSetsWon < setsToWin) {
+        score.set += 1; // Only update the set if the match isn't won
+        score.homePoints = 0;
+        score.awayPoints = 0;
+      }
+    } else if (score.awayPoints >= setPoint && leadByTwo) {
+      score.awaySetsWon += 1;
+      if (score.awaySetsWon < setsToWin) {
+        score.set += 1; // Only update the set if the match isn't won
+        score.homePoints = 0;
+        score.awayPoints = 0;
+      }
+    }
+
+    return score;
   };
 
   return (

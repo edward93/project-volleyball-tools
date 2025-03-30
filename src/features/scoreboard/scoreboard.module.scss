@@ -18,6 +18,7 @@
       display: flex;
       padding: 0.25rem;
       background-color: lighten($color: theme($bg-color, $primary-color), $amount: 15);
+      place-items: center;
     }
 
     & .scoreboard-score {
