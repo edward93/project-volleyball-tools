@@ -1,4 +1,4 @@
-import ScoreboardComponent from "components/Scoreboard/Scoreboard.Component";
+import ScoreboardComponent from "features/scoreboard/Scoreboard.Component";
 import { useAppSelector } from "reduxTools/hooks";
 import RotationToolComponent from "./Rotation.Tool.Component";
 

@@ -44,6 +44,9 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
     // latest game action id
     const latestActionId = state.gameAction.byId[state.gameAction.allIds[state.gameAction.allIds.length - 1]]?.id;
 
+    // get current score id
+    const currentScoreId = state.score.allIds[state.score.allIds.length - 1];
+    
     // game state object
     const gameState: GameState = {
       id: uuidv4(),
@@ -52,6 +55,7 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
         activePlayerIds: playerIds,
         playerLocationIds,
         gameActionId: latestActionId,
+        currentScoreId,
       },
     };
 

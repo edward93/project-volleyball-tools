@@ -1,5 +1,5 @@
-@import "./colors.scss";
-@import "./common.scss";
+@import "../../styles/colors.scss";
+@import "../../styles/common.scss";
 
 .vt-tools-scoreboard-section {
   @include prevent-select;
@@ -18,6 +18,7 @@
       display: flex;
       padding: 0.25rem;
       background-color: lighten($color: theme($bg-color, $primary-color), $amount: 15);
+      place-items: center;
     }
 
     & .scoreboard-score {
@@ -30,6 +31,12 @@
       color: theme($bg-color, $primary-color);
       padding: 0.25rem;
       cursor: pointer;
+    }
+
+    & .scoreboard-controls {
+      display: grid;
+      grid-template: 1f 1fr/1fr;
+      padding: 0 0.5rem;
     }
 
     & .scoreboard-sets-won {

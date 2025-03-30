@@ -29,14 +29,17 @@
    ├── index.tsx
    └── ... (other root-level files)
    ```
-3. Fix `ScoreBoard` component
+3. ~~Fix `ScoreBoard` component. Update `score` store and slices (design a better store for this)~~.
+  - ~~Update saved store with a new one that has initialized scores in it (start it over)~~
+  - ~~Method to properly add points up (if it one team wins increment the sets won counter)~~
 4. ~~Add the volleyball~~
 5. ~~Create a new team and save it (Japan's team)~~
 6. ~~Separate framework code from the rest for VolleyballComponent (separation of concerns)~~
 7. ~~Write down MVP requirements (limit the scope and remove bike-shedding)~~
 8. ~~Convert MVP requirements to tasks~~
 9. Add volleyball position to the gameState dependencies
-10. Perform "separation of concerns" refactoring for the MVP components
+10. Extract `onStartTrackingClick` into a new function called `startGame` or `initializeGame`
+11. Perform "separation of concerns" refactoring for the MVP components
 
 ## Out of scope
 

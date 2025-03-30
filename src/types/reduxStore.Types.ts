@@ -135,10 +135,6 @@ export type PlayersLocations = {
 export type Scores = {
   /** Scores by score id */
   byId: Record<string, Score>;
-  /** Scores by game id by game state id [gameId][gameStateId] */
-  byGameStateId: Record<string, Record<string, Score>>;
-  /** All score ids per game */
-  allIdsByGameId: Record<string, string[]>;
   /** All scores */
   allIds: string[];
 };
