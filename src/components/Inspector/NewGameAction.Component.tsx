@@ -27,7 +27,7 @@ const StatsComponent = () => {
   const dispatch = useAppDispatch();
 
   // game state helper
-  const [newGameState] = useGameStateHelpers();
+  const [saveCurrentGameState] = useGameStateHelpers();
 
   // current selected item (player)
   const { selectedId } = useAppSelector((selector) => selector.inspector);
@@ -99,7 +99,7 @@ const StatsComponent = () => {
     // gameState.current = null;
 
     // add a new game state object
-    newGameState();
+    saveCurrentGameState();
     // hide the section
     toggleStatsSection();
   };

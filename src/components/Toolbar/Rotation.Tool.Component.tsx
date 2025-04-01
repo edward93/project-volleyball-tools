@@ -26,7 +26,7 @@ type RotationToolProps = {
 const RotationToolComponent = (props: RotationToolProps) => {
   const { teamId } = props;
 
-  const [newGameState] = useGameStateHelpers();
+  const [saveCurrentGameState] = useGameStateHelpers();
 
   // team
   const team = useAppSelector((selector) => selector.teams.byId[teamId]);
@@ -80,7 +80,7 @@ const RotationToolComponent = (props: RotationToolProps) => {
 
     // should be called after all the actions were dispatched
     // save the state to the store
-    newGameState();
+    saveCurrentGameState();
   };
 
   /**

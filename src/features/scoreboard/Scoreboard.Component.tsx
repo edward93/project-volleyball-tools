@@ -40,7 +40,7 @@ const ScoreboardComponent = () => {
   const currentScore = scores.byId[currentScoreId];
 
   // game state helper (saves the current state)
-  const [newGameState] = useGameStateHelpers();
+  const [saveCurrentGameState] = useGameStateHelpers();
 
   /**
    * Handles home score up click event
@@ -105,7 +105,7 @@ const ScoreboardComponent = () => {
     dispatch(createNewScore(score));
 
     // update the game state
-    newGameState();
+    saveCurrentGameState();
   };
 
   /**

@@ -27,7 +27,7 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
   /**
    * Creates and save a new game state
    */
-  const newGameState = () => {
+  const saveCurrentGameState = () => {
     // get updated state
     const state = store.getState();
     // get current active player ids
@@ -63,5 +63,5 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
     dispatch(saveNewState(gameState));
   };
 
-  return [newGameState];
+  return [saveCurrentGameState];
 };

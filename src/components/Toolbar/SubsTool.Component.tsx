@@ -35,7 +35,7 @@ const SubsToolComponent = (props: SubsToolProps) => {
   const { teamId } = props;
   const dispatch = useDispatch();
   // game sate helper
-  const [newGameState] = useGameStateHelpers();
+  const [saveCurrentGameState] = useGameStateHelpers();
 
   // current sub in/out
   const [subIn, setSubIn] = useState<Player>();
@@ -98,7 +98,7 @@ const SubsToolComponent = (props: SubsToolProps) => {
       dispatch(addLocation(subbedInPlayerLocation));
 
       // update the game state
-      newGameState();
+      saveCurrentGameState();
       close();
     }
   };

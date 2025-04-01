@@ -52,7 +52,7 @@ export const GameSetupComponent = () => {
   const { classes } = useStyles();
 
   // game sate helper
-  const [newGameState] = useGameStateHelpers();
+  const [saveCurrentGameState] = useGameStateHelpers();
   // list of players on the current team
   const [players, setPlayers] = useState<Player[]>([]);
   // team
@@ -128,7 +128,7 @@ export const GameSetupComponent = () => {
     dispatch(addLocations(locations));
 
     // add the first game state
-    newGameState();
+    saveCurrentGameState();
 
     // move to the tracking page
     navigate(ROUTES.GAME(game.id));
