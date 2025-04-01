@@ -1,6 +1,6 @@
 import { AnyAction, Dispatch as ReduxDispatch } from "@reduxjs/toolkit";
 import { ListenerEffectAPI } from "@reduxjs/toolkit/dist/listenerMiddleware/types";
-import { newGame } from "components/Scoreboard/game.Slice";
+import { newGame } from "features/gameSetup/game.Slice";
 import { debounce } from "lodash";
 
 /**
