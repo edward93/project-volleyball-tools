@@ -1,15 +1,12 @@
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
+import { useAppSelector } from "reduxTools/hooks";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { v4 as uuidv4 } from "uuid";
-import { createNewScore } from "./score.Slice";
-
 import { ActionIcon } from "@mantine/core";
-import { Score } from "types/volleyballTool.New.Types";
 import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
+import { useScoreHelper } from "utils/hooks/useScoreHelper.hook";
 import styles from "./scoreboard.module.scss";
 
 /**
@@ -17,7 +14,6 @@ import styles from "./scoreboard.module.scss";
  * @returns Scoreboard Component
  */
 const ScoreboardComponent = () => {
-  const dispatch = useAppDispatch();
   // current game
   const game = useAppSelector((selector) => selector.game);
   // all teams
@@ -42,6 +38,9 @@ const ScoreboardComponent = () => {
   // game state helper (saves the current state)
   const [saveCurrentGameState] = useGameStateHelpers();
 
+  // updating score helper
+  const { updateScore } = useScoreHelper();
+
   /**
    * Handles home score up click event
    * @param event - Click event
@@ -49,10 +48,7 @@ const ScoreboardComponent = () => {
   const onHomeScoreUpClick = (event: React.MouseEvent<SVGSVGElement>) => {
     event.preventDefault();
 
-    const newScore = currentScore.homePoints + 1;
-    if (!validateScore(newScore)) return;
-
-    updateScore({ ...currentScore, homePoints: newScore });
+    changeScore(1);
   };
 
   /**
@@ -62,10 +58,7 @@ const ScoreboardComponent = () => {
   const onHomeScoreDownClick = (event: React.MouseEvent<SVGSVGElement>) => {
     event.preventDefault();
 
-    const newScore = currentScore.homePoints - 1;
-    if (!validateScore(newScore)) return;
-
-    updateScore({ ...currentScore, homePoints: newScore });
+    changeScore(-1);
   };
 
   /**
@@ -75,10 +68,7 @@ const ScoreboardComponent = () => {
   const onAwayScoreUpClick = (event: React.MouseEvent<SVGSVGElement>) => {
     event.preventDefault();
 
-    const newScore = currentScore.awayPoints + 1;
-    if (!validateScore(newScore)) return;
-
-    updateScore({ ...currentScore, awayPoints: newScore });
+    changeScore(undefined, 1);
   };
 
   /**
@@ -88,10 +78,7 @@ const ScoreboardComponent = () => {
   const onAwayScoreDownClick = (event: React.MouseEvent<SVGSVGElement>) => {
     event.preventDefault();
 
-    const newScore = currentScore.awayPoints - 1;
-    if (!validateScore(newScore)) return;
-
-    updateScore({ ...currentScore, awayPoints: newScore });
+    changeScore(undefined, -1);
   };
 
   /**
@@ -99,56 +86,11 @@ const ScoreboardComponent = () => {
    *
    * @param score - Score to update
    */
-  const updateScore = (score: Score) => {
-    score.id = uuidv4();
-    score = checkSetWin(score);
-    dispatch(createNewScore(score));
+  const changeScore = (homeScoreChange?: number, awayScoreChange?: number) => {
+    updateScore(homeScoreChange, awayScoreChange);
 
     // update the game state
     saveCurrentGameState();
-  };
-
-  /**
-   * Validates the score
-   *
-   * @param score Score to validate
-   * @returns True if the score is valid false otherwise
-   */
-  const validateScore = (score: number): boolean => {
-    if (score < 0) return false;
-    return true;
-  };
-
-  /**
-   * Checks if the score is a winning score and updates the sets won
-   *
-   * @param score - Score to check
-   * @param maxSets - Maximum number of sets
-   * @returns - Updated score with sets won
-   */
-  const checkSetWin = (score: Score, maxSets: number = 5): Score => {
-    const setsToWin = Math.ceil(maxSets / 2);
-    const isFinalSet = score.set === maxSets;
-    const setPoint = isFinalSet ? 15 : 25;
-    const leadByTwo = Math.abs(score.homePoints - score.awayPoints) >= 2;
-
-    if (score.homePoints >= setPoint && leadByTwo) {
-      score.homeSetsWon += 1;
-      if (score.homeSetsWon < setsToWin) {
-        score.set += 1; // Only update the set if the match isn't won
-        score.homePoints = 0;
-        score.awayPoints = 0;
-      }
-    } else if (score.awayPoints >= setPoint && leadByTwo) {
-      score.awaySetsWon += 1;
-      if (score.awaySetsWon < setsToWin) {
-        score.set += 1; // Only update the set if the match isn't won
-        score.homePoints = 0;
-        score.awayPoints = 0;
-      }
-    }
-
-    return score;
   };
 
   return (

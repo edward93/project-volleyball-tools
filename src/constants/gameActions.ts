@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 export const Kill: GameActionType = {
   id: uuidv4(),
   category: GameActionCategory.Attack,
+  gameScoreChange: 1,
   name: "Kill",
   score: 3,
   desc: "Attack that resulted in a kill: opponent wasn't able to pick it up, attack or made an error",
@@ -13,6 +14,7 @@ export const Kill: GameActionType = {
 export const AttackError: GameActionType = {
   id: uuidv4(),
   category: GameActionCategory.Attack,
+  gameScoreChange: -1,
   name: "Attack Error",
   score: 0,
   desc: "Attack that went out of bounds or into the net, blocks do not count",
@@ -29,6 +31,7 @@ export const AttackAttempt: GameActionType = {
 export const PerfectBlock: GameActionType = {
   id: uuidv4(),
   category: GameActionCategory.Block,
+  gameScoreChange: 1,
   name: "Perfect Block",
   score: 3,
   desc: "A block that was resulted in the end of the rally",
@@ -53,6 +56,7 @@ export const BlockTouch: GameActionType = {
 export const BlockError: GameActionType = {
   id: uuidv4(),
   category: GameActionCategory.Block,
+  gameScoreChange: -1,
   name: "Block Error",
   score: 0,
   desc: "Touch that wasn't picked up by teammates",
@@ -85,6 +89,7 @@ export const BadPass: GameActionType = {
 export const PassError: GameActionType = {
   id: uuidv4(),
   category: GameActionCategory.Pass,
+  gameScoreChange: -1,
   name: "Passing Error",
   score: 0,
   desc: "Resulted in opponents point",
@@ -93,6 +98,7 @@ export const PassError: GameActionType = {
 export const ServiceAce: GameActionType = {
   id: uuidv4(),
   category: GameActionCategory.Serve,
+  gameScoreChange: 1,
   name: "Service Ace",
   score: 3,
   desc: "Service Ace",
@@ -101,6 +107,7 @@ export const ServiceAce: GameActionType = {
 export const ServiceError: GameActionType = {
   id: uuidv4(),
   category: GameActionCategory.Serve,
+  gameScoreChange: -1,
   name: "Service Error",
   score: 0,
   desc: "Serve went out of bounds, into the net or other fault was committed during the serve",
@@ -125,6 +132,7 @@ export const PerfectSet: GameActionType = {
 export const SetError: GameActionType = {
   id: uuidv4(),
   category: GameActionCategory.Set,
+  gameScoreChange: -1,
   name: "Setting Error",
   score: 0,
   desc: "A faulty set (double) that resulted in opponent winning the point",
@@ -154,12 +162,13 @@ export const DigTouch: GameActionType = {
   desc: "Ball was contacted but either wasn't enough or was a bad dig",
 };
 
-export const DigMiss: GameActionType = {
+export const DigError: GameActionType = {
   id: uuidv4(),
   category: GameActionCategory.Dig,
+  gameScoreChange: -1,
   name: "Missed",
   score: 0,
-  desc: "Ball hit the ground without a contact",
+  desc: "Ball hit the ground without a contact or was contacted but was unrecoverable",
 };
 
 /** Helper obj */
@@ -188,6 +197,6 @@ export const GameActionTypesById = {
 
   [PerfectDig.id]: PerfectDig,
   [DigTouch.id]: DigTouch,
-  [DigMiss.id]: DigMiss,
+  [DigError.id]: DigError,
 };
 //#endregion
