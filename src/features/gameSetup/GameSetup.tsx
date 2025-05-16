@@ -2,7 +2,7 @@ import { Button, Stepper, createStyles } from "@mantine/core";
 import { addLocations } from "components/Players/playerLocation.Slice";
 import { addPlayers } from "components/Players/players.Slice";
 import { addTeam } from "components/Players/teams.Slice";
-import { newGame } from "components/Scoreboard/game.Slice";
+import { newGame } from "features/gameSetup/game.Slice";
 import { DefaultRotationPositionsVertical } from "constants/courtPositions";
 import { None } from "constants/playerPositions";
 import { createNewScore } from "features/scoreboard/score.Slice";
@@ -52,7 +52,7 @@ export const GameSetupComponent = () => {
   const { classes } = useStyles();
 
   // game sate helper
-  const [newGameState] = useGameStateHelpers();
+  const [saveCurrentGameState] = useGameStateHelpers();
   // list of players on the current team
   const [players, setPlayers] = useState<Player[]>([]);
   // team
@@ -128,7 +128,7 @@ export const GameSetupComponent = () => {
     dispatch(addLocations(locations));
 
     // add the first game state
-    newGameState();
+    saveCurrentGameState();
 
     // move to the tracking page
     navigate(ROUTES.GAME(game.id));

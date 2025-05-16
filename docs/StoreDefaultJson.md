@@ -204,34 +204,6 @@ By default the store has the following data stored
     },
     "allIds": ["fcd73c58-7d66-4bf1-99ef-2699c95e154e", "d2edcb73-3ec8-4af8-b4a9-0ed6c94a23ef"]
   },
-  "sets": {
-    "byId": {
-      "74ea0a6c-20ab-4691-9a88-6e478d4a2f9f": {
-        "gameId": "",
-        "id": "74ea0a6c-20ab-4691-9a88-6e478d4a2f9f",
-        "set": 1,
-        "homeScore": 0,
-        "awayScore": 0
-      }
-    },
-    "byGameId": {
-      "": [
-        {
-          "gameId": "",
-          "id": "74ea0a6c-20ab-4691-9a88-6e478d4a2f9f",
-          "set": 1,
-          "homeScore": 0,
-          "awayScore": 0
-        }
-      ]
-    },
-    "allIds": ["74ea0a6c-20ab-4691-9a88-6e478d4a2f9f"]
-  },
-  "points": {
-    "byId": {},
-    "byGameStateId": {},
-    "allIds": []
-  },
   "score": {
     "byId": {
       "918c1f48-6923-44ac-b14c-c235638a04ee": {

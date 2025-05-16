@@ -40,6 +40,10 @@
 9. Add volleyball position to the gameState dependencies
 10. Extract `onStartTrackingClick` into a new function called `startGame` or `initializeGame`
 11. Perform "separation of concerns" refactoring for the MVP components
+12. ~~Automatic score updates~~
+ - ~~List of all actions that result in a score change~~
+ - ~~Decide when to update the score~~
+ - ~~Implement automatic score updates~~
 
 ## Out of scope
 

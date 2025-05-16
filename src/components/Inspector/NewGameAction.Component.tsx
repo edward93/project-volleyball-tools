@@ -9,10 +9,11 @@ import { useAppDispatch, useAppSelector } from "reduxTools/hooks";
 // import { addGameAction } from "components/Players/players.Slice";
 import { create as createNewGameAction } from "./gameAction.Slice";
 
+import { GameActionTypesById } from "constants/gameActions";
 import "styles/stats.scss";
 import { GameAction } from "types/volleyballTool.New.Types";
 import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
-import { GameActionTypesById } from "constants/gameActions";
+import { useScoreHelper } from "utils/hooks/useScoreHelper.hook";
 
 const selectGameActions: SelectItem[] = Object.entries(GameActionTypesById).map(([key, action]) => ({
   value: key,
@@ -27,7 +28,7 @@ const StatsComponent = () => {
   const dispatch = useAppDispatch();
 
   // game state helper
-  const [newGameState] = useGameStateHelpers();
+  const [saveCurrentGameState] = useGameStateHelpers();
 
   // current selected item (player)
   const { selectedId } = useAppSelector((selector) => selector.inspector);
@@ -36,6 +37,9 @@ const StatsComponent = () => {
   const [showNewActionSection, setShowNewActionSection] = useState(false);
   // current action
   const [currentAction, setCurrentAction] = useState<GameAction>();
+
+  // updating score helper
+  const { updateScore } = useScoreHelper();
 
   //#region user input handlers
   /**
@@ -92,14 +96,22 @@ const StatsComponent = () => {
     if (!selectedId) return;
 
     // save the new game action
-    if (currentAction) dispatch(createNewGameAction(currentAction));
+    if (currentAction) {
+      // TODO: refactor score update logic
+      const actionType = GameActionTypesById[currentAction.type];
+      if (actionType.gameScoreChange) {
+        if (actionType.gameScoreChange > 0) updateScore(Math.abs(actionType.gameScoreChange));
+        else updateScore(undefined, Math.abs(actionType.gameScoreChange));
+      }
+      dispatch(createNewGameAction(currentAction));
+    }
 
     // cleanup
     setCurrentAction(undefined);
     // gameState.current = null;
 
     // add a new game state object
-    newGameState();
+    saveCurrentGameState();
     // hide the section
     toggleStatsSection();
   };

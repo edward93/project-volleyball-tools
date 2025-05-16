@@ -16,6 +16,8 @@ export type GameActionType = {
   id: string;
   /** Category of the action */
   category: GameActionCategory;
+  /** +1 or -1 meaning this action results in a point for the team or the opponent, if at all */
+  gameScoreChange?: number;
   /** Name of the action */
   name: string;
   /** Score that describes this action, necessary for math calcs */
