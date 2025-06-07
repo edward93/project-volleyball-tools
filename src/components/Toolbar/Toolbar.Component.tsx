@@ -2,7 +2,7 @@ import ScoreboardComponent from "features/scoreboard/Scoreboard.Component";
 import { useAppSelector } from "reduxTools/hooks";
 import RotationToolComponent from "./Rotation.Tool.Component";
 
-import SubsToolComponent from "./SubsTool.Component";
+import SubsToolComponent from "features/subs/SubsTool.Component";
 import styles from "./toolbar.module.scss";
 
 /**
