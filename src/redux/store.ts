@@ -7,6 +7,7 @@ import score from "features/scoreboard/score.Slice";
 import inspector from "../components/Inspector/inspector.Slice";
 import players from "../components/Players/players.Slice";
 import game from "../features/gameSetup/game.Slice";
+import teamSettings from "../features/subs/teamSettings.Slice";
 import volleyballPosition from "../features/volleyball/volleyballPosition.Slice";
 
 import listenerMiddleware from "./middlewares/actionListenerMiddleware";
@@ -38,6 +39,7 @@ export const store = configureStore({
     playersLocations,
     game,
     teams,
+    teamSettings,
     score,
     gameState,
     gameAction,
