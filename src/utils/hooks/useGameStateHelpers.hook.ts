@@ -12,6 +12,9 @@ type GameStateHelpersReturnType = [
   () => void,
 ];
 
+// TODO: helper method that will return the entity associated wit the latest game state
+// TODO: add UI to show team settings (Dropdown with an icon) (subs, timeouts, etc.)
+// TODO: when subbing players, update the team settings (substitutions made, etc.)
 /**
  * Game state helper hook
  *
@@ -44,6 +47,19 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
     // latest game action id
     const latestActionId = state.gameAction.byId[state.gameAction.allIds[state.gameAction.allIds.length - 1]]?.id;
 
+    // Get the last two team settings by teamId
+    const allTeamSettingsIds = state.teamSettings.allIds;
+    const teamSettingsIds: Record<string, string> = {};
+
+    // Iterate from the end to get the last two records
+    for (let i = allTeamSettingsIds.length - 1; i >= Math.max(0, allTeamSettingsIds.length - 2); i--) {
+      const settingId = allTeamSettingsIds[i];
+      const setting = state.teamSettings.byId[settingId];
+      if (setting) {
+        teamSettingsIds[setting.teamId] = setting.id;
+      }
+    }
+
     // get current score id
     const currentScoreId = state.score.allIds[state.score.allIds.length - 1];
     
@@ -56,6 +72,7 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
         playerLocationIds,
         gameActionId: latestActionId,
         currentScoreId,
+        teamSettingsIds,
       },
     };
 

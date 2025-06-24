@@ -204,6 +204,25 @@ By default the store has the following data stored
     },
     "allIds": ["fcd73c58-7d66-4bf1-99ef-2699c95e154e", "d2edcb73-3ec8-4af8-b4a9-0ed6c94a23ef"]
   },
+  "teamSettings": {
+    "byId": {
+      "c225c166-e4e6-40e1-9b10-ee89b5105554": {
+        "id": "c225c166-e4e6-40e1-9b10-ee89b5105554",
+        "teamId": "fcd73c58-7d66-4bf1-99ef-2699c95e154e",
+        "subs": { "maxSubstitutions": 6, "substitutionsMade": 0 },
+        "timeouts": { "maxTimeouts": 2, "timeoutsMade": 0 },
+        "challenges": { "maxChallenges": 2, "challengesMade": 0 }
+      },
+      "8d1b4443-3a59-4ed3-9042-0b1bfb400d2b": {
+        "id": "8d1b4443-3a59-4ed3-9042-0b1bfb400d2b",
+        "teamId": "d2edcb73-3ec8-4af8-b4a9-0ed6c94a23ef",
+        "subs": { "maxSubstitutions": 6, "substitutionsMade": 0 },
+        "timeouts": { "maxTimeouts": 2, "timeoutsMade": 0 },
+        "challenges": { "maxChallenges": 2, "challengesMade": 0 }
+      }
+    },
+    "allIds": ["c225c166-e4e6-40e1-9b10-ee89b5105554", "8d1b4443-3a59-4ed3-9042-0b1bfb400d2b"]
+  },
   "score": {
     "byId": {
       "918c1f48-6923-44ac-b14c-c235638a04ee": {
@@ -242,7 +261,11 @@ By default the store has the following data stored
             "512bb837-683f-4302-8955-3c29582e57f2": "c1dd833b-00b6-48a5-80b1-712475e6cb48",
             "492bc76d-a94e-4601-a004-fa766fe02031": "f921d11c-26a9-426e-8a4e-c5939ee60cc0"
           },
-          "currentScoreId": "918c1f48-6923-44ac-b14c-c235638a04ee"
+          "currentScoreId": "918c1f48-6923-44ac-b14c-c235638a04ee",
+          "teamSettingsIds": {
+            "fcd73c58-7d66-4bf1-99ef-2699c95e154e": "c225c166-e4e6-40e1-9b10-ee89b5105554",
+            "8d1b4443-3a59-4ed3-9042-0b1bfb400d2b": "8d1b4443-3a59-4ed3-9042-0b1bfb400d2b"
+          }
         }
       }
     },

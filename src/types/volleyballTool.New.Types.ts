@@ -99,6 +99,8 @@ export type GameState = {
     activePlayerIds: string[];
     /** all locations of current players snapshot by this state [playerId][playerLocationId]*/
     playerLocationIds: Record<string, string>;
+    /** latest team settings by team id { teamId: teamSettingId }*/
+    teamSettingsIds: Record<string, string>;
     /** game action associated with this state (only one action per state) */
     gameActionId?: string;
     /** current score id */
