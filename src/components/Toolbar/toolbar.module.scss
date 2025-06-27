@@ -13,7 +13,7 @@
 
   & .toolbar-section {
     display: grid;
-    grid-template: 1fr / 1fr 1fr;
+    grid-template: 1fr / 1fr 1fr 2fr;
     column-gap: 0.5rem;
     // justify-self: stretch;
 
@@ -35,4 +35,10 @@
       place-items: stretch;
     }
   }
+}
+
+.right-toolbar {
+  display: grid;
+  grid-template: 1fr / 2fr 1fr 1fr;
+  column-gap: 0.5rem;
 }

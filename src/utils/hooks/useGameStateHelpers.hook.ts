@@ -13,7 +13,6 @@ type GameStateHelpersReturnType = [
 ];
 
 // TODO: helper method that will return the entity associated wit the latest game state
-// TODO: add UI to show team settings (Dropdown with an icon) (subs, timeouts, etc.)
 // TODO: when subbing players, update the team settings (substitutions made, etc.)
 /**
  * Game state helper hook
