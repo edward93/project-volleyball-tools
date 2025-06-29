@@ -7,12 +7,13 @@ import { v4 as uuidv4 } from "uuid";
 
 import { addLocation } from "components/Players/playerLocation.Slice";
 import { subPlayers } from "components/Players/players.Slice";
+import { PositionsById } from "constants/playerPositions";
 import { forwardRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Player, PlayerLocation } from "types/volleyballTool.New.Types";
 import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
 import styles from "./subs.tool.module.scss";
-import { PositionsById } from "constants/playerPositions";
+import { addTeamSettings } from "./teamSettings.Slice";
 
 /** Subs tool props */
 type SubsToolProps = {
@@ -35,7 +36,7 @@ const SubsToolComponent = (props: SubsToolProps) => {
   const { teamId } = props;
   const dispatch = useDispatch();
   // game sate helper
-  const [saveCurrentGameState] = useGameStateHelpers();
+  const [saveCurrentGameState, currentState] = useGameStateHelpers();
 
   // current sub in/out
   const [subIn, setSubIn] = useState<Player>();
@@ -51,6 +52,15 @@ const SubsToolComponent = (props: SubsToolProps) => {
 
   // player locations
   const playerLocations = useAppSelector((selector) => selector.playersLocations);
+
+  // TODO: simplify getting latest entity from the dependency of the game state
+  // team settings
+  const currentTeamSettingsId = currentState?.dependencies?.teamSettingsIds?.[teamId];
+  const teamSettings = useAppSelector((selector) =>
+    currentTeamSettingsId
+      ? selector.teamSettings.byId[currentTeamSettingsId]
+      : Object.values(selector.teamSettings.byId).filter((c) => c.teamId === teamId)[0],
+  );
 
   // active and inactive players
   const inactivePlayers = players.filter((c) => !c.isActive);
@@ -97,6 +107,18 @@ const SubsToolComponent = (props: SubsToolProps) => {
       const subbedInPlayerLocation: PlayerLocation = { ...subbedOutPlayerLocation, id: uuidv4(), playerId: subIn.id };
       dispatch(addLocation(subbedInPlayerLocation));
 
+      // update the team settings to reflect the substitution
+      dispatch(
+        addTeamSettings({
+          ...teamSettings,
+          id: uuidv4(),
+          subs: {
+            substitutionsMade: teamSettings.subs.substitutionsMade + 1,
+            maxSubstitutions: teamSettings.subs.maxSubstitutions,
+          },
+        }),
+      );
+
       // update the game state
       saveCurrentGameState();
       close();
@@ -105,7 +127,13 @@ const SubsToolComponent = (props: SubsToolProps) => {
 
   return (
     <div className={styles.container}>
-      <Modal opened={opened} onClose={close} title="Substitution" centered size="md">
+      <Modal
+        opened={opened}
+        onClose={close}
+        title={`Substitution: ${teamSettings.subs.substitutionsMade}/${teamSettings.subs.maxSubstitutions}`}
+        centered
+        size="md"
+      >
         <div className={styles.modalContent}>
           <section className={styles.subIn}>
             <Select

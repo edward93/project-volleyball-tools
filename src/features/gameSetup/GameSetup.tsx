@@ -2,10 +2,11 @@ import { Button, Stepper, createStyles } from "@mantine/core";
 import { addLocations } from "components/Players/playerLocation.Slice";
 import { addPlayers } from "components/Players/players.Slice";
 import { addTeam } from "components/Players/teams.Slice";
-import { newGame } from "features/gameSetup/game.Slice";
 import { DefaultRotationPositionsVertical } from "constants/courtPositions";
 import { None } from "constants/playerPositions";
+import { newGame } from "features/gameSetup/game.Slice";
 import { createNewScore } from "features/scoreboard/score.Slice";
+import { addTeamSettings } from "features/subs/teamSettings.Slice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "reduxTools/hooks";
@@ -18,6 +19,7 @@ import {
   PositionType,
   Score,
   Team,
+  TeamSettings,
 } from "types/volleyballTool.New.Types";
 import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
 import { ROUTES } from "utils/router/routes";
@@ -58,6 +60,10 @@ export const GameSetupComponent = () => {
   // team
   const [team, setTeam] = useState<Team>();
   const [opponentTeam, setOpponentTeam] = useState<Team>();
+  // team settings
+  const [teamSettings, setTeamSettings] = useState<TeamSettings>();
+  const [opponentTeamSettings, setOpponentTeamSettings] = useState<TeamSettings>();
+
   // current player name
   const [currentPlayerName, setCurrentPlayerName] = useState<string>("");
   // current player position
@@ -127,6 +133,10 @@ export const GameSetupComponent = () => {
 
     dispatch(addLocations(locations));
 
+    // add team settings to the store
+    if (teamSettings) dispatch(addTeamSettings(teamSettings));
+    if (opponentTeamSettings) dispatch(addTeamSettings(opponentTeamSettings));
+
     // add the first game state
     saveCurrentGameState();
 
@@ -191,6 +201,24 @@ export const GameSetupComponent = () => {
     };
 
     setTeam(homeTeam);
+    // set team settings
+    const settings: TeamSettings = {
+      id: uuidv4(),
+      teamId: homeTeam.id,
+      subs: {
+        maxSubstitutions: 6,
+        substitutionsMade: 0,
+      },
+      timeouts: {
+        maxTimeouts: 3,
+        timeoutsMade: 0,
+      },
+      challenges: {
+        maxChallenges: 3,
+        challengesMade: 0,
+      },
+    };
+    setTeamSettings(settings);
 
     // create opponent team
     const opponentTeam: Team = {
@@ -200,6 +228,25 @@ export const GameSetupComponent = () => {
       name: opponentTeamName,
     };
     setOpponentTeam(opponentTeam);
+
+    // set other team settings
+    const opponentSettings: TeamSettings = {
+      id: uuidv4(),
+      teamId: homeTeam.id,
+      subs: {
+        maxSubstitutions: 6,
+        substitutionsMade: 0,
+      },
+      timeouts: {
+        maxTimeouts: 3,
+        timeoutsMade: 0,
+      },
+      challenges: {
+        maxChallenges: 3,
+        challengesMade: 0,
+      },
+    };
+    setOpponentTeamSettings(opponentSettings);
 
     // move the stepper
     setActive(1);

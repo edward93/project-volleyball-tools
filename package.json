@@ -1,6 +1,6 @@
 {
   "name": "project-volleyball-tools",
-  "version": "0.0.19",
+  "version": "0.0.21",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.6",

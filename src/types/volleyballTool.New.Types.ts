@@ -99,6 +99,8 @@ export type GameState = {
     activePlayerIds: string[];
     /** all locations of current players snapshot by this state [playerId][playerLocationId]*/
     playerLocationIds: Record<string, string>;
+    /** latest team settings by team id { teamId: teamSettingId }*/
+    teamSettingsIds: Record<string, string>;
     /** game action associated with this state (only one action per state) */
     gameActionId?: string;
     /** current score id */
@@ -194,11 +196,50 @@ export type Team = {
   name: string;
   /** is home team */
   isHome: boolean;
-
   // This is for internal use only
   /** Which side of the court this team is on */
   courtSide: HalfCourt;
 };
+
+//#region team settings
+/** Team settings type (subs, timeouts, challenges) */
+export type TeamSettings = {
+  /** Unique auto generated id */
+  id: string;
+  /** team id */
+  teamId: string;
+  /** subs settings */
+  subs: SubsSettings;
+  /** timeouts settings */
+  timeouts: TimeoutSettings;
+  /** challenges settings */
+  challenges: ChallengeSettings;
+};
+
+/** Challenge settings */
+export type ChallengeSettings = {
+  /** Maximum number of challenges allowed */
+  maxChallenges: number;
+  /** Number of challenges made so far */
+  challengesMade: number;
+};
+
+/** Timeout settings */
+export type TimeoutSettings = {
+  /** Maximum number of timeouts allowed */
+  maxTimeouts: number;
+  /** Number of timeouts made so far */
+  timeoutsMade: number;
+};
+
+/** Subs settings */
+export type SubsSettings = {
+  /** Maximum number of substitutions allowed */
+  maxSubstitutions: number;
+  /** Number of substitutions made so far */
+  substitutionsMade: number;
+};
+//#endregion
 
 /** Game subs */
 export type Substitutions = {

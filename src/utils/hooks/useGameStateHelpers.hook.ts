@@ -10,8 +10,13 @@ type GameStateHelpersReturnType = [
    * Creates a new game state and stores it
    */
   () => void,
+  /**
+   * Current game state
+   */
+  GameState,
 ];
 
+// TODO: helper method that will return the entity associated wit the latest game state
 /**
  * Game state helper hook
  *
@@ -23,6 +28,9 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
 
   // current game
   const game = useAppSelector((selector) => selector.game);
+  // current game state
+  const { currentStateId } = useAppSelector((selector) => selector.gameState);
+  const currentState = useAppSelector((selector) => selector.gameState.byId[currentStateId ?? ""]);
 
   /**
    * Creates and save a new game state
@@ -44,9 +52,22 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
     // latest game action id
     const latestActionId = state.gameAction.byId[state.gameAction.allIds[state.gameAction.allIds.length - 1]]?.id;
 
+    // Get the last two team settings by teamId
+    const allTeamSettingsIds = state.teamSettings.allIds;
+    const teamSettingsIds: Record<string, string> = {};
+
+    // Iterate from the end to get the last two records
+    for (let i = allTeamSettingsIds.length - 1; i >= Math.max(0, allTeamSettingsIds.length - 2); i--) {
+      const settingId = allTeamSettingsIds[i];
+      const setting = state.teamSettings.byId[settingId];
+      if (setting) {
+        teamSettingsIds[setting.teamId] = setting.id;
+      }
+    }
+
     // get current score id
     const currentScoreId = state.score.allIds[state.score.allIds.length - 1];
-    
+
     // game state object
     const gameState: GameState = {
       id: uuidv4(),
@@ -56,6 +77,7 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
         playerLocationIds,
         gameActionId: latestActionId,
         currentScoreId,
+        teamSettingsIds,
       },
     };
 
@@ -63,5 +85,5 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
     dispatch(saveNewState(gameState));
   };
 
-  return [saveCurrentGameState];
+  return [saveCurrentGameState, currentState];
 };
