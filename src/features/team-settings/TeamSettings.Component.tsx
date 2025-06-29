@@ -11,6 +11,7 @@ type TeamSettingsToolProps = {
   teamId: string;
 };
 
+// TODO: Make sure subs and potentially other settings reset when new set starts
 /**
  * Team settings Tool Component
  * @returns - Team settings Tool Component
