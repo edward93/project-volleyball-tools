@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { Player, PlayerLocation } from "types/volleyballTool.New.Types";
 import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
 import styles from "./subs.tool.module.scss";
+import { addTeamSettings } from "./teamSettings.Slice";
 
 /** Subs tool props */
 type SubsToolProps = {
@@ -35,11 +36,7 @@ const SubsToolComponent = (props: SubsToolProps) => {
   const { teamId } = props;
   const dispatch = useDispatch();
   // game sate helper
-  const [saveCurrentGameState] = useGameStateHelpers();
-
-  // current game state id
-  const { currentStateId } = useAppSelector((selector) => selector.gameState);
-  const currentState = useAppSelector((selector) => selector.gameState.byId[currentStateId ?? ""]);
+  const [saveCurrentGameState, currentState] = useGameStateHelpers();
 
   // current sub in/out
   const [subIn, setSubIn] = useState<Player>();
@@ -109,6 +106,18 @@ const SubsToolComponent = (props: SubsToolProps) => {
       // should be added
       const subbedInPlayerLocation: PlayerLocation = { ...subbedOutPlayerLocation, id: uuidv4(), playerId: subIn.id };
       dispatch(addLocation(subbedInPlayerLocation));
+
+      // update the team settings to reflect the substitution
+      dispatch(
+        addTeamSettings({
+          ...teamSettings,
+          id: uuidv4(),
+          subs: {
+            substitutionsMade: teamSettings.subs.substitutionsMade + 1,
+            maxSubstitutions: teamSettings.subs.maxSubstitutions,
+          },
+        }),
+      );
 
       // update the game state
       saveCurrentGameState();

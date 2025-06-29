@@ -10,10 +10,13 @@ type GameStateHelpersReturnType = [
    * Creates a new game state and stores it
    */
   () => void,
+  /**
+   * Current game state
+   */
+  GameState,
 ];
 
 // TODO: helper method that will return the entity associated wit the latest game state
-// TODO: when subbing players, update the team settings (substitutions made, etc.)
 /**
  * Game state helper hook
  *
@@ -25,6 +28,9 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
 
   // current game
   const game = useAppSelector((selector) => selector.game);
+  // current game state
+  const { currentStateId } = useAppSelector((selector) => selector.gameState);
+  const currentState = useAppSelector((selector) => selector.gameState.byId[currentStateId ?? ""]);
 
   /**
    * Creates and save a new game state
@@ -61,7 +67,7 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
 
     // get current score id
     const currentScoreId = state.score.allIds[state.score.allIds.length - 1];
-    
+
     // game state object
     const gameState: GameState = {
       id: uuidv4(),
@@ -79,5 +85,5 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
     dispatch(saveNewState(gameState));
   };
 
-  return [saveCurrentGameState];
+  return [saveCurrentGameState, currentState];
 };
