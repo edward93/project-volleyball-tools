@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { VolleyballPosition } from "types/volleyballTool.New.Types";
+import { useGameStateHelpers } from "utils/hooks/useGameStateHelpers.hook";
 import { useMoveable } from "utils/hooks/useMoveable.hook";
 
 /**
@@ -26,6 +27,9 @@ export const useVolleyballHook = (
   // moveable hook
   const [isPressed, press, release, move] = useMoveable<VolleyballPosition>(position, setPosition);
 
+  // current game state
+  const [_, currentState] = useGameStateHelpers();
+
   useEffect(() => {
     if (svgRef.current) {
       svgRef.current.addEventListener("mousemove", onMouseMove);
@@ -37,6 +41,12 @@ export const useVolleyballHook = (
       svgRef.current?.removeEventListener("touchmove", onTouchMove);
     };
   }, [svgRef]);
+
+  useEffect(() => {
+    if (currentState && currentState.dependencies.volleyballPosition) {
+      setPosition(currentState.dependencies.volleyballPosition!);
+    }
+  }, [currentState]);
 
   /**
    * Handles the mouse down event on an SVG circle element.

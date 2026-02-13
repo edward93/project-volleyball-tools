@@ -56,6 +56,9 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
     const allTeamSettingsIds = state.teamSettings.allIds;
     const teamSettingsIds: Record<string, string> = {};
 
+    // Get the current volleyball position
+    const volleyballPosition = state.volleyballPosition;
+
     // Iterate from the end to get the last two records
     for (let i = allTeamSettingsIds.length - 1; i >= Math.max(0, allTeamSettingsIds.length - 2); i--) {
       const settingId = allTeamSettingsIds[i];
@@ -78,6 +81,7 @@ export const useGameStateHelpers = (): GameStateHelpersReturnType => {
         gameActionId: latestActionId,
         currentScoreId,
         teamSettingsIds,
+        volleyballPosition
       },
     };
 

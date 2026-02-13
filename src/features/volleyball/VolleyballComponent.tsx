@@ -19,10 +19,13 @@ const VolleyballComponent = (props: { svgRef: React.RefObject<SVGSVGElement> }) 
   const volleyballPosition = useAppSelector((selector) => selector.volleyballPosition);
 
   // custom hook to handle the volleyball movement
-  const { position, isPressed, onMouseDown, onTouchStart, onStopPressing } =
-    useVolleyballHook(volleyballPosition, svgRef, () => {
+  const { position, isPressed, onMouseDown, onTouchStart, onStopPressing } = useVolleyballHook(
+    volleyballPosition,
+    svgRef,
+    () => {
       dispatch(updateVolleyballPosition({ id: uuidv4(), x: position.x, y: position.y }));
-    });
+    },
+  );
 
   return (
     <g

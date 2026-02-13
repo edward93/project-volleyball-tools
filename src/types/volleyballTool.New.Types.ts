@@ -105,6 +105,8 @@ export type GameState = {
     gameActionId?: string;
     /** current score id */
     currentScoreId?: string;
+    /** volleyball position */
+    volleyballPosition?: VolleyballPosition;
   };
 };
 
